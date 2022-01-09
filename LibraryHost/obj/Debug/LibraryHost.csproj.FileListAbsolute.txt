@@ -1,0 +1,13 @@
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\LibraryHost.exe.config
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\LibraryHost.exe
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\LibraryHost.pdb
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\obj\Debug\LibraryHost.csproj.AssemblyReference.cache
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\obj\Debug\LibraryHost.csproj.CoreCompileInputs.cache
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\obj\Debug\LibraryHost.exe
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\obj\Debug\LibraryHost.pdb
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\LibraryService.dll
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\EntityFramework.dll
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\LibraryService.pdb
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\LibraryService.dll.config
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\EntityFramework.xml
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\obj\Debug\LibraryHost.csproj.CopyComplete
