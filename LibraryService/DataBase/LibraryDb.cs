@@ -21,6 +21,8 @@ namespace LibraryService
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
 
         public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Book> Books { get; set; }
+        public virtual DbSet<Borrow> Borrows { get; set; }
         // public virtual DbSet<MyEntity> MyEntities { get; set; }
     }
 

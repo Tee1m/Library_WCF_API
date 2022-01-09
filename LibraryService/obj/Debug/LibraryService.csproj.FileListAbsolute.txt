@@ -11,5 +11,7 @@ C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryServi
 C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.pdb
 C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations.init.resources
 C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.csproj.GenerateResource.cache
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.csproj.AssemblyReference.cache
 C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._001.resources
+C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._002.resources
+C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._003.resources
+C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._004.resources

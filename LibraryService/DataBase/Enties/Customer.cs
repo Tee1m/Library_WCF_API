@@ -13,10 +13,8 @@ namespace LibraryService
     // You can add XSD files into the project. After building the project, you can directly use the data types defined there, with the namespace "LibraryService.ContractType".
     [DataContract]
     [Table("Klienci")]
-    public class Customer
+    public class Customer : DbObject
     {
-        [Key]
-        public int Id { get; set; }
         [DataMember]
         [Required]
         public string Name { get; set; }
