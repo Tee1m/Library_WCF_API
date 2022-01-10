@@ -89,6 +89,14 @@
     <Compile Include="Migrations\202201092153181_004.Designer.cs">
       <DependentUpon>202201092153181_004.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201102146528_005.cs" />
+    <Compile Include="Migrations\202201102146528_005.Designer.cs">
+      <DependentUpon>202201102146528_005.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202201102202443_006.cs" />
+    <Compile Include="Migrations\202201102202443_006.Designer.cs">
+      <DependentUpon>202201102202443_006.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LibraryAPI.cs" />
@@ -112,6 +120,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201092153181_004.resx">
       <DependentUpon>202201092153181_004.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201102146528_005.resx">
+      <DependentUpon>202201102146528_005.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201102202443_006.resx">
+      <DependentUpon>202201102202443_006.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

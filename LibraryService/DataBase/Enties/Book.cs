@@ -5,7 +5,6 @@ using System.Runtime.Serialization;
 
 namespace LibraryService
 {
-    [DataContract]
     [Table("Ksiazki")]
     public class Book : DbObject
     {

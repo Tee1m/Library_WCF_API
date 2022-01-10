@@ -5,7 +5,6 @@ using System;
 
 namespace LibraryService
 {
-    [DataContract]
     [Table("Wypozyczenia")]
     public class Borrow : DbObject
     {
@@ -14,15 +13,21 @@ namespace LibraryService
         public Customer Customer { get; set; }
         [DataMember]
         [Required]
-        public Book Books { get; set; }
+        public Book Book { get; set; }
         [DataMember]
         public DateTime DateOfBorrow { get; set; }
         [DataMember]
         public DateTime? Return { get; set; }
+        
+        public Borrow() { }
 
-        public Borrow()
+        public Borrow(Customer customer, Book book)
         {
-            DateOfBorrow = DateTime.Today;
+            this.Customer = Customer;
+            this.Book = Book;
+            this.DateOfBorrow = DateTime.Today;
         }
+
+        
     }
 }
