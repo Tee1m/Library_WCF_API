@@ -23,8 +23,5 @@ namespace LibraryService
         [DataMember]
         [Required]
         public int Availability { get; set; }
-        [DataMember]
-        [Required]
-        public float Price { get; set; }
     }
 }

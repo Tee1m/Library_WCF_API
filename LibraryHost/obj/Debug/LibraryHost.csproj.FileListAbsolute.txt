@@ -11,3 +11,5 @@ C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\LibraryService.
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\LibraryService.dll.config
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\EntityFramework.xml
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\obj\Debug\LibraryHost.csproj.CopyComplete
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\EntityFramework.SqlServer.xml

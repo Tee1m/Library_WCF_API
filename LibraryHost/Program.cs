@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LibraryService;
+﻿using LibraryService;
+using System;
 using System.ServiceModel;
 
 namespace LibraryHost
@@ -12,17 +8,39 @@ namespace LibraryHost
     {
         static void Main(string[] args)
         {
-            ServiceHost host = new ServiceHost(typeof(LibraryAPI));
-
+            ServiceHost BorrowsService = new ServiceHost(typeof(BorrowsRepository));
+            ServiceHost CustomersService = new ServiceHost(typeof(CustomersRepository));
+            ServiceHost BooksService = new ServiceHost(typeof(BooksRepository));
             Console.WriteLine("Uruchamianie ...");
-            host.Opened += Host_Opened;
-            host.Open();
+
+            BorrowsService.Opened += BorrowsServiceOpened;
+            CustomersService.Opened += CustomersServiceOpened;
+            BooksService.Opened += BooksServiceOpened;
+
+            CustomersService.Open();            
+            BorrowsService.Open();
+            BooksService.Open();
+
             Console.ReadKey();
+
+            BorrowsService.Close();
+            CustomersService.Close();
+            BooksService.Close();
         }
 
-        private static void Host_Opened(object sender, EventArgs e)
+        private static void BooksServiceOpened(object sender, EventArgs e)
         {
-            Console.WriteLine("LibraryAPI host został uruchomiony");
+            Console.WriteLine("BooksRepository host został uruchomiony");
+        }
+
+        private static void CustomersServiceOpened(object sender, EventArgs e)
+        {
+            Console.WriteLine("CustomersRepository host został uruchomiony");
+        }
+
+        private static void BorrowsServiceOpened(object sender, EventArgs e)
+        {
+            Console.WriteLine("BorrowsRepository host został uruchomiony");
         }
     }
 }
