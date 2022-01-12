@@ -11,17 +11,21 @@ namespace LibraryService
         [DataMember]
         [Required]
         public string Title { get; set; }
-        [DataMember]
-        [Required]
-        public string Description { get; set; }
+
         [DataMember]
         [Required]
         public string AuthorName { get; set; }
+
         [DataMember]
         [Required]
         public string AuthorSurname { get; set; }
+
         [DataMember]
         [Required]
-        public int Availability { get; set; }
+        public int Availability { get; set; }    
+        
+        [DataMember]
+        [Required]
+        public string Description { get; set; }
     }
 }

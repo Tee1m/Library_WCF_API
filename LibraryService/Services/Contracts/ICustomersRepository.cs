@@ -15,5 +15,4 @@ namespace LibraryService
         [OperationContract]
         List<Customer> GetCustomers();
     }
-
 }

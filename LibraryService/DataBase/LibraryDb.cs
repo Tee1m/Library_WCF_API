@@ -15,6 +15,7 @@ namespace LibraryService
         public LibraryDb()
             : base("name=LibraryDb")
         {
+            Database.SetInitializer<LibraryDb>(new CreateDatabaseIfNotExists<LibraryDb>());
         }
 
         // Add a DbSet for each entity type that you want to include in your model. For more information 

@@ -36,6 +36,7 @@ namespace LibraryService
 
                 customer = customersQuery[0];
                 book = booksQuery[0];
+
                 Borrow borrow = new Borrow(customer, book);
                 db.Borrows.Add(borrow);
                 db.SaveChanges();
@@ -46,9 +47,12 @@ namespace LibraryService
 
         public string Return(int id)
         {
-            Borrow borrow = new Borrow();
+            Customer customer = new Customer();
+            Book book = new Book();
+
             using (LibraryDb db = new LibraryDb())
             {
+                Borrow borrow = new Borrow();
                 var borrowsQuery = db.Borrows.Where(x => x.Id == id).ToList();
 
                 if (borrowsQuery.Count() == 0)
@@ -57,9 +61,15 @@ namespace LibraryService
                 }
 
                 borrow = borrowsQuery[0];
+
+                var customerQuery = db.Customers.Where(x => x.Id == borrow.Customer.Id).ToList();
+                var bookQuery = db.Books.Where(x => x.Id == borrow.Book.Id).ToList();
+
+                customer = customerQuery[0];
+                book = bookQuery[0];
             }
 
-            return $"Zwrócono, Tytuł: {borrow.Book.Title} Klienta: {borrow.Customer.Name} {borrow.Customer.Surname}";
+            return $"Zwrócono, Tytuł: {book.Title} Klienta: {customer.Name} {customer.Surname}";
         }
 
         public List<Borrow> GetBorrows()

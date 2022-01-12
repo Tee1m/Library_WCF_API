@@ -27,17 +27,5 @@ namespace LibraryService
         [DataMember]
         [Required]
         public string TelephoneNumber { get; set; }
-        
-        public Customer () { }
-
-        public Customer(string name, string surname, string address, string telephoneNumber)
-        {
-            this.Name = name;
-            this.Surname = surname;
-            this.Address = address;
-            this.TelephoneNumber = telephoneNumber;
-        }
-
-        
     }
 }

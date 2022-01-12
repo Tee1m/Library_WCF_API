@@ -11,21 +11,30 @@ namespace LibraryService
         [DataMember]
         [Required]
         public Customer Customer { get; set; }
+
+        [ForeignKey("Customer")]
+        public int CustomerId { get; set; }
+
         [DataMember]
         [Required]
         public Book Book { get; set; }
+
+        [ForeignKey("Book")]
+        public int BookId { get; set; }
+
         [DataMember]
         public DateTime DateOfBorrow { get; set; }
+
         [DataMember]
         public DateTime? Return { get; set; }
-        
-        public Borrow() { }
 
-        public Borrow(Customer customer, Book book)
+        public Borrow() {}
+
+        public Borrow(Customer customer,  Book book)
         {
-            this.Customer = Customer;
-            this.Book = Book;
-            this.DateOfBorrow = DateTime.Today;
+            DateOfBorrow = DateTime.Now;
+            this.Customer = customer;
+            this.Book = book;
         }
 
         
