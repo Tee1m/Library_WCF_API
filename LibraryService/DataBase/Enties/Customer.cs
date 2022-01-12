@@ -26,11 +26,11 @@ namespace LibraryService
         public string Address { get; set; }
         [DataMember]
         [Required]
-        public int TelephoneNumber { get; set; }
+        public string TelephoneNumber { get; set; }
         
         public Customer () { }
 
-        public Customer(string name, string surname, string address, int telephoneNumber)
+        public Customer(string name, string surname, string address, string telephoneNumber)
         {
             this.Name = name;
             this.Surname = surname;

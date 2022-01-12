@@ -71,6 +71,10 @@
     <Compile Include="Migrations\202201112320348_007.Designer.cs">
       <DependentUpon>202201112320348_007.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202201120130082_008.cs" />
+    <Compile Include="Migrations\202201120130082_008.Designer.cs">
+      <DependentUpon>202201120130082_008.cs</DependentUpon>
+    </Compile>
     <Compile Include="Services\BooksRepository.cs" />
     <Compile Include="Services\Contracts\IBooksRepository.cs" />
     <Compile Include="Services\Contracts\ICustomersRepository.cs" />
@@ -137,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202201112320348_007.resx">
       <DependentUpon>202201112320348_007.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202201120130082_008.resx">
+      <DependentUpon>202201120130082_008.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

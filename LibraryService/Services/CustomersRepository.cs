@@ -33,7 +33,7 @@ namespace LibraryService
 
         private bool CustomerIsNullable(Customer customer)
         {
-            return customer.Name == null || customer.Surname == null || customer.Address == null || customer.TelephoneNumber == 0;
+            return customer.Name == null || customer.Surname == null || customer.Address == null || customer.TelephoneNumber == "";
         }
 
         private bool IsSimilarCustomer(Customer existing, Customer created)
