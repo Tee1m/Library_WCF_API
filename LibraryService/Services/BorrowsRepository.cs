@@ -34,6 +34,8 @@ namespace LibraryService
                     return "Wpożyczenie jest niemożliwe, ponieważ książki niema na stanie biblioteki.";
                 }
 
+                booksQuery[0].Availability -= 1;
+
                 customer = customersQuery[0];
                 book = booksQuery[0];
 
@@ -62,8 +64,8 @@ namespace LibraryService
 
                 borrow = borrowsQuery[0];
 
-                var customerQuery = db.Customers.Where(x => x.Id == borrow.Customer.Id).ToList();
-                var bookQuery = db.Books.Where(x => x.Id == borrow.Book.Id).ToList();
+                var customerQuery = db.Customers.Where(x => x.Id == borrow.CustomerId).ToList();
+                var bookQuery = db.Books.Where(x => x.Id == borrow.BookId).ToList();
 
                 customer = customerQuery[0];
                 book = bookQuery[0];

@@ -36,7 +36,5 @@ namespace LibraryService
             this.Customer = customer;
             this.Book = book;
         }
-
-        
     }
 }

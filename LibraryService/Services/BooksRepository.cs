@@ -29,7 +29,7 @@ namespace LibraryService
                 }
 
                 db.Books.Add(newBook);
-                db.SaveChanges();
+                db.SaveChanges(); //TO DO ENTIES EXCEPTION
             }
 
             return "Dodano Książkę do bazy danych.";
@@ -43,7 +43,7 @@ namespace LibraryService
 
         private bool BookIsNullable(Book book)
         {
-            return book.AuthorName == null || book.AuthorSurname == null || book.Description == null || book.Title == null;
+            return book.AuthorName == null || book.AuthorSurname == null || book.Description == "" || book.Title == null;
         }
 
         public string DeleteBook(int id)
@@ -59,9 +59,12 @@ namespace LibraryService
                 {
                     return "Nie znaleziono wskazanej Książki w bazie biblioteki.";
                 }
-                else if (q.Where(x => x.Book.Id == id && x.Return == null).Count() != 0)
+                else if (q == null)
                 {
-                    return "Nie usunieto książki, ponieważ nie wszystkie egzemplarze zostały zwrócone";
+                    if (q.Where(x => x.Book.Id == id && x.Return == null).Count() != 0)
+                    {
+                        return "Nie usunieto książki, ponieważ nie wszystkie egzemplarze zostały zwrócone";
+                    }    
                 }
 
                 book = books[0];
