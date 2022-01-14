@@ -34,12 +34,13 @@ namespace LibraryService
                     return "Wpożyczenie jest niemożliwe, ponieważ książki niema na stanie biblioteki.";
                 }
 
-                booksQuery[0].Availability -= 1;
-
                 customer = customersQuery[0];
                 book = booksQuery[0];
 
+                book.Availability--;
+
                 Borrow borrow = new Borrow(customer, book);
+
                 db.Borrows.Add(borrow);
                 db.SaveChanges();
             }
@@ -69,18 +70,42 @@ namespace LibraryService
 
                 customer = customerQuery[0];
                 book = bookQuery[0];
+
+                book.Availability++;
+                borrow.Return = DateTime.Now;
+
+                db.Entry(borrow).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
             }
 
             return $"Zwrócono, Tytuł: {book.Title} Klienta: {customer.Name} {customer.Surname}";
         }
 
-        public List<Borrow> GetBorrows()
-        {
+        public List<BorrowDTO> GetBorrows()
+        {   
+            List<BorrowDTO> borrowsDTO = new List<BorrowDTO>();
+            BorrowDTO bDTO;
+
             using (LibraryDb db = new LibraryDb())
             {
-                return db.Borrows.ToList();
+                foreach (var borrow in db.Borrows)
+                {
+                    bDTO = new BorrowDTO();
+
+                    var customersQuery = db.Customers.Where(x => x.Id == borrow.CustomerId).ToList();
+                    var booksQuery = db.Books.Where(x => x.Id == borrow.BookId).ToList();
+
+                    bDTO.Id = borrow.Id;
+                    bDTO.DateOfBorrow = borrow.DateOfBorrow;
+                    bDTO.Return = borrow.Return;
+                    bDTO.Customer = $"{customersQuery[0].Name} {customersQuery[0].Surname} {customersQuery[0].TelephoneNumber}";
+                    bDTO.Book = $"{booksQuery[0].Title}, {booksQuery[0].AuthorName} {booksQuery[0].AuthorSurname}";
+                    
+                    borrowsDTO.Add(bDTO);
+                }
+
+                return borrowsDTO;
             }
         }
-
     }
 }

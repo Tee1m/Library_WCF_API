@@ -18,7 +18,7 @@ namespace LibraryService
         string Return(int id);
 
         [OperationContract]
-        List<Borrow> GetBorrows();
+        List<BorrowDTO> GetBorrows();
 
         // TODO: Add your service operations here
     }

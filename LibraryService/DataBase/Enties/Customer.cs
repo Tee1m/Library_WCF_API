@@ -27,5 +27,10 @@ namespace LibraryService
         [DataMember]
         [Required]
         public string TelephoneNumber { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id : {Id}, Name: {Name}, Surname: {Surname}";
+        }
     }
 }

@@ -27,5 +27,10 @@ namespace LibraryService
         [DataMember]
         [Required]
         public string Description { get; set; }
+
+        public override string ToString()
+        {
+            return $"Id: {Id}, Title";
+        }
     }
 }
