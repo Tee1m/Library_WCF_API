@@ -62,6 +62,10 @@ namespace LibraryService
                 {
                     return "Nie znaleziono wskazanego wypożyczenia w bazie biblioteki.";
                 }
+                else if (borrowsQuery[0].Return != null)
+                {
+                    return "Wypożyczenie zostało już zwrócone.";
+                }
 
                 borrow = borrowsQuery[0];
 
