@@ -28,9 +28,14 @@ namespace LibraryService
         [Required]
         public string TelephoneNumber { get; set; }
 
-        public override string ToString()
+        public Customer() {}
+
+        public Customer(string name, string surname, string address, string telephoneNumber)
         {
-            return $"Id : {Id}, Name: {Name}, Surname: {Surname}";
+            this.Name = name;
+            this.Surname = surname;
+            this.Address = address;
+            this.TelephoneNumber = telephoneNumber;
         }
     }
 }

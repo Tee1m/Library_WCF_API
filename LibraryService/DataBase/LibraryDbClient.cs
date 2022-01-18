@@ -8,63 +8,68 @@ namespace LibraryService
 {
     public class LibraryDbClient : IDatabaseClient
     {
-        private LibraryDb _db = new LibraryDb();
+        private readonly LibraryDb _dataBase;
+
+        public LibraryDbClient(LibraryDb database)
+        {
+            this._dataBase = database;
+        }
         
         public void AddBook(Book book)
         {
-            _db.Books.Add(book);
-            _db.SaveChanges();
+            _dataBase.Books.Add(book);
+            _dataBase.SaveChanges();
         }
 
         public void AddBorrow(Borrow borrow)
         {
-            _db.Borrows.Add(borrow);
-            _db.SaveChanges();
+            _dataBase.Borrows.Add(borrow);
+            _dataBase.SaveChanges();
         }
 
         public void AddCustomer(Customer customer)
         {
-            _db.Customers.Add(customer);
-            _db.SaveChanges();
+            _dataBase.Customers.Add(customer);
+            _dataBase.SaveChanges();
         }
 
         public List<Book> GetBooks()
         {
-            return _db.Books.ToList();
+            return _dataBase.Books.ToList();
         }
 
         public List<Borrow> GetBorrows()
         {
-            return _db.Borrows.ToList();
+            return _dataBase.Borrows.ToList();
         }
 
         public List<Customer> GetCustomers()
         {
-            return _db.Customers.ToList();
+            return _dataBase.Customers.ToList();
         }
 
         public void RemoveBook(Book book)
         {
-            _db.Books.Remove(book);
-            _db.SaveChanges();
+            _dataBase.Books.Remove(book);
+            _dataBase.SaveChanges();
         }
 
         public void RemoveCustomer(Customer customer)
         {
-            _db.Customers.Remove(customer);
-            _db.SaveChanges();
+            _dataBase.Customers.Remove(customer);
+            _dataBase.SaveChanges();
         }
 
         public void Return(Borrow borrow)
         {
-            _db.Entry(borrow).State = System.Data.Entity.EntityState.Modified;
-            _db.SaveChanges();
+            _dataBase.Entry(borrow).State = System.Data.Entity.EntityState.Modified;
+            _dataBase.SaveChanges();
         }
 
         public void ModifyBook(Book book)
         {
-            _db.Entry(book).State = System.Data.Entity.EntityState.Modified;
-            _db.SaveChanges();
+            _dataBase.Entry(book).State = System.Data.Entity.EntityState.Modified;
+            _dataBase.SaveChanges();
         }
     }
 }

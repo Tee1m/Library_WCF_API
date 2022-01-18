@@ -8,19 +8,20 @@ namespace LibraryHost
     {
         static void Main(string[] args)
         {
-            LibraryDbClient _libraryDb = new LibraryDbClient();
+            var _dbClient = new LibraryDbClient(new LibraryDb());
 
-            ServiceHost BorrowsService = new ServiceHost(new BorrowsRepository(_libraryDb));
-            ServiceHost CustomersService = new ServiceHost(new CustomersRepository(_libraryDb));
-            ServiceHost BooksService = new ServiceHost(new BooksRepository(_libraryDb));
+            var BorrowsService = new ServiceHost(new BorrowsService(_dbClient));
+            var CustomersService = new ServiceHost(new CustomersService(_dbClient));
+            var BooksService = new ServiceHost(new BooksService(_dbClient));
+            
             Console.WriteLine("Uruchamianie ...");
 
             BorrowsService.Opened += BorrowsServiceOpened;
             CustomersService.Opened += CustomersServiceOpened;
             BooksService.Opened += BooksServiceOpened;
-
-            CustomersService.Open();            
+            
             BorrowsService.Open();
+            CustomersService.Open();            
             BooksService.Open();
 
             Console.ReadKey();

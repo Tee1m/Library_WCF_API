@@ -81,10 +81,10 @@
     <Compile Include="Migrations\202201121951325_009.Designer.cs">
       <DependentUpon>202201121951325_009.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\BooksRepository.cs" />
-    <Compile Include="Services\Contracts\IBooksRepository.cs" />
-    <Compile Include="Services\Contracts\ICustomersRepository.cs" />
-    <Compile Include="Services\Contracts\IBorrowsRepository.cs" />
+    <Compile Include="Services\BooksService.cs" />
+    <Compile Include="Services\Contracts\IBooksService.cs" />
+    <Compile Include="Services\Contracts\ICustomersService.cs" />
+    <Compile Include="Services\Contracts\IBorrowsService.cs" />
     <Compile Include="DataBase\LibraryDb.cs" />
     <Compile Include="Migrations\202201091051506_init.cs" />
     <Compile Include="Migrations\202201091051506_init.Designer.cs">
@@ -116,8 +116,8 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\BorrowsRepository.cs" />
-    <Compile Include="Services\CustomersRepository.cs" />
+    <Compile Include="Services\BorrowsService.cs" />
+    <Compile Include="Services\CustomersService.cs" />
     <Compile Include="DataBase\LibraryDbClient.cs" />
   </ItemGroup>
   <ItemGroup>
