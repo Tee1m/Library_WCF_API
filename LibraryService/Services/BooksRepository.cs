@@ -5,6 +5,13 @@ namespace LibraryService
 {
     public class BooksRepository : IBooksRepository
     {
+        private readonly IDatabaseClient _dbClient;
+
+        public BooksRepository(IDatabaseClient dbClient)
+        {
+            this._dbClient = dbClient;
+        }
+
         public string AddBook(Book newBook)
         {
             if (BookIsNullable(newBook))
@@ -12,25 +19,20 @@ namespace LibraryService
                 return "Nie dodano książki, ponieważ conajmniej jedno z atrybutów nie zawiera wartości.";
             }
 
-            using (LibraryDb db = new LibraryDb())
+            var books = _dbClient.GetBooks();
+            foreach (var book in books)
             {
-                var books = db.Books.ToList();
-                foreach (var book in books)
+                if (IsSimilarBook(book, newBook))
                 {
-                    if (IsSimilarBook(book, newBook))
-                    {
-                        book.Availability += newBook.Availability;
+                     book.Availability += newBook.Availability;
 
-                        db.Entry(book).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
+                     _dbClient.ModifyBook(book);
 
-                        return "Książka znajduje się w bazie biblioteki. Uzupełniono jej dostępność.";
-                    }
+                     return "Książka znajduje się w bazie biblioteki. Uzupełniono jej dostępność.";
                 }
-
-                db.Books.Add(newBook);
-                db.SaveChanges(); //TO DO ENTIES EXCEPTION
             }
+
+            _dbClient.AddBook(newBook);
 
             return "Dodano Książkę do bazy danych.";
         }
@@ -50,39 +52,31 @@ namespace LibraryService
         {
             Book book = new Book();
 
-            using (LibraryDb db = new LibraryDb())
+            var books = _dbClient.GetBooks().Where(x => x.Id == id).ToList();
+            var borrows = _dbClient.GetBorrows().ToList();
+
+            if (books.Count() == 0)
             {
-                List<Book> books = db.Books.Where(x => x.Id == id).ToList();
-                var q = db.Borrows.ToList();
-
-                if (books.Count() == 0)
-                {
-                    return "Nie znaleziono wskazanej Książki w bazie biblioteki.";
-                }
-                else if (q == null)
-                {
-                    if (q.Where(x => x.Book.Id == id && x.Return == null).Count() != 0)
-                    {
-                        return "Nie usunieto książki, ponieważ nie wszystkie egzemplarze zostały zwrócone";
-                    }    
-                }
-
-                book = books[0];
-
-                db.Books.Remove(book);
-                db.SaveChanges();
+                return "Nie znaleziono wskazanej Książki w bazie biblioteki.";
             }
+            else if (borrows == null)
+            {
+                if (borrows.Where(x => x.Book.Id == id && x.Return == null).Count() != 0)
+                {
+                    return "Nie usunieto książki, ponieważ nie wszystkie egzemplarze zostały zwrócone";
+                }    
+            }
+
+            book = books[0];
+
+            _dbClient.RemoveBook(book);
 
             return $"Usunięto książkę, Tytuł: {book.Title} Autor: {book.AuthorName} {book.AuthorSurname}.";
         }
 
         public List<Book> GetBooks()
         {
-
-            using (LibraryDb db = new LibraryDb())
-            {
-                return db.Books.ToList();
-            }
+            return _dbClient.GetBooks();
         }
     }
 }

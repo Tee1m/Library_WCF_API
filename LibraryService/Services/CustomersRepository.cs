@@ -5,6 +5,13 @@ namespace LibraryService
 {
     public class CustomersRepository : ICustomersRepository
     {
+        private readonly IDatabaseClient _dbClient;
+
+        public CustomersRepository(IDatabaseClient dbClient)
+        {
+            this._dbClient = dbClient;
+        }
+
         public string AddCustomer(Customer newCustomer)
         {
             if (CustomerIsNullable(newCustomer))
@@ -12,21 +19,17 @@ namespace LibraryService
                 return "Nie dodano Klienta, ponieważ conajmniej jedno z atrybutów nie zawiera wartości.";
             }
 
-            using (LibraryDb db = new LibraryDb())
+            var customers = _dbClient.GetCustomers();
+
+            foreach (var existingCustomer in customers)
             {
-                var customers = db.Customers.ToList();
-
-                foreach (var existingCustomer in customers)
+                if (IsSimilarCustomer(existingCustomer, newCustomer))
                 {
-                    if (IsSimilarCustomer(existingCustomer, newCustomer))
-                    {
-                        return "Nie dodano Klienta, ponieważ istnieje on w bazie biblioteki.";
-                    }
+                    return "Nie dodano Klienta, ponieważ istnieje on w bazie biblioteki.";
                 }
-
-                db.Customers.Add(newCustomer);
-                db.SaveChanges();
             }
+
+            _dbClient.AddCustomer(newCustomer);
 
             return $"Dodano Klienta, P. {newCustomer.Name} {newCustomer.Surname}";
         }
@@ -46,34 +49,27 @@ namespace LibraryService
         {
             Customer customer = new Customer();
 
-            using (LibraryDb db = new LibraryDb())
+            var customerQuery = _dbClient.GetCustomers().Where(x => x.Id == id).ToList();
+            var borrowsQuery = _dbClient.GetBorrows().ToList();
+
+            if (customerQuery.Count() == 0)
             {
-                var customerQuery = db.Customers.Where(x => x.Id == id).ToList();
-                var borrowsQuery = db.Borrows.ToList();
-
-                if (customerQuery.Count() == 0)
-                {
-                    return "Nie znaleziono wskazanego Klienta w bazie biblioteki.";
-                }
-                else if (borrowsQuery.Where(x => x.Customer.Id == id).Count() != 0)
-                {
-                    return "Nie usunieto Klienta, ponieważ posiada on jeszcze wypożyczone książki.";
-                }
-                customer = customerQuery[0];
-
-                db.Customers.Remove(customer);
-                db.SaveChanges();
+                return "Nie znaleziono wskazanego Klienta w bazie biblioteki.";
             }
+            else if (borrowsQuery.Where(x => x.Customer.Id == id).Count() != 0)
+            {
+                return "Nie usunieto Klienta, ponieważ posiada on jeszcze wypożyczone książki.";
+            }
+            customer = customerQuery[0];
+
+            _dbClient.RemoveCustomer(customer);
 
             return $"Usunięto Klienta, P. {customer.Name} {customer.Surname}.";
         }
 
         public List<Customer> GetCustomers()
         {
-            using (LibraryDb db = new LibraryDb())
-            {
-                return db.Customers.ToList();
-            }
+            return _dbClient.GetCustomers();
         }
     }
 }

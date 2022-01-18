@@ -8,9 +8,11 @@ namespace LibraryHost
     {
         static void Main(string[] args)
         {
-            ServiceHost BorrowsService = new ServiceHost(typeof(BorrowsRepository));
-            ServiceHost CustomersService = new ServiceHost(typeof(CustomersRepository));
-            ServiceHost BooksService = new ServiceHost(typeof(BooksRepository));
+            LibraryDbClient _libraryDb = new LibraryDbClient();
+
+            ServiceHost BorrowsService = new ServiceHost(new BorrowsRepository(_libraryDb));
+            ServiceHost CustomersService = new ServiceHost(new CustomersRepository(_libraryDb));
+            ServiceHost BooksService = new ServiceHost(new BooksRepository(_libraryDb));
             Console.WriteLine("Uruchamianie ...");
 
             BorrowsService.Opened += BorrowsServiceOpened;
