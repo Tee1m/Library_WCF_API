@@ -49,8 +49,8 @@ namespace LibraryService
 
         public string DeleteCustomer(int id)
         {
-            var customerQuery = _dbClient.GetCustomers().ToList();
-            var borrowsQuery = _dbClient.GetBorrows().ToList();
+            var customerQuery = _dbClient.GetCustomers();
+            var borrowsQuery = _dbClient.GetBorrows();
 
             if (!customerQuery.Where(x => x.Id == id).Any())
             {

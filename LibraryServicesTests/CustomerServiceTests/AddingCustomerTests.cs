@@ -16,24 +16,25 @@ namespace CustomerServicesTests
         {
             //when
             testCustomer = new Customer();
-            var customersService = MockCustomerService(new List<Customer>() { testCustomer });
+
+            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer });
+            var customersService = new CustomersService(dBClient);
 
             //given
             var throwed = customersService.AddCustomer(testCustomer);
             var expected = "Nie dodano Klienta, ponieważ conajmniej jedno z atrybutów nie zawiera wartości.";
 
             //then
-
             StringAssert.Contains(throwed, expected);
-
         }
 
         [TestMethod]
         public void ExistCustomerNotAdded()
         {
             //when
-            var customersService = MockCustomerService(new List<Customer>() { testCustomer });
-     
+            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer });
+            var customersService = new CustomersService(dBClient);
+
             //given
             var throwed = customersService.AddCustomer(testCustomer);
             var expected = "Nie dodano Klienta, ponieważ istnieje on w bazie biblioteki.";
@@ -46,7 +47,8 @@ namespace CustomerServicesTests
         public void CorectCustomerAdded()
         {
             //when
-            var customersService = MockCustomerService(new List<Customer>() {anotherCustomer});
+            var dBClient = MockDataBaseClient(new List<Customer>() { anotherCustomer });
+            var customersService = new CustomersService(dBClient);
 
             //given
             var throwed = customersService.AddCustomer(testCustomer);
@@ -56,14 +58,14 @@ namespace CustomerServicesTests
             StringAssert.Contains(throwed, expected);
         }
         
-        public CustomersService MockCustomerService(List<Customer> customersList)
+        IDatabaseClient MockDataBaseClient(List<Customer> customersList)
         {
-            var mockCustomerService = new Mock<IDatabaseClient>();
+            var mockDBClient = new Mock<IDatabaseClient>();
 
-            mockCustomerService.Setup(x => x.GetCustomers())
+            mockDBClient.Setup(x => x.GetCustomers())
                 .Returns(customersList);
 
-            return new CustomersService(mockCustomerService.Object);
+            return mockDBClient.Object;
         }
     }
 }

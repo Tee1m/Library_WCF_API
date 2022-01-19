@@ -16,7 +16,8 @@ namespace CustomerServicesTests
             //when
             testCustomer.Id = 1;
 
-            var customersService = MockCustomerService(new List<Customer>() { testCustomer }, new List<Borrow>());
+            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>());
+            var customersService = new CustomersService(dBClient);
 
             //given
             var throwed = customersService.DeleteCustomer(2);
@@ -33,8 +34,8 @@ namespace CustomerServicesTests
             testCustomer.Id = 1;
             testBorrow.CustomerId = 1;
             
-            var customersService = MockCustomerService(new List<Customer>() { testCustomer },
-                new List<Borrow>() { testBorrow });
+            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>() { testBorrow });
+            var customersService = new CustomersService(dBClient);
 
             //given
             var throwed = customersService.DeleteCustomer(1);
@@ -51,8 +52,8 @@ namespace CustomerServicesTests
             testCustomer.Id = 1;
             testBorrow.CustomerId = 2;
 
-            var customerService = MockCustomerService(new List<Customer>() { testCustomer },
-                new List<Borrow>() { testBorrow });
+            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>() { testBorrow });
+            var customerService = new CustomersService(dBClient);
 
             //given
             var throwed = customerService.DeleteCustomer(1);
@@ -62,17 +63,17 @@ namespace CustomerServicesTests
             StringAssert.Contains(throwed, expected);
         }
 
-        public CustomersService MockCustomerService(List<Customer> customersList, List<Borrow> borrowsList)
+        IDatabaseClient MockDataBaseClient(List<Customer> customersList, List<Borrow> borrowsList)
         {
-            var mockCustomerService = new Mock<IDatabaseClient>();
+            var mockDBClient = new Mock<IDatabaseClient>();
 
-            mockCustomerService.Setup(x => x.GetCustomers())
+            mockDBClient.Setup(x => x.GetCustomers())
                 .Returns(customersList);
 
-            mockCustomerService.Setup(y => y.GetBorrows())
+            mockDBClient.Setup(y => y.GetBorrows())
                 .Returns(borrowsList);
 
-            return new CustomersService(mockCustomerService.Object);
+            return mockDBClient.Object;
         }
     }
 }

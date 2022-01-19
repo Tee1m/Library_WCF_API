@@ -21,27 +21,25 @@ namespace LibraryService
 
         public string Borrow(int customerId, int bookId)
         {
-            Customer customer = new Customer();
-            Book book = new Book();
+            var customersQuery = _dbClient.GetCustomers();
+            var booksQuery = _dbClient.GetBooks();
 
-            var customersQuery = _dbClient.GetCustomers().Where(x => x.Id == customerId).ToList();
-            var booksQuery = _dbClient.GetBooks().Where(x => x.Id == bookId).ToList();
-
-            if (customersQuery.Count() == 0)
+            if (customersQuery.Where(x => x.Id == customerId).Any())
             {
                 return "Nie znaleziono wskazanego Klienta w bazie biblioteki.";
             }
-            else if (booksQuery.Count() == 0)
+            else if (booksQuery.Where(x => x.Id == bookId).Any())
             {
                 return "Nie znaleziono wskazanej Książki w bazie biblioteki.";
             }
-            else if (booksQuery[0].Availability == 0)
+
+            var customer = customersQuery.Where(x => x.Id == customerId).Single();
+            var book = booksQuery.Where(x => x.Id == bookId).Single();
+
+            if (book.Availability == 0)
             {
                 return "Wpożyczenie jest niemożliwe, ponieważ książki niema na stanie biblioteki.";
             }
-
-            customer = customersQuery[0];
-            book = booksQuery[0];
 
             book.Availability--;
 

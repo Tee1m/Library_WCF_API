@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataBase\DTO\BorrowDTO.cs" />
+    <Compile Include="DataBase\EntiesBuilders\BookBuilder.cs" />
     <Compile Include="DataBase\Enties\Book.cs" />
     <Compile Include="DataBase\Enties\Borrow.cs" />
     <Compile Include="DataBase\Enties\Customer.cs" />
