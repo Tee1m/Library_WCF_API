@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LibraryService
 {
-    class BookBuilder
+    public class BookBuilder
     {
-        private readonly Book _book;
+        private readonly Book _book = new Book();
 
         public BookBuilder SetId(int id)
         {

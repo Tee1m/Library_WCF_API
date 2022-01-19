@@ -22,6 +22,7 @@ namespace LibraryService
             }
 
             var books = _dbClient.GetBooks();
+
             foreach (var book in books)
             {
                 if (IsSimilarBook(book, newBook))
@@ -54,22 +55,22 @@ namespace LibraryService
         {
             Book book = new Book();
 
-            var books = _dbClient.GetBooks().Where(x => x.Id == id).ToList();
-            var borrows = _dbClient.GetBorrows().ToList();
+            var books = _dbClient.GetBooks();
+            var borrows = _dbClient.GetBorrows();
 
-            if (books.Count() == 0)
+            if (!books.Where(x => x.Id == id).Any())
             {
                 return "Nie znaleziono wskazanej Książki w bazie biblioteki.";
             }
             else if (borrows == null)
             {
-                if (borrows.Where(x => x.Book.Id == id && x.Return == null).Count() != 0)
+                if (borrows.Where(x => x.Book.Id == id && x.Return == null).Any())
                 {
                     return "Nie usunieto książki, ponieważ nie wszystkie egzemplarze zostały zwrócone";
                 }    
             }
 
-            book = books[0];
+            book = books.Where(x => x.Id == id).Single();
 
             _dbClient.RemoveBook(book);
 

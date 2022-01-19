@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 
-namespace CustomerServicesTests
+namespace CustomersServicesTests
 {
     [TestClass]
     public class AddingCustomerTests

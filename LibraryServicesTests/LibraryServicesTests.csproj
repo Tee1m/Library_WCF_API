@@ -62,8 +62,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CustomerServiceTests\AddingCustomerTests.cs" />
-    <Compile Include="CustomerServiceTests\DeleteCustomerTests.cs" />
+    <Compile Include="BooksServiceTests\AddBookTests.cs" />
+    <Compile Include="BooksServiceTests\DeleteBookTests.cs" />
+    <Compile Include="CustomersServiceTests\AddingCustomerTests.cs" />
+    <Compile Include="CustomersServiceTests\DeleteCustomerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
