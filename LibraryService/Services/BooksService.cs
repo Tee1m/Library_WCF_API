@@ -62,9 +62,9 @@ namespace LibraryService
             {
                 return "Nie znaleziono wskazanej Książki w bazie biblioteki.";
             }
-            else if (borrows == null)
+            else if (borrows != null)
             {
-                if (borrows.Where(x => x.Book.Id == id && x.Return == null).Any())
+                if (borrows.Where(x => x.BookId == id && x.Return == null).Any())
                 {
                     return "Nie usunieto książki, ponieważ nie wszystkie egzemplarze zostały zwrócone";
                 }    

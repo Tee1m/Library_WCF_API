@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibraryService.DataBase.EntiesBuilders
+namespace LibraryService
 {
-    class BorrowBuilder
+    public class BorrowBuilder
     {
         private readonly Borrow _borrow = new Borrow();
 
@@ -50,6 +50,11 @@ namespace LibraryService.DataBase.EntiesBuilders
         {
             _borrow.Return = returnDate;
             return this;
+        }
+
+        public Borrow Build()
+        {
+            return _borrow;
         }
     }
 }
