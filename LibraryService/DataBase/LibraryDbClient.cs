@@ -60,7 +60,7 @@ namespace LibraryService
             _dataBase.SaveChanges();
         }
 
-        public void Return(Borrow borrow)
+        public void ReturnBorrow(Borrow borrow)
         {
             _dataBase.Entry(borrow).State = System.Data.Entity.EntityState.Modified;
             _dataBase.SaveChanges();

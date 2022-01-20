@@ -12,10 +12,10 @@ namespace LibraryService
     public interface IBorrowsService
     {          
         [OperationContract]
-        string Borrow(int customerId, int bookId);
+        string AddBorrow(int customerId, int bookId);
 
         [OperationContract]
-        string Return(int id);
+        string ReturnBorrow(int id);
 
         [OperationContract]
         List<BorrowDTO> GetBorrows();

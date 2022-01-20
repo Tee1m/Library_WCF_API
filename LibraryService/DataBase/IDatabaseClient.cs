@@ -16,7 +16,7 @@ namespace LibraryService
         List<Borrow> GetBorrows();
         void RemoveCustomer(Customer customer);
         void RemoveBook(Book book);
-        void Return(Borrow borrow);
+        void ReturnBorrow(Borrow borrow);
         void ModifyBook(Book book);
     }
 }

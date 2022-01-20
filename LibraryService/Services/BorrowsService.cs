@@ -19,16 +19,16 @@ namespace LibraryService
             this._dbClient = dbClient;
         }
 
-        public string Borrow(int customerId, int bookId)
+        public string AddBorrow(int customerId, int bookId)
         {
             var customersQuery = _dbClient.GetCustomers();
             var booksQuery = _dbClient.GetBooks();
 
-            if (customersQuery.Where(x => x.Id == customerId).Any())
+            if (!customersQuery.Where(x => x.Id == customerId).Any())
             {
                 return "Nie znaleziono wskazanego Klienta w bazie biblioteki.";
             }
-            else if (booksQuery.Where(x => x.Id == bookId).Any())
+            else if (!booksQuery.Where(x => x.Id == bookId).Any())
             {
                 return "Nie znaleziono wskazanej Książki w bazie biblioteki.";
             }
@@ -50,35 +50,29 @@ namespace LibraryService
             return $"Wyporzyczono, Tytuł: {book.Title}, Klientowi: {customer.Name} {customer.Surname}";
         }
 
-        public string Return(int id)
+        public string ReturnBorrow(int id)
         {
-            Customer customer = new Customer();
-            Book book = new Book();
-            Borrow borrow = new Borrow();
+            var borrowsQuery = _dbClient.GetBorrows();
 
-            var borrowsQuery = _dbClient.GetBorrows().Where(x => x.Id == id).ToList();
-
-            if (borrowsQuery.Count() == 0)
+            if (!borrowsQuery.Where(x => x.Id == id).Any())
             {
                 return "Nie znaleziono wskazanego wypożyczenia w bazie biblioteki.";
             }
-            else if (borrowsQuery[0].Return != null)
+
+            var borrow = borrowsQuery.Where(x => x.Id == id).Single(); 
+
+            if (borrow.Return != null)
             {
                 return "Wypożyczenie zostało już zwrócone.";
             }
 
-            borrow = borrowsQuery[0];
-
-            var customerQuery = _dbClient.GetCustomers().Where(x => x.Id == borrow.CustomerId).ToList();
-            var bookQuery = _dbClient.GetBooks().Where(x => x.Id == borrow.BookId).ToList();
-
-            customer = customerQuery[0];
-            book = bookQuery[0];
+            var customer = _dbClient.GetCustomers().Where(x => x.Id == borrow.CustomerId).Single();
+            var book = _dbClient.GetBooks().Where(x => x.Id == borrow.BookId).Single();
 
             book.Availability++;
             borrow.Return = DateTime.Now;
 
-            _dbClient.Return(borrow);
+            _dbClient.ReturnBorrow(borrow);
 
             return $"Zwrócono, Tytuł: {book.Title} Klienta: {customer.Name} {customer.Surname}";
         }
@@ -94,14 +88,14 @@ namespace LibraryService
             {
                 bDTO = new BorrowDTO();
 
-                var customersQuery = _dbClient.GetCustomers().Where(x => x.Id == borrow.CustomerId).ToList();
-                var booksQuery = _dbClient.GetBooks().Where(x => x.Id == borrow.BookId).ToList();
+                var customer = _dbClient.GetCustomers().Where(x => x.Id == borrow.CustomerId).Single();
+                var book = _dbClient.GetBooks().Where(x => x.Id == borrow.BookId).Single();
 
                 bDTO.Id = borrow.Id;
                 bDTO.DateOfBorrow = borrow.DateOfBorrow;
                 bDTO.Return = borrow.Return;
-                bDTO.Customer = $"{customersQuery[0].Name} {customersQuery[0].Surname} {customersQuery[0].TelephoneNumber}";
-                bDTO.Book = $"{booksQuery[0].Title}, {booksQuery[0].AuthorName} {booksQuery[0].AuthorSurname}";
+                bDTO.Customer = customer.ToString();
+                bDTO.Book = book.ToString();
                     
                 borrowsDTO.Add(bDTO);
             }

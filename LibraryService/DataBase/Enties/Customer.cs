@@ -18,24 +18,24 @@ namespace LibraryService
         [DataMember]
         [Required]
         public string Name { get; set; }
+
         [DataMember]
         [Required]
         public string Surname { get; set; }
+
         [DataMember]
         [Required]
         public string Address { get; set; }
+
         [DataMember]
         [Required]
         public string TelephoneNumber { get; set; }
 
         public Customer() {}
 
-        public Customer(string name, string surname, string address, string telephoneNumber)
+        public override string ToString()
         {
-            this.Name = name;
-            this.Surname = surname;
-            this.Address = address;
-            this.TelephoneNumber = telephoneNumber;
+            return $"{Name} {Surname} {TelephoneNumber}";
         }
     }
 }

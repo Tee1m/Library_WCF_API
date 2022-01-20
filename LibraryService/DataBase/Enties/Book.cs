@@ -29,5 +29,10 @@ namespace LibraryService
         public string Description { get; set; }
 
         public Book() {}
+
+        public override string ToString()
+        {
+            return $"{Title}, {AuthorName} {AuthorSurname}";
+        }
     }
 }
