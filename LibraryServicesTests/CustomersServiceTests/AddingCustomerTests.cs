@@ -8,20 +8,33 @@ namespace CustomersServicesTests
     [TestClass]
     public class AddingCustomerTests
     {
-        Customer testCustomer = new Customer("Test", "Test", "Test", "Test");
-        Customer anotherCustomer = new Customer("Another", "Another", "Another", "Another");
+        Customer testCustomer = new CustomerBuilder()
+            .SetId(1)
+            .SetName("Test")
+            .SetSurname("Test")
+            .SetAddress("Test")
+            .SetTelephoneNumber("123")
+            .Build();
+
+        Customer anotherCustomer = new CustomerBuilder()
+            .SetId(2)
+            .SetName("TestTest")
+            .SetSurname("TestTest")
+            .SetAddress("TestTest")
+            .SetTelephoneNumber("1232")
+            .Build();
 
         [TestMethod]
         public void NullCustomerNotAdded()
         {
             //when
-            testCustomer = new Customer();
+            Customer nullCustomer = new Customer();
 
-            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer });
+            var dBClient = MockDataBaseClient(new List<Customer>());
             var customersService = new CustomersService(dBClient);
 
             //given
-            var throwed = customersService.AddCustomer(testCustomer);
+            var throwed = customersService.AddCustomer(nullCustomer);
             var expected = "Nie dodano Klienta, ponieważ conajmniej jedno z atrybutów nie zawiera wartości.";
 
             //then

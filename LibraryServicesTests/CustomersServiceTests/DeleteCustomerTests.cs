@@ -8,14 +8,22 @@ namespace CustomersServicesTests
     [TestClass]
     public class DeleteCustomerTests
     {
-        Customer testCustomer = new Customer("Test", "Test", "Test", "Test");
-        Borrow testBorrow = new Borrow();
+        Customer testCustomer = new CustomerBuilder()
+            .SetId(1)
+            .SetName("Test")
+            .SetSurname("Test")
+            .SetAddress("Test")
+            .SetTelephoneNumber("Test")
+            .Build();
+
+        Borrow testBorrow = new BorrowBuilder()
+            .SetCustomerId(1)
+            .Build();
+
         [TestMethod]
         public void NonExistingCustomerNotDeleted()
         {
             //when
-            testCustomer.Id = 1;
-
             var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>());
             var customersService = new CustomersService(dBClient);
 
@@ -30,10 +38,7 @@ namespace CustomersServicesTests
         [TestMethod]
         public void CustomerWithBorrowNotDeleted()
         {
-            //when
-            testCustomer.Id = 1;
-            testBorrow.CustomerId = 1;
-            
+            //when           
             var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>() { testBorrow });
             var customersService = new CustomersService(dBClient);
 
@@ -49,10 +54,11 @@ namespace CustomersServicesTests
         public void CustomerWithoutBorrowDeleted()
         {
             //when
-            testCustomer.Id = 1;
-            testBorrow.CustomerId = 2;
+            Borrow anotherBorrow = new BorrowBuilder()
+            .SetCustomerId(2)
+            .Build();
 
-            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>() { testBorrow });
+            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>() { anotherBorrow });
             var customerService = new CustomersService(dBClient);
 
             //given
