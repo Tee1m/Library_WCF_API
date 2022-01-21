@@ -24,7 +24,7 @@ namespace CustomersServicesTests
         public void NonExistingCustomerNotDeleted()
         {
             //when
-            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>());
+            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>() { testBorrow });
             var customersService = new CustomersService(dBClient);
 
             //given

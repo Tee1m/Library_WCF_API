@@ -62,7 +62,7 @@ namespace BooksServiceTests
         }
 
         [TestMethod]
-        public void AddedCorrectBook()
+        public void BookAdded()
         {
             //when
             var dBClient = MockDataBaseClient(new List<Book>() { book });
