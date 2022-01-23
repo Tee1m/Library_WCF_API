@@ -9,12 +9,12 @@ using System.Data.Entity;
 namespace LibraryService
 {
     // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "Service1" in both code and config file together.
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    //[ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class BorrowsService : IBorrowsService
     {
-        private readonly IDatabaseClient _dbClient;
+        private readonly IDataBaseClient _dbClient;
 
-        public BorrowsService(IDatabaseClient dbClient)
+        public BorrowsService(IDataBaseClient dbClient)
         {
             this._dbClient = dbClient;
         }

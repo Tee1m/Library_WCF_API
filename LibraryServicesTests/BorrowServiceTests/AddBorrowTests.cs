@@ -63,9 +63,9 @@ namespace BorrowServiceTests
             StringAssert.Contains(throwed, expected);
         }
 
-        IDatabaseClient MockDataBaseClient(List<Customer> customersList, List<Book> booksList)
+        IDataBaseClient MockDataBaseClient(List<Customer> customersList, List<Book> booksList)
         {
-            var mockDBClient = new Mock<IDatabaseClient>();
+            var mockDBClient = new Mock<IDataBaseClient>();
 
             mockDBClient.Setup(x => x.GetCustomers())
                 .Returns(customersList);

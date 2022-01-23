@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibraryService
 {
-    public interface IDatabaseClient
+    public interface IDataBaseClient
     {
         void AddCustomer(Customer customer);
         void AddBook(Book book);

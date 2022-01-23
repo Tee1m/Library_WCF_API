@@ -76,9 +76,9 @@ namespace BooksServiceTests
             StringAssert.Contains(throwed, expected);
         }
 
-        IDatabaseClient MockDataBaseClient(List<Book> booksList)
+        IDataBaseClient MockDataBaseClient(List<Book> booksList)
         {
-            var mockDBClient = new Mock<IDatabaseClient>();
+            var mockDBClient = new Mock<IDataBaseClient>();
 
             mockDBClient.Setup(x => x.GetBooks())
                 .Returns(booksList);

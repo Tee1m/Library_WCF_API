@@ -71,7 +71,7 @@
     <Compile Include="DataBase\Enties\Borrow.cs" />
     <Compile Include="DataBase\Enties\Customer.cs" />
     <Compile Include="DataBase\Enties\DbObject.cs" />
-    <Compile Include="DataBase\IDatabaseClient.cs" />
+    <Compile Include="DataBase\IDataBaseClient.cs" />
     <Compile Include="Migrations\202201112320348_007.cs" />
     <Compile Include="Migrations\202201112320348_007.Designer.cs">
       <DependentUpon>202201112320348_007.cs</DependentUpon>

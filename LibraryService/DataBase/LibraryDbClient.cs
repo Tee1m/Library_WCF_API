@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LibraryService
 {
-    public class LibraryDbClient : IDatabaseClient
+    public class LibraryDbClient : IDataBaseClient
     {
         private readonly LibraryDb _dataBase;
 

@@ -4,12 +4,12 @@ using System.ServiceModel;
 
 namespace LibraryService
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    //[ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class BooksService : IBooksService
     {
-        private readonly IDatabaseClient _dbClient;
+        private readonly IDataBaseClient _dbClient;
 
-        public BooksService(IDatabaseClient dbClient)
+        public BooksService(IDataBaseClient dbClient)
         {
             this._dbClient = dbClient;
         }

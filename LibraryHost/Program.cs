@@ -1,6 +1,9 @@
 ﻿using LibraryService;
 using System;
 using System.ServiceModel;
+using Autofac;
+using Autofac.Integration.Wcf;
+using Autofac.Core;
 
 namespace LibraryHost
 {
@@ -8,27 +11,47 @@ namespace LibraryHost
     {
         static void Main(string[] args)
         {
-            var _dbClient = new LibraryDbClient(new LibraryDb());
+            var borrowsHost = new ServiceHost(typeof(BorrowsService));
+            var customersHost = new ServiceHost(typeof(CustomersService));
+            var booksHost = new ServiceHost(typeof(BooksService));
 
-            var BorrowsService = new ServiceHost(new BorrowsService(_dbClient));
-            var CustomersService = new ServiceHost(new CustomersService(_dbClient));
-            var BooksService = new ServiceHost(new BooksService(_dbClient));
-            
+            using (IContainer container = DataBaseConnector.RegisterContainerBuilder().Build())
+            {
+                CheckServiceIsRegistrated(container, new TypedService(typeof(IBooksService)));
+                CheckServiceIsRegistrated(container, new TypedService(typeof(IBorrowsService)));
+                CheckServiceIsRegistrated(container, new TypedService(typeof(ICustomersService)));
+
+                borrowsHost.AddDependencyInjectionBehavior<IBorrowsService>(container);
+                customersHost.AddDependencyInjectionBehavior<ICustomersService>(container);
+                booksHost.AddDependencyInjectionBehavior<IBooksService>(container);
+            }
+
             Console.WriteLine("Uruchamianie ...");
 
-            BorrowsService.Opened += BorrowsServiceOpened;
-            CustomersService.Opened += CustomersServiceOpened;
-            BooksService.Opened += BooksServiceOpened;
-            
-            BorrowsService.Open();
-            CustomersService.Open();            
-            BooksService.Open();
+            borrowsHost.Opened += BorrowsServiceOpened;
+            customersHost.Opened += CustomersServiceOpened;
+            booksHost.Opened += BooksServiceOpened;
+
+            borrowsHost.Open();
+            customersHost.Open();
+            booksHost.Open();
 
             Console.ReadKey();
 
-            BorrowsService.Close();
-            CustomersService.Close();
-            BooksService.Close();
+            borrowsHost.Close();
+            customersHost.Close();
+            booksHost.Close();
+        }
+
+        private static void CheckServiceIsRegistrated(IContainer container, Service service)
+        {
+            IComponentRegistration registration;
+            if (!container.ComponentRegistry.TryGetRegistration(service, out registration))
+            {
+                Console.WriteLine($"The service typeof {typeof(BooksService)} contract has not been registered in the container.");
+                Console.ReadLine();
+                Environment.Exit(-1);
+            }
         }
 
         private static void BooksServiceOpened(object sender, EventArgs e)
