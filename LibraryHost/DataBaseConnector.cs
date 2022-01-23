@@ -8,9 +8,10 @@ namespace LibraryHost
         public static ContainerBuilder RegisterContainerBuilder()
         {
             ContainerBuilder builder = new ContainerBuilder();
-            var dataBase = new LibraryDb();
-
-            builder.Register(c => new LibraryDbClient(dataBase))
+           
+            builder.Register(c => new LibraryDb())
+                .As<LibraryDb>();
+            builder.Register(c => new LibraryDbClient(c.Resolve<LibraryDb>()))
                 .As<IDataBaseClient>();
 
             builder.Register(c => new BooksService(c.Resolve<IDataBaseClient>()))

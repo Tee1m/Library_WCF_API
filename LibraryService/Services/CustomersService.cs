@@ -4,7 +4,6 @@ using System.ServiceModel;
 
 namespace LibraryService
 {
-    //[ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class CustomersService : ICustomersService
     {
         private readonly IDataBaseClient _dbClient;
