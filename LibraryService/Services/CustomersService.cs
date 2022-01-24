@@ -6,11 +6,13 @@ namespace LibraryService
 {
     public class CustomersService : ICustomersService
     {
-        private readonly IDataBaseClient _dbClient;
+        private readonly IRepository<Customer> _customersRepository;
+        private readonly IRepository<Borrow> _borrowsRepository;
 
-        public CustomersService(IDataBaseClient dbClient)
+        public CustomersService(IRepository<Customer> customers, IRepository<Borrow> borrows)
         {
-            this._dbClient = dbClient;
+            this._customersRepository = customers;
+            this._borrowsRepository = borrows;
         }
 
         public string AddCustomer(Customer newCustomer)
@@ -20,7 +22,7 @@ namespace LibraryService
                 return "Nie dodano Klienta, ponieważ conajmniej jedno z atrybutów nie zawiera wartości.";
             }
 
-            var customers = _dbClient.GetCustomers();
+            var customers = _customersRepository.Get();
 
             foreach (var existingCustomer in customers)
             {
@@ -30,7 +32,7 @@ namespace LibraryService
                 }
             }
 
-            _dbClient.AddCustomer(newCustomer);
+            _customersRepository.Add(newCustomer);
 
             return $"Dodano Klienta, P. {newCustomer.Name} {newCustomer.Surname}";
         }
@@ -48,8 +50,8 @@ namespace LibraryService
 
         public string DeleteCustomer(int id)
         {
-            var customerQuery = _dbClient.GetCustomers();
-            var borrowsQuery = _dbClient.GetBorrows();
+            var customerQuery = _customersRepository.Get();
+            var borrowsQuery = _borrowsRepository.Get();
 
             if (!customerQuery.Where(x => x.Id == id).Any())
             {
@@ -62,14 +64,14 @@ namespace LibraryService
 
             var customer = customerQuery.Where(x => x.Id == id).Single();
 
-            _dbClient.RemoveCustomer(customer);
+            _customersRepository.Remove(customer);
 
             return $"Usunięto Klienta, P. {customer.Name} {customer.Surname}.";
         }
 
         public List<Customer> GetCustomers()
         {
-            return _dbClient.GetCustomers();
+            return _customersRepository.Get().ToList();
         }
     }
 }

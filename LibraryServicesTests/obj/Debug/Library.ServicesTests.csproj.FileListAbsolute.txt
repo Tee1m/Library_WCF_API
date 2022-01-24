@@ -1,0 +1,4 @@
+C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\obj\Debug\Library.ServicesTests.csproj.AssemblyReference.cache
+C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\obj\Debug\Library.ServicesTests.csproj.CoreCompileInputs.cache
+C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\obj\Debug\LibraryServicesTests.dll
+C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\obj\Debug\LibraryServicesTests.pdb

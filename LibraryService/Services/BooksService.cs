@@ -6,11 +6,13 @@ namespace LibraryService
 {
     public class BooksService : IBooksService
     {
-        private readonly IDataBaseClient _dbClient;
+        private readonly IRepository<Book> _booksRepository;
+        private readonly IRepository<Borrow> _borrowsRepository;
 
-        public BooksService(IDataBaseClient dbClient)
+        public BooksService(IRepository<Book> booksRepository, IRepository<Borrow> borrowsRepository)
         {
-            this._dbClient = dbClient;
+            this._booksRepository = booksRepository;
+            this._borrowsRepository = borrowsRepository;
         }
 
         public string AddBook(Book newBook)
@@ -20,7 +22,7 @@ namespace LibraryService
                 return "Nie dodano książki, ponieważ conajmniej jedno z atrybutów nie zawiera wartości.";
             }
 
-            var books = _dbClient.GetBooks();
+            var books = _booksRepository.Get();
 
             foreach (var book in books)
             {
@@ -28,13 +30,13 @@ namespace LibraryService
                 {
                      book.Availability += newBook.Availability;
 
-                     _dbClient.ModifyBook(book);
+                     _booksRepository.Attach(book);
 
                      return "Książka znajduje się w bazie biblioteki. Uzupełniono jej dostępność.";
                 }
             }
 
-            _dbClient.AddBook(newBook);
+            _booksRepository.Add(newBook);
 
             return "Dodano Książkę do bazy danych.";
         }
@@ -52,10 +54,10 @@ namespace LibraryService
 
         public string DeleteBook(int id)
         {
-            Book book = new Book();
+            var book = new Book();
 
-            var books = _dbClient.GetBooks();
-            var borrows = _dbClient.GetBorrows();
+            var books = _booksRepository.Get().ToList();
+            var borrows = _borrowsRepository.Get().ToList();
 
             if (!books.Where(x => x.Id == id).Any())
             {
@@ -71,14 +73,14 @@ namespace LibraryService
 
             book = books.Where(x => x.Id == id).Single();
 
-            _dbClient.RemoveBook(book);
+            _booksRepository.Remove(book);
 
             return $"Usunięto książkę, Tytuł: {book.Title} Autor: {book.AuthorName} {book.AuthorSurname}.";
         }
 
         public List<Book> GetBooks()
         {
-            return _dbClient.GetBooks();
+            return _booksRepository.Get().ToList();
         }
     }
 }

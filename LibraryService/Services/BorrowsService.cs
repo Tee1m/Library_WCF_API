@@ -10,17 +10,21 @@ namespace LibraryService
 {
     public class BorrowsService : IBorrowsService
     {
-        private readonly IDataBaseClient _dbClient;
+        private readonly IRepository<Customer> _customersRepository;
+        private readonly IRepository<Borrow> _borrowsRepository;
+        private readonly IRepository<Book> _booksRepository;
 
-        public BorrowsService(IDataBaseClient dbClient)
+        public BorrowsService(IRepository<Customer> customers, IRepository<Borrow> borrows, IRepository<Book> books)
         {
-            this._dbClient = dbClient;
+            this._customersRepository = customers;
+            this._borrowsRepository = borrows;
+            this._booksRepository = books;
         }
 
         public string AddBorrow(int customerId, int bookId)
         {
-            var customersQuery = _dbClient.GetCustomers();
-            var booksQuery = _dbClient.GetBooks();
+            var customersQuery = _customersRepository.Get();
+            var booksQuery = _booksRepository.Get();
 
             if (!customersQuery.Where(x => x.Id == customerId).Any())
             {
@@ -43,14 +47,14 @@ namespace LibraryService
 
             Borrow borrow = new Borrow(customer, book);
 
-            _dbClient.AddBorrow(borrow);
+            _borrowsRepository.Add(borrow);
 
             return $"Wyporzyczono, Tytuł: {book.Title}, Klientowi: {customer.Name} {customer.Surname}";
         }
 
         public string ReturnBorrow(int id)
         {
-            var borrowsQuery = _dbClient.GetBorrows();
+            var borrowsQuery = _borrowsRepository.Get();
 
             if (!borrowsQuery.Where(x => x.Id == id).Any())
             {
@@ -64,13 +68,13 @@ namespace LibraryService
                 return "Wypożyczenie zostało już zwrócone.";
             }
 
-            var customer = _dbClient.GetCustomers().Where(x => x.Id == borrow.CustomerId).Single();
-            var book = _dbClient.GetBooks().Where(x => x.Id == borrow.BookId).Single();
+            var customer = _customersRepository.Get().Where(x => x.Id == borrow.CustomerId).Single();
+            var book = _booksRepository.Get().Where(x => x.Id == borrow.BookId).Single();
 
             book.Availability++;
             borrow.Return = DateTime.Now;
 
-            _dbClient.ReturnBorrow(borrow);
+            _borrowsRepository.Attach(borrow);
 
             return $"Zwrócono, Tytuł: {book.Title} Klienta: {customer.Name} {customer.Surname}";
         }
@@ -80,14 +84,14 @@ namespace LibraryService
             List<BorrowDTO> borrowsDTO = new List<BorrowDTO>();
             BorrowDTO bDTO;
 
-            var borrows = _dbClient.GetBorrows();
+            var borrows = _borrowsRepository.Get();
 
             foreach (var borrow in borrows)
             {
                 bDTO = new BorrowDTO();
 
-                var customer = _dbClient.GetCustomers().Where(x => x.Id == borrow.CustomerId).Single();
-                var book = _dbClient.GetBooks().Where(x => x.Id == borrow.BookId).Single();
+                var customer = _customersRepository.Get().Where(x => x.Id == borrow.CustomerId).Single();
+                var book = _booksRepository.Get().Where(x => x.Id == borrow.BookId).Single();
 
                 bDTO.Id = borrow.Id;
                 bDTO.DateOfBorrow = borrow.DateOfBorrow;
