@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LibraryService;
-using Moq;
+using Library.ServicesTests;
 
 namespace BorrowServiceTests
 {
@@ -36,8 +36,11 @@ namespace BorrowServiceTests
         public void ExceptionBorrowNotAdded(int customerId, int bookId, string announcement)
         {
             //when
-            var dbClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Book>() { testBook });
-            var borrowsService = new BorrowsService(dbClient);
+            var customerRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>());
+            var booksRepository = MockFactory.CreateBooksRepository(new List<Book>() { testBook });
+
+            var borrowsService = new BorrowsService(customerRepository, borrowsRepository, booksRepository);
 
             //given
             var throwed = borrowsService.AddBorrow(customerId, bookId);
@@ -52,8 +55,11 @@ namespace BorrowServiceTests
         {
             //when
             testBook.Availability = 1;
-            var dbClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Book>() { testBook });
-            var borrowsService = new BorrowsService(dbClient);
+            var customerRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>());
+            var booksRepository = MockFactory.CreateBooksRepository(new List<Book>() { testBook });
+
+            var borrowsService = new BorrowsService(customerRepository, borrowsRepository, booksRepository);
 
             //given
             var throwed = borrowsService.AddBorrow(1, 1);
@@ -61,19 +67,6 @@ namespace BorrowServiceTests
 
             //then
             StringAssert.Contains(throwed, expected);
-        }
-
-        IDataBaseClient MockDataBaseClient(List<Customer> customersList, List<Book> booksList)
-        {
-            var mockDBClient = new Mock<IDataBaseClient>();
-
-            mockDBClient.Setup(x => x.GetCustomers())
-                .Returns(customersList);
-
-            mockDBClient.Setup(x => x.GetBooks())
-                .Returns(booksList);
-
-            return mockDBClient.Object;
         }
     }
 }

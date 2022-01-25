@@ -1,7 +1,7 @@
 ﻿using LibraryService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using System.Collections.Generic;
+using Library.ServicesTests;
 
 namespace CustomersServicesTests
 {
@@ -24,8 +24,10 @@ namespace CustomersServicesTests
         public void NonExistingCustomerNotDeleted()
         {
             //when
-            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>() { testBorrow });
-            var customersService = new CustomersService(dBClient);
+            var customersRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>() { testBorrow });
+
+            var customersService = new CustomersService(customersRepository, borrowsRepository);
 
             //given
             var throwed = customersService.DeleteCustomer(2);
@@ -39,8 +41,10 @@ namespace CustomersServicesTests
         public void CustomerWithBorrowNotDeleted()
         {
             //when           
-            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>() { testBorrow });
-            var customersService = new CustomersService(dBClient);
+            var customersRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>() { testBorrow });
+
+            var customersService = new CustomersService(customersRepository, borrowsRepository);
 
             //given
             var throwed = customersService.DeleteCustomer(1);
@@ -58,28 +62,17 @@ namespace CustomersServicesTests
             .SetCustomerId(2)
             .Build();
 
-            var dBClient = MockDataBaseClient(new List<Customer>() { testCustomer }, new List<Borrow>() { anotherBorrow });
-            var customerService = new CustomersService(dBClient);
+            var customersRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>() { anotherBorrow });
+
+            var customersService = new CustomersService(customersRepository, borrowsRepository);
 
             //given
-            var throwed = customerService.DeleteCustomer(1);
+            var throwed = customersService.DeleteCustomer(1);
             var expected = $"Usunięto Klienta, P. {testCustomer.Name} {testCustomer.Surname}.";
 
             //then
             StringAssert.Contains(throwed, expected);
-        }
-
-        IDataBaseClient MockDataBaseClient(List<Customer> customersList, List<Borrow> borrowsList)
-        {
-            var mockDBClient = new Mock<IDataBaseClient>();
-
-            mockDBClient.Setup(x => x.GetCustomers())
-                .Returns(customersList);
-
-            mockDBClient.Setup(y => y.GetBorrows())
-                .Returns(borrowsList);
-
-            return mockDBClient.Object;
         }
     }
 }

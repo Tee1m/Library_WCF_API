@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LibraryService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using Library.ServicesTests;
-using Moq;
+using Library.ServicesTests;
 
 namespace BooksServiceTests
 {
@@ -32,9 +31,6 @@ namespace BooksServiceTests
         [TestMethod]
         public void NullBookNotAdded()
         {
-            var factory = new MockRepository(MockBehavior.Strict);
-            factory.Create(IBooksRepository);
-
             //when
             var booksRepository = MockFactory.CreateBooksRepository(new List<Book>() { book });
             var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>());

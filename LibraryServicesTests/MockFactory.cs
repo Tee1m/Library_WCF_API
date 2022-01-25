@@ -4,7 +4,7 @@ using Moq;
 
 namespace Library.ServicesTests
 {
-    class MockFactory
+    static class MockFactory
     {
         public static ICustomersRepository CreateCustomersRepository(List<Customer> customerList)
         {

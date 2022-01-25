@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LibraryService;
-using Moq;
 using Library.ServicesTests;
 
 namespace BooksServiceTests
@@ -33,8 +32,10 @@ namespace BooksServiceTests
         public void BookNotExistAndNotDeleted()
         {
             //when
-            var booksRepository = MockFactory.
-            var booksService = new BooksService(booksRepository);
+            var booksRepository = MockFactory.CreateBooksRepository(new List<Book>() { book });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>() { borrow });
+
+            var booksService = new BooksService(booksRepository, borrowsRepository);
 
             //given
             var throwed = booksService.DeleteBook(2);
@@ -48,8 +49,10 @@ namespace BooksServiceTests
         public void NotReturnedAllCopiesBookNotDeleted()
         {
             //when
-            var dbClient = MockDataBaseClient(new List<Book>() { book }, new List<Borrow>() { borrow });
-            var booksService = new BooksService(dbClient);
+            var booksRepository = MockFactory.CreateBooksRepository(new List<Book>() { book });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>() { borrow });
+
+            var booksService = new BooksService(booksRepository, borrowsRepository);
 
             //given
             var throwed = booksService.DeleteBook(1);
@@ -64,8 +67,10 @@ namespace BooksServiceTests
         {
             //when
             borrow.BookId = 2;
-            var dbClient = MockDataBaseClient(new List<Book>() { book }, new List<Borrow>() { borrow });
-            var booksService = new BooksService(dbClient);
+            var booksRepository = MockFactory.CreateBooksRepository(new List<Book>() { book });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>() { borrow });
+
+            var booksService = new BooksService(booksRepository, borrowsRepository);
 
             //given
             var throwed = booksService.DeleteBook(1);
