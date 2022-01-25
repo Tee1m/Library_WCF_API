@@ -12,18 +12,18 @@ namespace LibraryHost
             builder.Register(c => new LibraryDb())
                 .As<IUnitOfWork>();
 
-            builder.Register(c => new DbClient<Book>(c.Resolve<IUnitOfWork>()))
-                .As<IRepository<Book>>();
-            builder.Register(c => new DbClient<Customer>(c.Resolve<IUnitOfWork>()))
-                .As<IRepository<Customer>>();
-            builder.Register(c => new DbClient<Borrow>(c.Resolve<IUnitOfWork>()))
-                .As<IRepository<Borrow>>();
+            builder.Register(c => new BooksRepository(c.Resolve<IUnitOfWork>()))
+                .As<IBooksRepository>();
+            builder.Register(c => new CustomersRepository(c.Resolve<IUnitOfWork>()))
+                .As<ICustomersRepository>();
+            builder.Register(c => new BorrowsRepository(c.Resolve<IUnitOfWork>()))
+                .As<IBorrowsRepository>();
 
-            builder.Register(c => new BooksService(c.Resolve<IRepository<Book>>(), c.Resolve<IRepository<Borrow>>()))
+            builder.Register(c => new BooksService(c.Resolve<IBooksRepository>(), c.Resolve<IBorrowsRepository> ()))
                 .As<IBooksService>();
-            builder.Register(c => new BorrowsService(c.Resolve<IRepository<Customer>>(), c.Resolve<IRepository<Borrow>>(), c.Resolve<IRepository<Book>>()))
+            builder.Register(c => new BorrowsService(c.Resolve<ICustomersRepository>(), c.Resolve<IBorrowsRepository> (), c.Resolve<IBooksRepository>()))
                 .As<IBorrowsService>();
-            builder.Register(c => new CustomersService(c.Resolve<IRepository<Customer>>(), c.Resolve<IRepository<Borrow>>()))
+            builder.Register(c => new CustomersService(c.Resolve<ICustomersRepository>(), c.Resolve<IBorrowsRepository> ()))
                 .As<ICustomersService>();
 
             return builder;

@@ -10,11 +10,11 @@ namespace LibraryService
 {
     public class BorrowsService : IBorrowsService
     {
-        private readonly IRepository<Customer> _customersRepository;
-        private readonly IRepository<Borrow> _borrowsRepository;
-        private readonly IRepository<Book> _booksRepository;
+        private readonly ICustomersRepository _customersRepository;
+        private readonly IBorrowsRepository _borrowsRepository;
+        private readonly IBooksRepository _booksRepository;
 
-        public BorrowsService(IRepository<Customer> customers, IRepository<Borrow> borrows, IRepository<Book> books)
+        public BorrowsService(ICustomersRepository customers, IBorrowsRepository borrows, IBooksRepository books)
         {
             this._customersRepository = customers;
             this._borrowsRepository = borrows;

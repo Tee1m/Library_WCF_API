@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="BooksServiceTests\AddBookTests.cs" />
     <Compile Include="BooksServiceTests\DeleteBookTests.cs" />
+    <Compile Include="MockFactory.cs" />
     <Compile Include="BorrowServiceTests\AddBorrowTests.cs" />
     <Compile Include="BorrowServiceTests\ReturnBorrowTests.cs" />
     <Compile Include="CustomersServiceTests\AddingCustomerTests.cs" />

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LibraryService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+//using Library.ServicesTests;
 using Moq;
 
 namespace BooksServiceTests
@@ -18,7 +19,6 @@ namespace BooksServiceTests
             .SetAuthorName("Test")
             .SetAuthorSurname("Test")
             .SetAvailability(1)
-            .SetDescription("Test")
             .Build();
 
         Book anotherBook = new BookBuilder()
@@ -27,15 +27,19 @@ namespace BooksServiceTests
             .SetAuthorName("TestTest")
             .SetAuthorSurname("TestTest")
             .SetAvailability(2)
-            .SetDescription("....")
             .Build();
 
         [TestMethod]
         public void NullBookNotAdded()
         {
+            var factory = new MockRepository(MockBehavior.Strict);
+            factory.Create(IBooksRepository);
+
             //when
-            var dBClient = MockDataBaseClient(new List<Book>() { book });
-            var booksService = new BooksService(dBClient);
+            var booksRepository = MockFactory.CreateBooksRepository(new List<Book>() { book });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>());
+
+            var booksService = new BooksService(booksRepository, borrowsRepository);
 
             book.Title = null;
             //given
@@ -50,8 +54,10 @@ namespace BooksServiceTests
         public void ExistingBookNotAdded()
         {
             //when
-            var dBClient = MockDataBaseClient(new List<Book>() { book });
-            var booksService = new BooksService(dBClient);
+            var booksRepository = MockFactory.CreateBooksRepository(new List<Book>() { book });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>());
+
+            var booksService = new BooksService(booksRepository, borrowsRepository);
 
             //given
             var throwed = booksService.AddBook(book);
@@ -65,8 +71,10 @@ namespace BooksServiceTests
         public void BookAdded()
         {
             //when
-            var dBClient = MockDataBaseClient(new List<Book>() { book });
-            var booksService = new BooksService(dBClient);
+            var booksRepository = MockFactory.CreateBooksRepository(new List<Book>() { book });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>());
+
+            var booksService = new BooksService(booksRepository, borrowsRepository);
 
             //given
             var throwed = booksService.AddBook(anotherBook);
@@ -74,16 +82,6 @@ namespace BooksServiceTests
 
             //then
             StringAssert.Contains(throwed, expected);
-        }
-
-        IDataBaseClient MockDataBaseClient(List<Book> booksList)
-        {
-            var mockDBClient = new Mock<IDataBaseClient>();
-
-            mockDBClient.Setup(x => x.GetBooks())
-                .Returns(booksList);
-
-            return mockDBClient.Object;
         }
     }
 }

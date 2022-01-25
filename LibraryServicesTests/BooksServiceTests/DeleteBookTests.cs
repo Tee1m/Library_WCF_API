@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LibraryService;
 using Moq;
+using Library.ServicesTests;
 
 namespace BooksServiceTests
 {
@@ -32,8 +33,8 @@ namespace BooksServiceTests
         public void BookNotExistAndNotDeleted()
         {
             //when
-            var dbClient = MockDataBaseClient(new List<Book>() { book }, new List<Borrow>() { borrow });
-            var booksService = new BooksService(dbClient);
+            var booksRepository = MockFactory.
+            var booksService = new BooksService(booksRepository);
 
             //given
             var throwed = booksService.DeleteBook(2);
@@ -72,19 +73,6 @@ namespace BooksServiceTests
 
             //then
             StringAssert.Contains(throwed, expected);
-        }
-
-        IDataBaseClient MockDataBaseClient(List<Book> booksList, List<Borrow> borrowList)
-        {
-            var mockDBClient = new Mock<IDataBaseClient>();
-
-            mockDBClient.Setup(x => x.GetBooks())
-                .Returns(booksList);
-
-            mockDBClient.Setup(x => x.GetBorrows())
-                .Returns(borrowList);
-
-            return mockDBClient.Object;
         }
     }
 }
