@@ -7,12 +7,12 @@ namespace LibraryService
     public interface ICustomersService
     {
         [OperationContract]
-        string AddCustomer(Customer newCustomer);
+        string AddCustomer(CustomerDTO newCustomer);
 
         [OperationContract]
         string DeleteCustomer(int id);
 
         [OperationContract]
-        List<Customer> GetCustomers();
+        List<CustomerDTO> GetCustomers();
     }
 }

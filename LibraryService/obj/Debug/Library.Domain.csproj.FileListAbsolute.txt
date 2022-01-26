@@ -1,0 +1,11 @@
+C:\Users\Macie\source\repos\LibraryService\LibraryService\bin\Debug\LibraryService.dll.config
+C:\Users\Macie\source\repos\LibraryService\LibraryService\bin\Debug\LibraryService.dll
+C:\Users\Macie\source\repos\LibraryService\LibraryService\bin\Debug\LibraryService.pdb
+C:\Users\Macie\source\repos\LibraryService\LibraryService\bin\Debug\EntityFramework.dll
+C:\Users\Macie\source\repos\LibraryService\LibraryService\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Macie\source\repos\LibraryService\LibraryService\bin\Debug\EntityFramework.xml
+C:\Users\Macie\source\repos\LibraryService\LibraryService\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\Library.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\Library.Domain.csproj.CopyComplete
+C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.dll
+C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.pdb

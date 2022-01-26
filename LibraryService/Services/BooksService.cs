@@ -15,7 +15,7 @@ namespace LibraryService
             this._borrowsRepository = borrowsRepository;
         }
 
-        public string AddBook(Book newBook)
+        public string AddBook(BookDTO newBook)
         {
             if (BookIsNullable(newBook))
             {
@@ -28,7 +28,7 @@ namespace LibraryService
             {
                 if (IsSimilarBook(book, newBook))
                 {
-                     book.Availability += newBook.Availability;
+                     book.Amount += newBook.Amount;
 
                      _booksRepository.Attach(book);
 
@@ -41,20 +41,20 @@ namespace LibraryService
             return "Dodano Książkę do bazy danych.";
         }
 
-        private bool IsSimilarBook(Book existing, Book created)
+        private bool IsSimilarBook(BookDTO existing, BookDTO created)
         {
             return existing.Title.Contains(created.Title) && existing.AuthorName.Contains(created.AuthorName)
                 && existing.AuthorSurname.Contains(created.AuthorSurname);
         }
 
-        private bool BookIsNullable(Book book)
+        private bool BookIsNullable(BookDTO book)
         {
             return book.AuthorName == null || book.AuthorSurname == null || book.Description == "" || book.Title == null;
         }
 
         public string DeleteBook(int id)
         {
-            var book = new Book();
+            var book = new BookDTO();
 
             var books = _booksRepository.Get().ToList();
             var borrows = _borrowsRepository.Get().ToList();
@@ -78,7 +78,7 @@ namespace LibraryService
             return $"Usunięto książkę, Tytuł: {book.Title} Autor: {book.AuthorName} {book.AuthorSurname}.";
         }
 
-        public List<Book> GetBooks()
+        public List<BookDTO> GetBooks()
         {
             return _booksRepository.Get().ToList();
         }

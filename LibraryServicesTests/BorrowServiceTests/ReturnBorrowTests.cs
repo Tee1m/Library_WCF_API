@@ -12,16 +12,16 @@ namespace BorrowServiceTests
     [TestClass]
     public class ReturnBorrowTests
     {
-        Customer testCustomer = new CustomerBuilder()
+        CustomerDTO testCustomer = new CustomerDTOBuilder()
             .SetId(1)
             .Build();
 
-        Book testBook = new BookBuilder()
+        BookDTO testBook = new BookDTOBuilder()
             .SetId(1)
             .SetAvailability(0)
             .Build();
 
-        Borrow testBorrow = new BorrowBuilder()
+        BorrowDTO testBorrow = new BorrowDTOBuilder()
             .SetId(1)
             .SetCustomerId(1)
             .SetBookId(1)
@@ -34,9 +34,9 @@ namespace BorrowServiceTests
         public void ExceptionBorrowNotReturned(int borrowId, string announcement)
         {
             //when
-            var customerRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>() { testBorrow });
-            var booksRepository = MockFactory.CreateBooksRepository(new List<Book>() { testBook });
+            var customerRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>() { testBorrow });
+            var booksRepository = MockFactory.CreateBooksRepository(new List<BookDTO>() { testBook });
 
             var borrowsService = new BorrowsService(customerRepository, borrowsRepository, booksRepository);
 
@@ -52,15 +52,15 @@ namespace BorrowServiceTests
         public void BorrowReturned()
         {
             //when
-            Borrow anotherBorrow = new BorrowBuilder()
+            BorrowDTO anotherBorrow = new BorrowDTOBuilder()
             .SetId(1)
             .SetCustomerId(1)
             .SetBookId(1)
             .Build();
 
-            var customerRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>() { anotherBorrow });
-            var booksRepository = MockFactory.CreateBooksRepository(new List<Book>() { testBook });
+            var customerRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>() { anotherBorrow });
+            var booksRepository = MockFactory.CreateBooksRepository(new List<BookDTO>() { testBook });
 
             var borrowsService = new BorrowsService(customerRepository, borrowsRepository, booksRepository);
 

@@ -75,9 +75,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LibraryService\Library.Services.csproj">
+    <ProjectReference Include="..\LibraryService\Library.Domain.csproj">
       <Project>{3cf02194-8b80-4ab3-9983-22752755c042}</Project>
-      <Name>Library.Services</Name>
+      <Name>Library.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

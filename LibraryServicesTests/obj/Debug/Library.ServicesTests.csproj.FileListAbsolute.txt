@@ -14,7 +14,6 @@ C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\Micros
 C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\Moq.dll
 C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
 C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\System.Threading.Tasks.Extensions.dll
-C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\EntityFramework.dll
 C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\LibraryService.pdb
 C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\LibraryService.dll.config
 C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\Castle.Core.xml
@@ -23,5 +22,4 @@ C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\Micros
 C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\Moq.xml
 C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\System.Threading.Tasks.Extensions.xml
-C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\bin\Debug\EntityFramework.xml
 C:\Users\Macie\source\repos\LibraryService\LibraryServicesTests\obj\Debug\Library.ServicesTests.csproj.CopyComplete

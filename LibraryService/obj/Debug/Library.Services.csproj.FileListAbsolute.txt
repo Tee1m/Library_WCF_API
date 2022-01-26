@@ -6,17 +6,6 @@ C:\Users\Macie\source\repos\LibraryService\LibraryService\bin\Debug\EntityFramew
 C:\Users\Macie\source\repos\LibraryService\LibraryService\bin\Debug\EntityFramework.xml
 C:\Users\Macie\source\repos\LibraryService\LibraryService\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\Library.Services.csproj.AssemblyReference.cache
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations.init.resources
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._001.resources
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._002.resources
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._003.resources
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._004.resources
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._005.resources
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._006.resources
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._007.resources
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._008.resources
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.Migrations._009.resources
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\Library.Services.csproj.GenerateResource.cache
 C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\Library.Services.csproj.CoreCompileInputs.cache
 C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\Library.Services.csproj.CopyComplete
 C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.dll

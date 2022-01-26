@@ -7,13 +7,13 @@ namespace LibraryService
     public interface IBooksService
     {
         [OperationContract]
-        string AddBook(Book newBook);
+        string AddBook(BookDTO newBook);
 
         [OperationContract]
         string DeleteBook(int id);
 
         [OperationContract]
-        List<Book> GetBooks();
+        List<BookDTO> GetBooks();
     }
 
 }

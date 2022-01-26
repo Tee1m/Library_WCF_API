@@ -8,7 +8,7 @@ namespace CustomersServicesTests
     [TestClass]
     public class DeleteCustomerTests
     {
-        Customer testCustomer = new CustomerBuilder()
+        CustomerDTO testCustomer = new CustomerDTOBuilder()
             .SetId(1)
             .SetName("Test")
             .SetSurname("Test")
@@ -16,7 +16,7 @@ namespace CustomersServicesTests
             .SetTelephoneNumber("Test")
             .Build();
 
-        Borrow testBorrow = new BorrowBuilder()
+        BorrowDTO testBorrow = new BorrowDTOBuilder()
             .SetCustomerId(1)
             .Build();
 
@@ -24,8 +24,8 @@ namespace CustomersServicesTests
         public void NonExistingCustomerNotDeleted()
         {
             //when
-            var customersRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>() { testBorrow });
+            var customersRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>() { testBorrow });
 
             var customersService = new CustomersService(customersRepository, borrowsRepository);
 
@@ -41,8 +41,8 @@ namespace CustomersServicesTests
         public void CustomerWithBorrowNotDeleted()
         {
             //when           
-            var customersRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>() { testBorrow });
+            var customersRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>() { testBorrow });
 
             var customersService = new CustomersService(customersRepository, borrowsRepository);
 
@@ -58,12 +58,12 @@ namespace CustomersServicesTests
         public void CustomerWithoutBorrowDeleted()
         {
             //when
-            Borrow anotherBorrow = new BorrowBuilder()
+            BorrowDTO anotherBorrow = new BorrowDTOBuilder()
             .SetCustomerId(2)
             .Build();
 
-            var customersRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>() { anotherBorrow });
+            var customersRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>() { anotherBorrow });
 
             var customersService = new CustomersService(customersRepository, borrowsRepository);
 

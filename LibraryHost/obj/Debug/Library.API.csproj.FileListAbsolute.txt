@@ -121,3 +121,8 @@ C:\Users\Macie\source\repos\LibraryService\LibraryHost\obj\Debug\Library.API.csp
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\obj\Debug\Library.API.csproj.CopyComplete
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\obj\Debug\LibraryHost.exe
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\obj\Debug\LibraryHost.pdb
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\AutoMapper.dll
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Library.Infrastructure.dll
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Library.Infrastructure.pdb
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Library.Infrastructure.dll.config
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\AutoMapper.xml

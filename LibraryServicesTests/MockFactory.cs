@@ -6,7 +6,7 @@ namespace Library.ServicesTests
 {
     static class MockFactory
     {
-        public static ICustomersRepository CreateCustomersRepository(List<Customer> customerList)
+        public static ICustomersRepository CreateCustomersRepository(List<CustomerDTO> customerList)
         {
             var mockCustomersRepository = new Mock<ICustomersRepository>();
 
@@ -16,7 +16,7 @@ namespace Library.ServicesTests
             return mockCustomersRepository.Object;
         }
 
-        public static IBorrowsRepository CreateBorrowsRepository(List<Borrow> borrowsList)
+        public static IBorrowsRepository CreateBorrowsRepository(List<BorrowDTO> borrowsList)
         {
             var mockBorrowsRepository = new Mock<IBorrowsRepository>();
 
@@ -26,7 +26,7 @@ namespace Library.ServicesTests
             return mockBorrowsRepository.Object;
         }
 
-        public static IBooksRepository CreateBooksRepository(List<Book> booksList)
+        public static IBooksRepository CreateBooksRepository(List<BookDTO> booksList)
         {
             var mockBooksRepository = new Mock<IBooksRepository>();
 

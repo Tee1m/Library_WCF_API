@@ -15,7 +15,7 @@ namespace LibraryService
             this._borrowsRepository = borrows;
         }
 
-        public string AddCustomer(Customer newCustomer)
+        public string AddCustomer(CustomerDTO newCustomer)
         {
             if (CustomerIsNullable(newCustomer))
             {
@@ -37,12 +37,12 @@ namespace LibraryService
             return $"Dodano Klienta, P. {newCustomer.Name} {newCustomer.Surname}";
         }
 
-        private bool CustomerIsNullable(Customer customer)
+        private bool CustomerIsNullable(CustomerDTO customer)
         {
             return customer.Name == null || customer.Surname == null || customer.Address == null || customer.TelephoneNumber == "";
         }
 
-        private bool IsSimilarCustomer(Customer existing, Customer created)
+        private bool IsSimilarCustomer(CustomerDTO existing, CustomerDTO created)
         {
             return existing.Name.Contains(created.Name) && existing.Surname.Contains(created.Surname) &&
                    existing.Address.Contains(created.Address) && existing.TelephoneNumber == created.TelephoneNumber;
@@ -69,7 +69,7 @@ namespace LibraryService
             return $"Usunięto Klienta, P. {customer.Name} {customer.Surname}.";
         }
 
-        public List<Customer> GetCustomers()
+        public List<CustomerDTO> GetCustomers()
         {
             return _customersRepository.Get().ToList();
         }

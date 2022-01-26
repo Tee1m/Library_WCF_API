@@ -15,7 +15,7 @@ namespace LibraryHost
             var customersHost = new ServiceHost(typeof(CustomersService));
             var booksHost = new ServiceHost(typeof(BooksService));
 
-            using (IContainer container = DataBaseConnector.RegisterContainerBuilder().Build())
+            using (IContainer container = ContainerIoC.RegisterContainerBuilder().Build())
             {
                 CheckServiceIsRegistrated(container, new TypedService(typeof(IBooksService)));
                 CheckServiceIsRegistrated(container, new TypedService(typeof(IBorrowsService)));

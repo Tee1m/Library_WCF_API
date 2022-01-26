@@ -38,16 +38,14 @@ namespace LibraryService
             var customer = customersQuery.Where(x => x.Id == customerId).Single();
             var book = booksQuery.Where(x => x.Id == bookId).Single();
 
-            if (book.Availability == 0)
+            if (book.Amount == 0)
             {
                 return "Wpożyczenie jest niemożliwe, ponieważ książki niema na stanie biblioteki.";
             }
 
-            book.Availability--;
+            book.Amount--;
 
-            Borrow borrow = new Borrow(customer, book);
-
-            _borrowsRepository.Add(borrow);
+            _borrowsRepository.Add(customer, book);
 
             return $"Wyporzyczono, Tytuł: {book.Title}, Klientowi: {customer.Name} {customer.Surname}";
         }
@@ -71,7 +69,7 @@ namespace LibraryService
             var customer = _customersRepository.Get().Where(x => x.Id == borrow.CustomerId).Single();
             var book = _booksRepository.Get().Where(x => x.Id == borrow.BookId).Single();
 
-            book.Availability++;
+            book.Amount++;
             borrow.Return = DateTime.Now;
 
             _borrowsRepository.Attach(borrow);
@@ -81,28 +79,7 @@ namespace LibraryService
 
         public List<BorrowDTO> GetBorrows()
         {   
-            List<BorrowDTO> borrowsDTO = new List<BorrowDTO>();
-            BorrowDTO bDTO;
-
-            var borrows = _borrowsRepository.Get();
-
-            foreach (var borrow in borrows)
-            {
-                bDTO = new BorrowDTO();
-
-                var customer = _customersRepository.Get().Where(x => x.Id == borrow.CustomerId).Single();
-                var book = _booksRepository.Get().Where(x => x.Id == borrow.BookId).Single();
-
-                bDTO.Id = borrow.Id;
-                bDTO.DateOfBorrow = borrow.DateOfBorrow;
-                bDTO.Return = borrow.Return;
-                bDTO.Customer = customer.ToString();
-                bDTO.Book = book.ToString();
-                    
-                borrowsDTO.Add(bDTO);
-            }
-
-            return borrowsDTO;
+            return _borrowsRepository.Get();
         }
     }
 }

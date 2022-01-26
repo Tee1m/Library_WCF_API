@@ -8,7 +8,7 @@ namespace CustomersServicesTests
     [TestClass]
     public class AddingCustomerTests
     {
-        Customer testCustomer = new CustomerBuilder()
+        CustomerDTO testCustomer = new CustomerDTOBuilder()
             .SetId(1)
             .SetName("Test")
             .SetSurname("Test")
@@ -16,7 +16,7 @@ namespace CustomersServicesTests
             .SetTelephoneNumber("123")
             .Build();
 
-        Customer anotherCustomer = new CustomerBuilder()
+        CustomerDTO anotherCustomer = new CustomerDTOBuilder()
             .SetId(2)
             .SetName("TestTest")
             .SetSurname("TestTest")
@@ -28,10 +28,10 @@ namespace CustomersServicesTests
         public void NullCustomerNotAdded()
         {
             //when
-            Customer nullCustomer = new Customer();
+            CustomerDTO nullCustomer = new CustomerDTO();
 
-            var customersRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>());
+            var customersRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>());
 
             var customersService = new CustomersService(customersRepository, borrowsRepository);
 
@@ -47,8 +47,8 @@ namespace CustomersServicesTests
         public void ExistCustomerNotAdded()
         {
             //when
-            var customersRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>());
+            var customersRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>());
 
             var customersService = new CustomersService(customersRepository, borrowsRepository);
 
@@ -64,8 +64,8 @@ namespace CustomersServicesTests
         public void CorrectCustomerAdded()
         {
             //when
-            var customersRepository = MockFactory.CreateCustomersRepository(new List<Customer>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<Borrow>());
+            var customersRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
+            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>());
 
             var customersService = new CustomersService(customersRepository, borrowsRepository);
 
