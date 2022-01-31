@@ -31,6 +31,7 @@ namespace Library.Infrastructure
             var borrow = _mapper.Map<Borrow>(obj);
 
             _context.Attach<Borrow>(borrow);
+            _context.Commit();
         }
 
         public List<BorrowDTO> Get()
