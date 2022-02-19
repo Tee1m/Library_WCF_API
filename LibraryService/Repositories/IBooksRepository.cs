@@ -6,7 +6,7 @@ namespace LibraryService
     {
         void Add(BookDTO obj);
         void Remove(BookDTO obj);
-        void Attach(BookDTO obj);
+        void Update(BookDTO obj);
         List<BookDTO> Get();
     }
 }

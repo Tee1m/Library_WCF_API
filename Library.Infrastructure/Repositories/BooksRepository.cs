@@ -2,15 +2,16 @@
 using System.Linq;
 using LibraryService;
 using AutoMapper;
+using System.Data.Entity;
 
 namespace Library.Infrastructure
 {
     public class BooksRepository : IBooksRepository
     {
-        private readonly IUnitOfWork _context;
+        private readonly LibraryDb _context;
         private readonly IMapper _mapper;
 
-        public BooksRepository(IUnitOfWork context, IMapper bookMapper)
+        public BooksRepository(LibraryDb context, IMapper bookMapper)
         {
             this._context = context;
             this._mapper = bookMapper;
@@ -20,32 +21,41 @@ namespace Library.Infrastructure
         {
             var book = _mapper.Map<Book>(obj);
 
-            _context.Add<Book>(book);
-            _context.Commit();
+            _context.Books.Add(book);
         }
 
-        public void Attach(BookDTO obj)
-        {
-            var book = _mapper.Map<Book>(obj);
+        public void Update(BookDTO obj)
+        { 
+            var book = _context.Books.Single(a => a.Id == obj.Id);
+            var translatedBook = _mapper.Map<Book>(obj);
 
-            _context.Attach<Book>(book);
-            _context.Commit();
-        }
+            book.AuthorName = translatedBook.AuthorName;
+            book.AuthorSurname = translatedBook.AuthorSurname;
+            book.Amount = translatedBook.Amount;
+            book.Title = translatedBook.Title;
+            book.Description = translatedBook.Description;
 
-        public List<BookDTO> Get()
-        {
-            var booksList = _context.Get<Book>().ToList<Book>();
-            var booksDTOList = new List<BookDTO>();
-
-            return booksDTOList;
+            _context.Entry(book).State = EntityState.Modified;
         }
 
         public void Remove(BookDTO obj)
         {
             var book = _mapper.Map<Book>(obj);
 
-            _context.Remove<Book>(book);
-            _context.Commit();
+            _context.Books.Remove(_context.Books.Single(a => a.Id == obj.Id));
+        }
+
+        public List<BookDTO> Get()
+        {
+            var booksList = _context.Books.ToList();
+            var booksDTOList = new List<BookDTO>();
+
+            foreach (var book in booksList)
+            {
+                booksDTOList.Add(_mapper.Map<BookDTO>(book));
+            }
+
+            return booksDTOList;
         }
     }
 }

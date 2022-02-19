@@ -8,23 +8,21 @@ using System.Data.Entity;
 
 namespace LibraryService
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class BorrowsService : IBorrowsService
     {
-        private readonly ICustomersRepository _customersRepository;
-        private readonly IBorrowsRepository _borrowsRepository;
-        private readonly IBooksRepository _booksRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BorrowsService(ICustomersRepository customers, IBorrowsRepository borrows, IBooksRepository books)
+        public BorrowsService(IUnitOfWork unitOfWork)
         {
-            this._customersRepository = customers;
-            this._borrowsRepository = borrows;
-            this._booksRepository = books;
+            this._unitOfWork = unitOfWork;
         }
+        
 
         public string AddBorrow(int customerId, int bookId)
         {
-            var customersQuery = _customersRepository.Get();
-            var booksQuery = _booksRepository.Get();
+            var customersQuery = _unitOfWork.CustomersRepository.Get();
+            var booksQuery = _unitOfWork.BooksRepository.Get();
 
             if (!customersQuery.Where(x => x.Id == customerId).Any())
             {
@@ -45,14 +43,16 @@ namespace LibraryService
 
             book.Amount--;
 
-            _borrowsRepository.Add(customer, book);
+            _unitOfWork.BooksRepository.Update(book);
+            _unitOfWork.BorrowsRepository.Add(customer, book);
+            _unitOfWork.Commit();
 
             return $"Wyporzyczono, Tytuł: {book.Title}, Klientowi: {customer.Name} {customer.Surname}";
         }
 
         public string ReturnBorrow(int id)
         {
-            var borrowsQuery = _borrowsRepository.Get();
+            var borrowsQuery = _unitOfWork.BorrowsRepository.Get();
 
             if (!borrowsQuery.Where(x => x.Id == id).Any())
             {
@@ -66,20 +66,21 @@ namespace LibraryService
                 return "Wypożyczenie zostało już zwrócone.";
             }
 
-            var customer = _customersRepository.Get().Where(x => x.Id == borrow.CustomerId).Single();
-            var book = _booksRepository.Get().Where(x => x.Id == borrow.BookId).Single();
+            var customer = _unitOfWork.CustomersRepository.Get().Where(x => x.Id == borrow.CustomerId).Single();
+            var book = _unitOfWork.BooksRepository.Get().Where(x => x.Id == borrow.BookId).Single();
 
             book.Amount++;
             borrow.Return = DateTime.Now;
 
-            _borrowsRepository.Attach(borrow);
+            _unitOfWork.BorrowsRepository.Update(borrow);
+            _unitOfWork.Commit();
 
             return $"Zwrócono, Tytuł: {book.Title} Klienta: {customer.Name} {customer.Surname}";
         }
 
         public List<BorrowDTO> GetBorrows()
         {   
-            return _borrowsRepository.Get();
+            return _unitOfWork.BorrowsRepository.Get();
         }
     }
 }

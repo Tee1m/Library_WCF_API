@@ -42,8 +42,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -52,13 +54,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoMapperConfig\BookMappingProfile.cs" />
+    <Compile Include="AutoMapperConfig\CustomerMappingProfile.cs" />
     <Compile Include="Enties\Book.cs" />
     <Compile Include="Enties\Borrow.cs" />
     <Compile Include="Enties\Customer.cs" />
     <Compile Include="Enties\DbObject.cs" />
-    <Compile Include="DataBase\IUnitOfWork.cs" />
     <Compile Include="DataBase\LibraryDb.cs" />
-    <Compile Include="MappingProfile.cs" />
+    <Compile Include="AutoMapperConfig\BorrowMappingProfile.cs" />
+    <Compile Include="IUnitOfWork.cs" />
     <Compile Include="Repositories\BooksRepository.cs" />
     <Compile Include="Repositories\BorrowsRepository.cs" />
     <Compile Include="Repositories\CustomersRepository.cs" />

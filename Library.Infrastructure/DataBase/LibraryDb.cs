@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Library.Infrastructure
 {
-    public class LibraryDb : DbContext , IUnitOfWork
+    public class LibraryDb : DbContext
     {
         // Your context has been configured to use a 'LibraryDb' connection string from your application's 
         // configuration file (App.config or Web.config). By default, this connection string targets the 
@@ -24,31 +24,6 @@ namespace Library.Infrastructure
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<Borrow> Borrows { get; set; }
-
-        public void Add<T>(T obj) where T : class
-        {
-            Set<T>().Add(obj);
-        }
-
-        public void Commit()
-        {
-            base.SaveChanges();
-        }
-
-        public IQueryable<T> Get<T>() where T : class
-        {
-            return Set<T>();
-        }
-
-        public void Remove<T>(T obj) where T : class
-        {
-            Set<T>().Remove(obj);
-        }
-
-        public void Attach<T>(T obj) where T : class
-        {
-            Set<T>().Attach(obj);
-        }
 
         // public virtual DbSet<MyEntity> MyEntities { get; set; }
     }

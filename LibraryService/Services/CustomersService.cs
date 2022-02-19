@@ -4,15 +4,14 @@ using System.ServiceModel;
 
 namespace LibraryService
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class CustomersService : ICustomersService
     {
-        private readonly ICustomersRepository _customersRepository;
-        private readonly IBorrowsRepository _borrowsRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CustomersService(ICustomersRepository customers, IBorrowsRepository borrows)
+        public CustomersService(IUnitOfWork unitOfWork)
         {
-            this._customersRepository = customers;
-            this._borrowsRepository = borrows;
+            this._unitOfWork = unitOfWork;
         }
 
         public string AddCustomer(CustomerDTO newCustomer)
@@ -22,7 +21,7 @@ namespace LibraryService
                 return "Nie dodano Klienta, ponieważ conajmniej jedno z atrybutów nie zawiera wartości.";
             }
 
-            var customers = _customersRepository.Get();
+            var customers = _unitOfWork.CustomersRepository.Get();
 
             foreach (var existingCustomer in customers)
             {
@@ -32,7 +31,8 @@ namespace LibraryService
                 }
             }
 
-            _customersRepository.Add(newCustomer);
+            _unitOfWork.CustomersRepository.Add(newCustomer);
+            _unitOfWork.Commit();
 
             return $"Dodano Klienta, P. {newCustomer.Name} {newCustomer.Surname}";
         }
@@ -50,8 +50,8 @@ namespace LibraryService
 
         public string DeleteCustomer(int id)
         {
-            var customerQuery = _customersRepository.Get();
-            var borrowsQuery = _borrowsRepository.Get();
+            var customerQuery = _unitOfWork.CustomersRepository.Get();
+            var borrowsQuery = _unitOfWork.BorrowsRepository.Get();
 
             if (!customerQuery.Where(x => x.Id == id).Any())
             {
@@ -64,14 +64,15 @@ namespace LibraryService
 
             var customer = customerQuery.Where(x => x.Id == id).Single();
 
-            _customersRepository.Remove(customer);
+            _unitOfWork.CustomersRepository.Remove(customer);
+            _unitOfWork.Commit();
 
             return $"Usunięto Klienta, P. {customer.Name} {customer.Surname}.";
         }
 
         public List<CustomerDTO> GetCustomers()
         {
-            return _customersRepository.Get().ToList();
+            return _unitOfWork.CustomersRepository.Get().ToList();
         }
     }
 }

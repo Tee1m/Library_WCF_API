@@ -2,15 +2,16 @@
 using System.Linq;
 using LibraryService;
 using AutoMapper;
+using System.Data.Entity;
 
 namespace Library.Infrastructure
 {
     public class CustomersRepository : ICustomersRepository
     {
-        private readonly IUnitOfWork _context;
+        private readonly LibraryDb _context;
         private readonly IMapper _mapper; 
 
-        public CustomersRepository(IUnitOfWork context, IMapper customerMapper)
+        public CustomersRepository(LibraryDb context, IMapper customerMapper)
         {
             this._context = context;
             this._mapper = customerMapper;
@@ -20,29 +21,31 @@ namespace Library.Infrastructure
         {
             var customer = _mapper.Map<Customer>(obj);
 
-            _context.Add<Customer>(customer);
-            _context.Commit();
+            _context.Customers.Add(customer);
         }
 
-        public void Attach(CustomerDTO obj)
+        public void Update(CustomerDTO obj)
         {
-            var customer = _mapper.Map<Customer>(obj);
+            var customer = _context.Customers.Single(a => a.Id == obj.Id);
+            var translatedCustomer = _mapper.Map<Customer>(obj);
 
-            _context.Attach<Customer>(customer);
-            _context.Commit();
+            customer.Id = translatedCustomer.Id;
+            customer.Name = translatedCustomer.Name;
+            customer.Surname = translatedCustomer.Surname;
+            customer.TelephoneNumber = translatedCustomer.TelephoneNumber;
+            customer.Address = translatedCustomer.Address;
+
+            _context.Entry(customer).State = EntityState.Modified;
         }
 
         public void Remove(CustomerDTO obj)
         {
-            var customer = _mapper.Map<Customer>(obj);
-
-            _context.Remove<Customer>(customer);
-            _context.Commit();
+            _context.Customers.Remove(_context.Customers.Single(a => a.Id == obj.Id));
         }
 
         public List<CustomerDTO> Get()
         {
-            var customersList = _context.Get<Customer>().ToList<Customer>();
+            var customersList = _context.Customers.ToList();
             var customersDTOList = new List<CustomerDTO>();
 
             foreach (var customer in customersList)
@@ -53,6 +56,5 @@ namespace Library.Infrastructure
             return customersDTOList;
         }
 
-        
     }
 }

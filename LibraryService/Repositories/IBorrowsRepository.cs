@@ -6,7 +6,8 @@ namespace LibraryService
     {
         void Add(CustomerDTO customer, BookDTO book);
         void Remove(BorrowDTO obj);
-        void Attach(BorrowDTO obj);
+        void Update(BorrowDTO obj);
         List<BorrowDTO> Get();
+
     }
 }

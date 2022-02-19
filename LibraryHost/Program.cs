@@ -14,17 +14,16 @@ namespace LibraryHost
             var borrowsHost = new ServiceHost(typeof(BorrowsService));
             var customersHost = new ServiceHost(typeof(CustomersService));
             var booksHost = new ServiceHost(typeof(BooksService));
+            
+            var container = ContainerIoC.RegisterContainerBuilder().Build();
+                         
+            CheckServiceIsRegistrated(container, new TypedService(typeof(IBooksService)));
+            CheckServiceIsRegistrated(container, new TypedService(typeof(IBorrowsService)));
+            CheckServiceIsRegistrated(container, new TypedService(typeof(ICustomersService)));
 
-            using (IContainer container = ContainerIoC.RegisterContainerBuilder().Build())
-            {
-                CheckServiceIsRegistrated(container, new TypedService(typeof(IBooksService)));
-                CheckServiceIsRegistrated(container, new TypedService(typeof(IBorrowsService)));
-                CheckServiceIsRegistrated(container, new TypedService(typeof(ICustomersService)));
-
-                borrowsHost.AddDependencyInjectionBehavior<IBorrowsService>(container);
-                customersHost.AddDependencyInjectionBehavior<ICustomersService>(container);
-                booksHost.AddDependencyInjectionBehavior<IBooksService>(container);
-            }
+            borrowsHost.AddDependencyInjectionBehavior<IBorrowsService>(container);
+            customersHost.AddDependencyInjectionBehavior<ICustomersService>(container);
+            booksHost.AddDependencyInjectionBehavior<IBooksService>(container);
 
             Console.WriteLine("Uruchamianie ...");
 
@@ -41,6 +40,8 @@ namespace LibraryHost
             borrowsHost.Close();
             customersHost.Close();
             booksHost.Close();
+
+            Environment.Exit(0);
         }
 
         private static void CheckServiceIsRegistrated(IContainer container, Service service)
@@ -48,7 +49,7 @@ namespace LibraryHost
             IComponentRegistration registration;
             if (!container.ComponentRegistry.TryGetRegistration(service, out registration))
             {
-                Console.WriteLine($"The service typeof {typeof(BooksService)} contract has not been registered in the container.");
+                Console.WriteLine($"The service typeof {service} has not been registered in the container.");
                 Console.ReadLine();
                 Environment.Exit(-1);
             }

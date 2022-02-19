@@ -4,15 +4,14 @@ using System.ServiceModel;
 
 namespace LibraryService
 {
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class BooksService : IBooksService
     {
-        private readonly IBooksRepository _booksRepository;
-        private readonly IBorrowsRepository _borrowsRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public BooksService(IBooksRepository booksRepository, IBorrowsRepository borrowsRepository)
+        public BooksService(IUnitOfWork unitOfWork)
         {
-            this._booksRepository = booksRepository;
-            this._borrowsRepository = borrowsRepository;
+            this._unitOfWork = unitOfWork;
         }
 
         public string AddBook(BookDTO newBook)
@@ -22,7 +21,7 @@ namespace LibraryService
                 return "Nie dodano książki, ponieważ conajmniej jedno z atrybutów nie zawiera wartości.";
             }
 
-            var books = _booksRepository.Get();
+            var books = _unitOfWork.BooksRepository.Get();
 
             foreach (var book in books)
             {
@@ -30,13 +29,14 @@ namespace LibraryService
                 {
                      book.Amount += newBook.Amount;
 
-                     _booksRepository.Attach(book);
+                     _unitOfWork.BooksRepository.Update(book);
 
                      return "Książka znajduje się w bazie biblioteki. Uzupełniono jej dostępność.";
                 }
             }
 
-            _booksRepository.Add(newBook);
+            _unitOfWork.BooksRepository.Add(newBook);
+            _unitOfWork.Commit();
 
             return "Dodano Książkę do bazy danych.";
         }
@@ -56,8 +56,8 @@ namespace LibraryService
         {
             var book = new BookDTO();
 
-            var books = _booksRepository.Get().ToList();
-            var borrows = _borrowsRepository.Get().ToList();
+            var books = _unitOfWork.BooksRepository.Get().ToList();
+            var borrows = _unitOfWork.BorrowsRepository.Get().ToList();
 
             if (!books.Where(x => x.Id == id).Any())
             {
@@ -73,14 +73,15 @@ namespace LibraryService
 
             book = books.Where(x => x.Id == id).Single();
 
-            _booksRepository.Remove(book);
+            _unitOfWork.BooksRepository.Remove(book);
+            _unitOfWork.Commit();
 
             return $"Usunięto książkę, Tytuł: {book.Title} Autor: {book.AuthorName} {book.AuthorSurname}.";
         }
 
         public List<BookDTO> GetBooks()
         {
-            return _booksRepository.Get().ToList();
+            return _unitOfWork.BooksRepository.Get().ToList();
         }
     }
 }

@@ -72,6 +72,7 @@
     <Compile Include="Repositories\IBooksRepository.cs" />
     <Compile Include="Repositories\IBorrowsRepository.cs" />
     <Compile Include="Repositories\ICustomersRepository.cs" />
+    <Compile Include="Repositories\IUnitOfWork.cs" />
     <Compile Include="Services\BooksService.cs" />
     <Compile Include="Services\Contracts\IBooksService.cs" />
     <Compile Include="Services\Contracts\ICustomersService.cs" />

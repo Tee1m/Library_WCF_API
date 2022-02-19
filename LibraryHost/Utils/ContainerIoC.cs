@@ -2,34 +2,51 @@
 using Autofac;
 using Library.Infrastructure;
 using AutoMapper;
+using AutoMapper.Configuration;
+using System.Collections.Generic;
+using System;
+using System.Linq;
 
 namespace LibraryHost
 {
-    public class ContainerIoC
+    public class ContainerIoC : Module
     {
         public static ContainerBuilder RegisterContainerBuilder()
         {
             ContainerBuilder builder = new ContainerBuilder();
-            builder.Register(c => new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())))
-                .As<IConfigurationProvider>();
-            builder.Register(c => new Mapper(c.Resolve<IConfigurationProvider>()))
-                .As<IMapper>();
 
-            builder.Register(c => new LibraryDb())
-                .As<IUnitOfWork>();
+            var autoMapperProfiles = new List<Profile>() {
+                (Profile)Activator.CreateInstance(typeof(BorrowMappingProfile)),
+                (Profile)Activator.CreateInstance(typeof(BookMappingProfile)),
+                (Profile)Activator.CreateInstance(typeof(CustomerMappingProfile))};
 
-            builder.Register(c => new BooksRepository(c.Resolve<IUnitOfWork>(), c.Resolve<IMapper>()))
+            builder.Register(context => new MapperConfiguration(cfg =>
+            {
+                foreach (var profile in autoMapperProfiles)
+                {
+                    cfg.AddProfile(profile);
+                }
+            }));
+
+            builder.Register(context => context.Resolve<MapperConfiguration>()
+                .CreateMapper()).As<IMapper>();
+            builder.Register(context => new LibraryDb())
+                .As<LibraryDb>();
+            builder.Register(context => new UnitOfWork(context.Resolve<LibraryDb>(), context.Resolve<IMapper>()))
+                .As<IUnitOfWork>().SingleInstance();
+
+            builder.Register(context => new BooksRepository(context.Resolve<LibraryDb>(), context.Resolve<IMapper>()))
                 .As<IBooksRepository>();
-            builder.Register(c => new CustomersRepository(c.Resolve<IUnitOfWork>(), c.Resolve<IMapper>()))
+            builder.Register(context => new CustomersRepository(context.Resolve<LibraryDb>(), context.Resolve<IMapper>()))
                 .As<ICustomersRepository>();
-            builder.Register(c => new BorrowsRepository(c.Resolve<IUnitOfWork>(), c.Resolve<IMapper>()))
+            builder.Register(context => new BorrowsRepository(context.Resolve<LibraryDb>(), context.Resolve<IMapper>()))
                 .As<IBorrowsRepository>();
 
-            builder.Register(c => new BooksService(c.Resolve<IBooksRepository>(), c.Resolve<IBorrowsRepository> ()))
+            builder.Register(context => new BooksService(context.Resolve<IUnitOfWork>()))
                 .As<IBooksService>();
-            builder.Register(c => new BorrowsService(c.Resolve<ICustomersRepository>(), c.Resolve<IBorrowsRepository> (), c.Resolve<IBooksRepository>()))
+            builder.Register(context => new BorrowsService(context.Resolve<IUnitOfWork>()))
                 .As<IBorrowsService>();
-            builder.Register(c => new CustomersService(c.Resolve<ICustomersRepository>(), c.Resolve<IBorrowsRepository> ()))
+            builder.Register(context => new CustomersService(context.Resolve<IUnitOfWork>()))
                 .As<ICustomersService>();
 
             return builder;
