@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LibraryService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Library.ServicesTests;
+using Moq;
 
 namespace BooksServiceTests
 {
@@ -32,10 +32,11 @@ namespace BooksServiceTests
         public void NullBookNotAdded()
         {
             //when
-            var booksRepository = MockFactory.CreateBooksRepository(new List<BookDTO>() { book });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>());
+            var unitOfWork = new Mock<IUnitOfWork>();
+            unitOfWork.Setup(x => x.BooksRepository.Get()).Returns(new List<BookDTO>() { book });
+            unitOfWork.Setup(x => x.BorrowsRepository.Get()).Returns(new List<BorrowDTO>());
 
-            var booksService = new BooksService(booksRepository, borrowsRepository);
+            var booksService = new BooksService(unitOfWork.Object);
 
             book.Title = null;
             //given
@@ -50,10 +51,11 @@ namespace BooksServiceTests
         public void ExistingBookNotAdded()
         {
             //when
-            var booksRepository = MockFactory.CreateBooksRepository(new List<BookDTO>() { book });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>());
+            var unitOfWork = new Mock<IUnitOfWork>();
+            unitOfWork.Setup(x => x.BooksRepository.Get()).Returns(new List<BookDTO>() { book });
+            unitOfWork.Setup(x => x.BorrowsRepository.Get()).Returns(new List<BorrowDTO>());
 
-            var booksService = new BooksService(booksRepository, borrowsRepository);
+            var booksService = new BooksService(unitOfWork.Object);
 
             //given
             var throwed = booksService.AddBook(book);
@@ -67,10 +69,11 @@ namespace BooksServiceTests
         public void BookAdded()
         {
             //when
-            var booksRepository = MockFactory.CreateBooksRepository(new List<BookDTO>() { book });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>());
+            var unitOfWork = new Mock<IUnitOfWork>();
+            unitOfWork.Setup(x => x.BooksRepository.Get()).Returns(new List<BookDTO>() { book });
+            unitOfWork.Setup(x => x.BorrowsRepository.Get()).Returns(new List<BorrowDTO>());
 
-            var booksService = new BooksService(booksRepository, borrowsRepository);
+            var booksService = new BooksService(unitOfWork.Object);
 
             //given
             var throwed = booksService.AddBook(anotherBook);

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LibraryService;
 using Library.ServicesTests;
+using Moq;
 
 namespace BooksServiceTests
 {
@@ -32,10 +33,11 @@ namespace BooksServiceTests
         public void BookNotExistAndNotDeleted()
         {
             //when
-            var booksRepository = MockFactory.CreateBooksRepository(new List<BookDTO>() { book });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>() { borrow });
+            var unitOfWork = new Mock<IUnitOfWork>();
+            unitOfWork.Setup(a => a.BooksRepository.Get()).Returns(new List<BookDTO>() { book });
+            unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<BorrowDTO>() { borrow });
 
-            var booksService = new BooksService(booksRepository, borrowsRepository);
+            var booksService = new BooksService(unitOfWork.Object);
 
             //given
             var throwed = booksService.DeleteBook(2);
@@ -49,10 +51,11 @@ namespace BooksServiceTests
         public void NotReturnedAllCopiesBookNotDeleted()
         {
             //when
-            var booksRepository = MockFactory.CreateBooksRepository(new List<BookDTO>() { book });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>() { borrow });
+            var unitOfWork = new Mock<IUnitOfWork>();
+            unitOfWork.Setup(a => a.BooksRepository.Get()).Returns(new List<BookDTO>() { book });
+            unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<BorrowDTO>() { borrow });
 
-            var booksService = new BooksService(booksRepository, borrowsRepository);
+            var booksService = new BooksService(unitOfWork.Object);
 
             //given
             var throwed = booksService.DeleteBook(1);
@@ -67,10 +70,11 @@ namespace BooksServiceTests
         {
             //when
             borrow.BookId = 2;
-            var booksRepository = MockFactory.CreateBooksRepository(new List<BookDTO>() { book });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>() { borrow });
+            var unitOfWork = new Mock<IUnitOfWork>();
+            unitOfWork.Setup(a => a.BooksRepository.Get()).Returns(new List<BookDTO>() { book });
+            unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<BorrowDTO>() { borrow });
 
-            var booksService = new BooksService(booksRepository, borrowsRepository);
+            var booksService = new BooksService(unitOfWork.Object);
 
             //given
             var throwed = booksService.DeleteBook(1);

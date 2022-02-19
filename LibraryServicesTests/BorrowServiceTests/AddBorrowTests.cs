@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using LibraryService;
-using Library.ServicesTests;
+using Moq;
 
 namespace BorrowServiceTests
 {
@@ -36,11 +36,12 @@ namespace BorrowServiceTests
         public void ExceptionBorrowNotAdded(int customerId, int bookId, string announcement)
         {
             //when
-            var customerRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>());
-            var booksRepository = MockFactory.CreateBooksRepository(new List<BookDTO>() { testBook });
+            var unitOfWork = new Mock<IUnitOfWork>();
+            unitOfWork.Setup(a => a.CustomersRepository.Get()).Returns(new List<CustomerDTO>() { testCustomer });
+            unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<BorrowDTO>());
+            unitOfWork.Setup(a => a.BooksRepository.Get()).Returns(new List<BookDTO>() { testBook });
 
-            var borrowsService = new BorrowsService(customerRepository, borrowsRepository, booksRepository);
+            var borrowsService = new BorrowsService(unitOfWork.Object);
 
             //given
             var throwed = borrowsService.AddBorrow(customerId, bookId);
@@ -55,11 +56,12 @@ namespace BorrowServiceTests
         {
             //when
             testBook.Amount = 1;
-            var customerRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>());
-            var booksRepository = MockFactory.CreateBooksRepository(new List<BookDTO>() { testBook });
+            var unitOfWork = new Mock<IUnitOfWork>();
+            unitOfWork.Setup(a => a.CustomersRepository.Get()).Returns(new List<CustomerDTO>() { testCustomer });
+            unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<BorrowDTO>());
+            unitOfWork.Setup(a => a.BooksRepository.Get()).Returns(new List<BookDTO>() { testBook });
 
-            var borrowsService = new BorrowsService(customerRepository, borrowsRepository, booksRepository);
+            var borrowsService = new BorrowsService(unitOfWork.Object);
 
             //given
             var throwed = borrowsService.AddBorrow(1, 1);

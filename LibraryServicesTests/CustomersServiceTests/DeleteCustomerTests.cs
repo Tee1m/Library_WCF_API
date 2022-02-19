@@ -1,7 +1,7 @@
 ﻿using LibraryService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using Library.ServicesTests;
+using Moq;
 
 namespace CustomersServicesTests
 {
@@ -24,10 +24,11 @@ namespace CustomersServicesTests
         public void NonExistingCustomerNotDeleted()
         {
             //when
-            var customersRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>() { testBorrow });
+            var unitOfWork = new Mock<IUnitOfWork>();
+            unitOfWork.Setup(a => a.CustomersRepository.Get()).Returns(new List<CustomerDTO>() { testCustomer });
+            unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<BorrowDTO>() { testBorrow });
 
-            var customersService = new CustomersService(customersRepository, borrowsRepository);
+            var customersService = new CustomersService(unitOfWork.Object);
 
             //given
             var throwed = customersService.DeleteCustomer(2);
@@ -41,10 +42,11 @@ namespace CustomersServicesTests
         public void CustomerWithBorrowNotDeleted()
         {
             //when           
-            var customersRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>() { testBorrow });
+            var unitOfWork = new Mock<IUnitOfWork>();
+            unitOfWork.Setup(a => a.CustomersRepository.Get()).Returns(new List<CustomerDTO>() { testCustomer });
+            unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<BorrowDTO>() { testBorrow });
 
-            var customersService = new CustomersService(customersRepository, borrowsRepository);
+            var customersService = new CustomersService(unitOfWork.Object);
 
             //given
             var throwed = customersService.DeleteCustomer(1);
@@ -62,10 +64,11 @@ namespace CustomersServicesTests
             .SetCustomerId(2)
             .Build();
 
-            var customersRepository = MockFactory.CreateCustomersRepository(new List<CustomerDTO>() { testCustomer });
-            var borrowsRepository = MockFactory.CreateBorrowsRepository(new List<BorrowDTO>() { anotherBorrow });
+            var unitOfWork = new Mock<IUnitOfWork>();
+            unitOfWork.Setup(a => a.CustomersRepository.Get()).Returns(new List<CustomerDTO>() { testCustomer });
+            unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<BorrowDTO>() { anotherBorrow });
 
-            var customersService = new CustomersService(customersRepository, borrowsRepository);
+            var customersService = new CustomersService(unitOfWork.Object);
 
             //given
             var throwed = customersService.DeleteCustomer(1);
