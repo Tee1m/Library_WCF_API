@@ -15,17 +15,7 @@ namespace LibraryHost
         {
             ContainerBuilder builder = new ContainerBuilder();
 
-            var autoMapperProfileTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes().Where(p => typeof(Profile)
-                .IsAssignableFrom(p) && p.IsPublic && !p.IsAbstract));
-            
-            builder.Register(ctx => new MapperConfiguration(cfg =>
-            {
-                foreach (var profile in autoMapperProfileTypes)
-                {
-                    cfg.AddProfile(profile);
-                }
-            }));
+            RegisterMaps(builder);
 
             builder.Register(context => context.Resolve<MapperConfiguration>()
                 .CreateMapper()).As<IMapper>();
@@ -49,6 +39,21 @@ namespace LibraryHost
                 .As<ICustomersService>();
 
             return builder;
+        }
+
+        private static void RegisterMaps(ContainerBuilder builder)
+        {
+            var autoMapperProfileTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes().Where(p => typeof(Profile)
+                .IsAssignableFrom(p) && p.IsPublic && !p.IsAbstract));
+
+            builder.Register(ctx => new MapperConfiguration(cfg =>
+            {
+                foreach (var profile in autoMapperProfileTypes)
+                {
+                    cfg.AddProfile(profile);
+                }
+            }));
         }
     }
 }
