@@ -9,4 +9,3 @@ C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\Library.Doma
 C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\Library.Domain.csproj.CopyComplete
 C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.dll
 C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\LibraryService.pdb
-C:\Users\Macie\source\repos\LibraryService\LibraryService\obj\Debug\Library.Domain.csproj.AssemblyReference.cache

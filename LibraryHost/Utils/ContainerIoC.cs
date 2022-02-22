@@ -15,14 +15,13 @@ namespace LibraryHost
         {
             ContainerBuilder builder = new ContainerBuilder();
 
-            var autoMapperProfiles = new List<Profile>() {
-                (Profile)Activator.CreateInstance(typeof(BorrowMappingProfile)),
-                (Profile)Activator.CreateInstance(typeof(BookMappingProfile)),
-                (Profile)Activator.CreateInstance(typeof(CustomerMappingProfile))};
-
-            builder.Register(context => new MapperConfiguration(cfg =>
+            var autoMapperProfileTypes = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(a => a.GetTypes().Where(p => typeof(Profile)
+                .IsAssignableFrom(p) && p.IsPublic && !p.IsAbstract));
+            
+            builder.Register(ctx => new MapperConfiguration(cfg =>
             {
-                foreach (var profile in autoMapperProfiles)
+                foreach (var profile in autoMapperProfileTypes)
                 {
                     cfg.AddProfile(profile);
                 }

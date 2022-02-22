@@ -11,54 +11,65 @@ namespace Library.Infrastructure
     public class UnitOfWork : IUnitOfWork
     {
         private LibraryDb _context;
-        private Mapper _mapper = new Mapper(new MapperConfiguration(cfg => cfg.AddProfile(new MappingProfile())));
-
-        public ICustomersRepository CustomersRepository
-        {
-            get
-            {
-                if (CustomersRepository == null)
-                    return new CustomersRepository(_context, _mapper);
-
-                return CustomersRepository;
-            }
-        }
+        private IMapper _mapper;
+        private IBooksRepository _booksRepository;
+        private IBorrowsRepository _borrowsRepository;
+        private ICustomersRepository _customersRepository;
 
         public IBooksRepository BooksRepository
         {
             get
             {
-                if (BooksRepository == null)
-                    return new BooksRepository(_context, _mapper);
+                if (_booksRepository == null)
+                {
+                    _booksRepository = new BooksRepository(_context, _mapper);
+                }
 
-                return BooksRepository;
+                return _booksRepository;
             }
+
+            private set { }
         }
 
         public IBorrowsRepository BorrowsRepository
         {
             get
             {
-                if (BorrowsRepository == null)
-                    return new BorrowsRepository(_context, _mapper);
+                if (_borrowsRepository == null)
+                {
+                    _borrowsRepository = new BorrowsRepository(_context, _mapper);
+                }
 
-                return BorrowsRepository;
+                return _borrowsRepository;
             }
+
+            private set { }
         }
 
-        public UnitOfWork(LibraryDb context)
+        public ICustomersRepository CustomersRepository
+        {
+            get
+            {
+                if (_customersRepository == null)
+                {
+                    _customersRepository = new CustomersRepository(_context, _mapper);
+                }
+
+                return _customersRepository;
+            }
+
+            private set { }
+        }
+
+        public UnitOfWork(LibraryDb context, IMapper mapper)
         {
             this._context = context;
+            this._mapper = mapper;
         }
 
         public void Commit()
         {
             _context.SaveChanges();
-        }
-
-        public void Dispose()
-        {
-            _context.Dispose();
         }
     }
 }
