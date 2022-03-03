@@ -12,12 +12,10 @@ namespace Library.Infrastructure
         // 
         // If you wish to target a different database and/or database provider, modify the 'LibraryDb' 
         // connection string in the application configuration file.
-        public LibraryDb()
-            : base("name=LibraryDb")
+        public LibraryDb(string nameOrConnectionString): base(nameOrConnectionString)
         {
             Database.SetInitializer<LibraryDb>(new CreateDatabaseIfNotExists<LibraryDb>());
         }
-
         // Add a DbSet for each entity type that you want to include in your model. For more information 
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
 

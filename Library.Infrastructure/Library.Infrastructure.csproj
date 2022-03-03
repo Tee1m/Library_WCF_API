@@ -54,14 +54,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoMapperConfig\BookMappingProfile.cs" />
-    <Compile Include="AutoMapperConfig\CustomerMappingProfile.cs" />
+    <Compile Include="AutoMapperProfiles\BookMappingProfile.cs" />
+    <Compile Include="AutoMapperProfiles\CustomerMappingProfile.cs" />
     <Compile Include="Enties\Book.cs" />
     <Compile Include="Enties\Borrow.cs" />
     <Compile Include="Enties\Customer.cs" />
     <Compile Include="Enties\DbObject.cs" />
     <Compile Include="DataBase\LibraryDb.cs" />
-    <Compile Include="AutoMapperConfig\BorrowMappingProfile.cs" />
+    <Compile Include="AutoMapperProfiles\BorrowMappingProfile.cs" />
     <Compile Include="Repositories\BooksRepository.cs" />
     <Compile Include="Repositories\BorrowsRepository.cs" />
     <Compile Include="Repositories\CustomersRepository.cs" />

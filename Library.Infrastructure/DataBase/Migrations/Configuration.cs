@@ -11,7 +11,7 @@ namespace Library.Infrastructure
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(LibraryDb context)

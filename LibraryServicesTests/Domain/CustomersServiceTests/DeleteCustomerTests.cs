@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using Moq;
 
-namespace CustomersServicesTests
+namespace Domain
 {
     [TestClass]
     public class DeleteCustomerTests

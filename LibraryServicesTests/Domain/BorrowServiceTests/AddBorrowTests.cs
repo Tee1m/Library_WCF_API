@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using LibraryService;
 using Moq;
 
-namespace BorrowServiceTests
+namespace Domain
 {
     [TestClass]
     public class AddBorrowTests

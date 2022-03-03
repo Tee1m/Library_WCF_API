@@ -7,7 +7,7 @@ using LibraryService;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-namespace BooksServiceTests
+namespace Domain
 {
     [TestClass]
     public class AddBookTests

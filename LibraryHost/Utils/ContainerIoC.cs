@@ -19,7 +19,7 @@ namespace LibraryHost
 
             builder.Register(context => context.Resolve<MapperConfiguration>()
                 .CreateMapper()).As<IMapper>();
-            builder.Register(context => new LibraryDb())
+            builder.Register(context => new LibraryDb("LibraryDB"))
                 .As<LibraryDb>();
             builder.Register(context => new UnitOfWork(context.Resolve<LibraryDb>(), context.Resolve<IMapper>()))
                 .As<IUnitOfWork>().SingleInstance();

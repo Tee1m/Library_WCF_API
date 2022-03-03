@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using LibraryService;
 using Moq;
 
-namespace BooksServiceTests
+namespace Domain
 {
     [TestClass]
     public class DeleteBookTests
