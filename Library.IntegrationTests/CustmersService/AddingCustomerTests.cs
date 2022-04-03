@@ -91,17 +91,17 @@ namespace CustomerServicesTests
             customer.Address = "ul. Moja";
             customer.TelephoneNumber = "123456789";
 
-            //given
             service.AddCustomer(customer);
-            var customers = service.GetCustomers();
 
+            //given
+            var customers = service.GetCustomers();
+    
             //then
-            var result = customers.Where(a => a.Name == customer.Name && a.Surname == customer.Surname && a.TelephoneNumber == customer.TelephoneNumber && a.Address == customer.Address).Any();
-            Assert.IsTrue(result);
+            Assert.IsTrue(customers.Count == 1);
         }
 
         [TestMethod]
-        public void MessageOfAddedCustomer()
+        public void CorrectMessageOfAddedCustomer()
         {
             //when
             customer.Name = "Maciej";
@@ -141,8 +141,9 @@ namespace CustomerServicesTests
             customer.Address = "ul. Moja";
             customer.TelephoneNumber = "123456789";
 
-            //given
             service.AddCustomer(customer);
+            //given
+
             var message = service.AddCustomer(customer);
 
             //then

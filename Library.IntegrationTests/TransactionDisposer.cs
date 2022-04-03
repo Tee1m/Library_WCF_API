@@ -5,7 +5,7 @@ using System.Transactions;
 namespace Library.IntegrationTests
 {
     [TestClass]
-    public class TransactionIsolator
+    public class TransactionIsolator : TestClassAttribute
     {
         protected TransactionScope scope;
 

@@ -77,6 +77,8 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BooksService\AddingBookTests.cs" />
+    <Compile Include="BooksService\DeleteBookTests.cs" />
     <Compile Include="CustmersService\AddingCustomerTests.cs" />
     <Compile Include="CustmersService\DeleteCustomerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
