@@ -100,7 +100,6 @@ C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\System.Xml.XPat
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Autofac.dll
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Autofac.Integration.Wcf.dll
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\EntityFramework.dll
-C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\LibraryService.dll
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\System.Runtime.CompilerServices.Unsafe.dll
@@ -111,7 +110,6 @@ C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Autofac.pdb
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Autofac.xml
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Autofac.Integration.Wcf.xml
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\EntityFramework.xml
-C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Microsoft.Bcl.AsyncInterfaces.xml
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\System.Runtime.CompilerServices.Unsafe.xml
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\System.Threading.Tasks.Extensions.xml
@@ -126,3 +124,5 @@ C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Library.Infrast
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Library.Infrastructure.pdb
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\Library.Infrastructure.dll.config
 C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\AutoMapper.xml
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Macie\source\repos\LibraryService\LibraryHost\bin\Debug\EntityFramework.SqlServer.xml

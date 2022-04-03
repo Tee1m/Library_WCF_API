@@ -6,6 +6,7 @@ using AutoMapper.Configuration;
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Configuration;
 
 namespace LibraryHost
 {
@@ -15,11 +16,13 @@ namespace LibraryHost
         {
             ContainerBuilder builder = new ContainerBuilder();
 
+            var connectionString = ConfigurationManager.ConnectionStrings["LibraryDataBase"].ConnectionString;
+
             RegisterMaps(builder);
 
             builder.Register(context => context.Resolve<MapperConfiguration>()
                 .CreateMapper()).As<IMapper>();
-            builder.Register(context => new LibraryDb("LibraryDB"))
+            builder.Register(context => new LibraryDb(connectionString))
                 .As<LibraryDb>();
             builder.Register(context => new UnitOfWork(context.Resolve<LibraryDb>(), context.Resolve<IMapper>()))
                 .As<IUnitOfWork>().SingleInstance();
@@ -56,4 +59,5 @@ namespace LibraryHost
             }));
         }
     }
+
 }
