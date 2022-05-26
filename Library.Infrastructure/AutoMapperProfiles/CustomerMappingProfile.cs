@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
-using LibraryService;
+using Domain;
+using Application;
 
-namespace Library.Infrastructure
+namespace DAL
 {
     public class CustomerMappingProfile : Profile
     {
         public CustomerMappingProfile()
         {
-            CreateMap<Customer, CustomerDTO>().ReverseMap();
+            CreateMap<CustomerDAL, Customer>().ReverseMap();
         }
     }
 }

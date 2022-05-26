@@ -1,18 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using Domain;
+using System.Collections.Generic;
 using System.ServiceModel;
 
-namespace LibraryService
+namespace Application
 {
     [ServiceContract]
     public interface ICustomersService
     {
         [OperationContract]
-        string AddCustomer(CustomerDTO newCustomer);
+        string AddCustomer(Customer newCustomer);
 
         [OperationContract]
         string DeleteCustomer(int id);
 
         [OperationContract]
-        List<CustomerDTO> GetCustomers();
+        List<Customer> GetCustomers();
     }
 }

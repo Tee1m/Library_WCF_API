@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Domain;
+using System.Collections.Generic;
 
-namespace LibraryService
+namespace Application
 {
     public interface IBooksRepository
     {
-        void Add(BookDTO obj);
-        void Remove(BookDTO obj);
-        void Update(BookDTO obj);
-        List<BookDTO> Get();
+        void Add(Book obj);
+        void Remove(Book obj);
+        void Update(Book obj);
+        List<Book> Get();
     }
 }

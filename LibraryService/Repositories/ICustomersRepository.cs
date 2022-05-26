@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Domain;
+using System.Collections.Generic;
 
-namespace LibraryService
+namespace Application
 {
     public interface ICustomersRepository
     {
-        void Add(CustomerDTO obj);
-        void Remove(CustomerDTO obj);
-        void Update(CustomerDTO obj);
-        List<CustomerDTO> Get();
+        void Add(Customer obj);
+        void Remove(Customer obj);
+        void Update(Customer obj);
+        List<Customer> Get();
 
     }
 }

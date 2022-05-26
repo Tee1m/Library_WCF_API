@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using LibraryService;
+using Application;
 using AutoMapper;
 using System.Data.Entity;
+using Domain;
 
-namespace Library.Infrastructure
+namespace DAL
 {
     public class BorrowsRepository : IBorrowsRepository
     {
@@ -17,20 +18,20 @@ namespace Library.Infrastructure
             this._mapper = borrowsMapper;
         }
 
-        public void Add(CustomerDTO customerDTO, BookDTO bookDTO)
+        public void Add(Customer customerDTO, Book bookDTO)
         {
             var customer = _context.Customers.Single(a => a.Id == customerDTO.Id);
             var book = _context.Books.Single(a => a.Id == bookDTO.Id);
 
-            var borrow = new Borrow(customer, book);
+            var borrow = new BorrowDAL(customer, book);
 
             _context.Borrows.Add(borrow);
         }
 
-        public void Update(BorrowDTO obj)
+        public void Update(Borrow obj)
         {
             var borrow = _context.Borrows.Single(a => a.Id == obj.Id);
-            var translatedBorrow = _mapper.Map<Borrow>(obj);
+            var translatedBorrow = _mapper.Map<BorrowDAL>(obj);
 
             borrow.CustomerId = translatedBorrow.CustomerId;
             borrow.BookId = translatedBorrow.BookId;
@@ -40,19 +41,19 @@ namespace Library.Infrastructure
             _context.Entry(borrow).State = EntityState.Modified;
         }
 
-        public void Remove(BorrowDTO obj)
+        public void Remove(Borrow obj)
         {
             _context.Borrows.Remove(_context.Borrows.Single(a => a.Id == obj.Id));
         }
 
-        public List<BorrowDTO> Get()
+        public List<Borrow> Get()
         {
             var borrowsList = _context.Borrows.ToList();
-            var borrowsDTOList = new List<BorrowDTO>();
+            var borrowsDTOList = new List<Borrow>();
 
             foreach (var borrow in borrowsList)
             {
-                borrowsDTOList.Add(_mapper.Map<BorrowDTO>(borrow));
+                borrowsDTOList.Add(_mapper.Map<Borrow>(borrow));
             }
 
             return borrowsDTOList;

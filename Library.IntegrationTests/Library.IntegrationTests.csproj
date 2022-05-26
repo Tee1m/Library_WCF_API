@@ -77,9 +77,10 @@
     <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BooksService\AddingBookTests.cs" />
+    <Compile Include="AddBorrowTests.cs" />
+    <Compile Include="BooksService\AddBookTests.cs" />
     <Compile Include="BooksService\DeleteBookTests.cs" />
-    <Compile Include="CustmersService\AddingCustomerTests.cs" />
+    <Compile Include="CustmersService\AddCustomerTests.cs" />
     <Compile Include="CustmersService\DeleteCustomerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransactionDisposer.cs" />
@@ -89,20 +90,30 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Library.Infrastructure\Library.Infrastructure.csproj">
+    <ProjectReference Include="..\Domain\Domain.csproj">
+      <Project>{7674073a-7b97-4121-9c98-349513f35ed6}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Library.Infrastructure\DAL.csproj">
       <Project>{aea4855c-5379-4ba3-9837-64f232ae042f}</Project>
-      <Name>Library.Infrastructure</Name>
+      <Name>DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LibraryHost\Library.API.csproj">
+    <ProjectReference Include="..\LibraryHost\WCF.csproj">
       <Project>{95cb1c7a-c4be-4f0f-84b3-4c05d5d3ae19}</Project>
-      <Name>Library.API</Name>
+      <Name>WCF</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LibraryService\Library.Domain.csproj">
+    <ProjectReference Include="..\LibraryService\Application.csproj">
       <Project>{3cf02194-8b80-4ab3-9983-22752755c042}</Project>
-      <Name>Library.Domain</Name>
+      <Name>Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tests.Common\Tests.Common.csproj">
+      <Project>{6314c5ad-bbc9-4610-8b8a-14ccdb40ec88}</Project>
+      <Name>Tests.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="BorrowsService\" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

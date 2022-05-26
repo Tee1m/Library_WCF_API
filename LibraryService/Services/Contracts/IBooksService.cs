@@ -1,19 +1,20 @@
-﻿using System.Collections.Generic;
+﻿using Domain;
+using System.Collections.Generic;
 using System.ServiceModel;
 
-namespace LibraryService
+namespace Application
 {
     [ServiceContract]
     public interface IBooksService
     {
         [OperationContract]
-        string AddBook(BookDTO newBook);
+        string AddBook(Book newBook);
 
         [OperationContract]
         string DeleteBook(int id);
 
         [OperationContract]
-        List<BookDTO> GetBooks();
+        List<Book> GetBooks();
     }
 
 }

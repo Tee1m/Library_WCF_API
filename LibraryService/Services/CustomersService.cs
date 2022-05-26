@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Domain;
+using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 
-namespace LibraryService
+namespace Application
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class CustomersService : ICustomersService
@@ -14,7 +15,7 @@ namespace LibraryService
             this._unitOfWork = unitOfWork;
         }
 
-        public string AddCustomer(CustomerDTO newCustomer)
+        public string AddCustomer(Customer newCustomer)
         {
             if (CustomerIsNullable(newCustomer))
             {
@@ -37,12 +38,12 @@ namespace LibraryService
             return $"Dodano Klienta, P. {newCustomer.Name} {newCustomer.Surname}";
         }
 
-        private bool CustomerIsNullable(CustomerDTO customer)
+        private bool CustomerIsNullable(Customer customer)
         {
             return customer.Name == null || customer.Surname == null || customer.Address == null || customer.TelephoneNumber == "";
         }
 
-        private bool IsSimilarCustomer(CustomerDTO existing, CustomerDTO created)
+        private bool IsSimilarCustomer(Customer existing, Customer created)
         {
             return existing.Name.Contains(created.Name) && existing.Surname.Contains(created.Surname) &&
                    existing.Address.Contains(created.Address) && existing.TelephoneNumber == created.TelephoneNumber;
@@ -70,7 +71,7 @@ namespace LibraryService
             return $"Usunięto Klienta, P. {customer.Name} {customer.Surname}.";
         }
 
-        public List<CustomerDTO> GetCustomers()
+        public List<Customer> GetCustomers()
         {
             return _unitOfWork.CustomersRepository.Get().ToList();
         }

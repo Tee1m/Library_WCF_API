@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Library.IntegrationTests;
 using LibraryHost;
-using LibraryService;
+using Application;
 using Autofac;
+using Domain;
 
 namespace BooksServiceTests
 {
@@ -17,7 +18,7 @@ namespace BooksServiceTests
         private static IBooksService _booksService;
         private static IBorrowsService _borrowsService;
         private static ICustomersService _customersService;
-        private BookDTO book = new BookDTO();
+        private Book book = new Book();
 
         [ClassInitialize]
         public static void SetUpTests(TestContext testContext)
@@ -94,7 +95,7 @@ namespace BooksServiceTests
             book.Description = "test test test";
             book.Title = "TestTitle";
 
-            CustomerDTO customer = new CustomerDTO();
+            Customer customer = new Customer();
 
             customer.Name = "Maciej";
             customer.Surname = "Hanulak";

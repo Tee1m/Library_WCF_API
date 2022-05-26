@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
-using LibraryService;
+using Domain;
+using Application;
 
-namespace Library.Infrastructure
+namespace DAL
 {
     public class BookMappingProfile : Profile
     {
         public BookMappingProfile()
         {
-            CreateMap<Book, BookDTO>().ReverseMap();
+            CreateMap<BookDAL, Book>().ReverseMap();
         }
     }
 }

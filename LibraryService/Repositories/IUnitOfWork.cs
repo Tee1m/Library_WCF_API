@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using LibraryService;
+using Application;
 
-namespace LibraryService
+namespace Application
 {
     public interface IUnitOfWork
     {

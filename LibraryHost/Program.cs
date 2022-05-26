@@ -1,4 +1,4 @@
-﻿using LibraryService;
+﻿using Application;
 using System;
 using System.ServiceModel;
 using Autofac;

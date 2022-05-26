@@ -67,26 +67,34 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\BooksServiceTests\AddBookTests.cs" />
-    <Compile Include="Domain\BooksServiceTests\DeleteBookTests.cs" />
-    <Compile Include="Domain\BorrowServiceTests\AddBorrowTests.cs" />
-    <Compile Include="Domain\BorrowServiceTests\ReturnBorrowTests.cs" />
-    <Compile Include="Domain\CustomersServiceTests\AddingCustomerTests.cs" />
-    <Compile Include="Domain\CustomersServiceTests\DeleteCustomerTests.cs" />
-    <Compile Include="Infrastructure\AutoMapperTests\ProfilesTests.cs" />
+    <Compile Include="Aplication\BooksServiceTests\AddBookTests.cs" />
+    <Compile Include="Aplication\BooksServiceTests\DeleteBookTests.cs" />
+    <Compile Include="Aplication\BorrowServiceTests\AddBorrowTests.cs" />
+    <Compile Include="Aplication\BorrowServiceTests\ReturnBorrowTests.cs" />
+    <Compile Include="Aplication\CustomersServiceTests\AddCustomerTests.cs" />
+    <Compile Include="Aplication\CustomersServiceTests\DeleteCustomerTests.cs" />
+    <Compile Include="DAL\AutoMapperTests\ProfilesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Library.Infrastructure\Library.Infrastructure.csproj">
-      <Project>{aea4855c-5379-4ba3-9837-64f232ae042f}</Project>
-      <Name>Library.Infrastructure</Name>
+    <ProjectReference Include="..\Domain\Domain.csproj">
+      <Project>{7674073a-7b97-4121-9c98-349513f35ed6}</Project>
+      <Name>Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LibraryService\Library.Domain.csproj">
+    <ProjectReference Include="..\Library.Infrastructure\DAL.csproj">
+      <Project>{aea4855c-5379-4ba3-9837-64f232ae042f}</Project>
+      <Name>DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LibraryService\Application.csproj">
       <Project>{3cf02194-8b80-4ab3-9983-22752755c042}</Project>
-      <Name>Library.Domain</Name>
+      <Name>Application</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Tests.Common\Tests.Common.csproj">
+      <Project>{6314c5ad-bbc9-4610-8b8a-14ccdb40ec88}</Project>
+      <Name>Tests.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using LibraryService;
+using Application;
 using AutoMapper;
 using System.Data.Entity;
+using Domain;
 
-namespace Library.Infrastructure
+namespace DAL
 {
     public class CustomersRepository : ICustomersRepository
     {
@@ -17,17 +18,17 @@ namespace Library.Infrastructure
             this._mapper = customerMapper;
         }
 
-        public void Add(CustomerDTO obj)
+        public void Add(Customer obj)
         {
-            var customer = _mapper.Map<Customer>(obj);
+            var customer = _mapper.Map<CustomerDAL>(obj);
 
             _context.Customers.Add(customer);
         }
 
-        public void Update(CustomerDTO obj)
+        public void Update(Customer obj)
         {
             var customer = _context.Customers.Single(a => a.Id == obj.Id);
-            var translatedCustomer = _mapper.Map<Customer>(obj);
+            var translatedCustomer = _mapper.Map<CustomerDAL>(obj);
 
             customer.Id = translatedCustomer.Id;
             customer.Name = translatedCustomer.Name;
@@ -38,19 +39,19 @@ namespace Library.Infrastructure
             _context.Entry(customer).State = EntityState.Modified;
         }
 
-        public void Remove(CustomerDTO obj)
+        public void Remove(Customer obj)
         {
             _context.Customers.Remove(_context.Customers.Single(a => a.Id == obj.Id));
         }
 
-        public List<CustomerDTO> Get()
+        public List<Customer> Get()
         {
             var customersList = _context.Customers.ToList();
-            var customersDTOList = new List<CustomerDTO>();
+            var customersDTOList = new List<Customer>();
 
             foreach (var customer in customersList)
             {
-                customersDTOList.Add(_mapper.Map<CustomerDTO>(customer));
+                customersDTOList.Add(_mapper.Map<Customer>(customer));
             }
 
             return customersDTOList;

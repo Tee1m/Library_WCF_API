@@ -1,4 +1,4 @@
-﻿using LibraryService;
+﻿using Application;
 using Autofac;
 using Library.Infrastructure;
 using AutoMapper;
@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Configuration;
+using DAL;
 
 namespace LibraryHost
 {

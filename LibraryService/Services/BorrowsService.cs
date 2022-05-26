@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Text;
 
-namespace LibraryService
+namespace Application
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class BorrowsService : IBorrowsService
@@ -77,7 +78,7 @@ namespace LibraryService
             return $"Zwrócono, Tytuł: {book.Title} Klienta: {customer.Name} {customer.Surname}";
         }
 
-        public List<BorrowDTO> GetBorrows()
+        public List<Borrow> GetBorrows()
         {   
             return _unitOfWork.BorrowsRepository.Get();
         }

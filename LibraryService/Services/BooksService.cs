@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using Domain;
+using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 
-namespace LibraryService
+namespace Application
 {
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class BooksService : IBooksService
@@ -14,7 +15,7 @@ namespace LibraryService
             this._unitOfWork = unitOfWork;
         }
 
-        public string AddBook(BookDTO newBook)
+        public string AddBook(Book newBook)
         {
             if (BookIsNullable(newBook))
             {
@@ -41,20 +42,20 @@ namespace LibraryService
             return "Dodano Książkę do bazy danych.";
         }
 
-        private bool IsSimilarBook(BookDTO existing, BookDTO created)
+        private bool IsSimilarBook(Book existing, Book created)
         {
             return existing.Title.Contains(created.Title) && existing.AuthorName.Contains(created.AuthorName)
                 && existing.AuthorSurname.Contains(created.AuthorSurname);
         }
 
-        private bool BookIsNullable(BookDTO book)
+        private bool BookIsNullable(Book book)
         {
             return book.AuthorName == null || book.AuthorSurname == null || book.Description == "" || book.Title == null;
         }
 
         public string DeleteBook(int id)
         {
-            var book = new BookDTO();
+            var book = new Book();
 
             var books = _unitOfWork.BooksRepository.Get().ToList();
             var borrows = _unitOfWork.BorrowsRepository.Get().ToList();
@@ -79,7 +80,7 @@ namespace LibraryService
             return $"Usunięto książkę, Tytuł: {book.Title} Autor: {book.AuthorName} {book.AuthorSurname}.";
         }
 
-        public List<BookDTO> GetBooks()
+        public List<Book> GetBooks()
         {
             return _unitOfWork.BooksRepository.Get().ToList();
         }

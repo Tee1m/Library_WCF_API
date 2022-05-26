@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using Library.IntegrationTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using LibraryHost;
-using LibraryService;
+using Application;
 using Autofac;
+using Domain;
 
 namespace CustomerServicesTests
 {
@@ -17,7 +18,7 @@ namespace CustomerServicesTests
         private static ICustomersService customersService;
         private static IBorrowsService borrowsService;
         private static IBooksService booksService;
-        private CustomerDTO customer = new CustomerDTO();
+        private Customer customer = new Customer();
 
         [ClassInitialize]
         public static void SetUpTests(TestContext testContext)
@@ -95,7 +96,7 @@ namespace CustomerServicesTests
             customer.Address = "ul. Moja";
             customer.TelephoneNumber = "123456789";
 
-            BookDTO book = new BookDTO();
+            Book book = new Book();
 
             book.Amount = 3;
             book.AuthorName = "Sztefan";

@@ -1,13 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Domain;
+using System.Collections.Generic;
 
-namespace LibraryService
+namespace Application
 {
     public interface IBorrowsRepository
     {
-        void Add(CustomerDTO customer, BookDTO book);
-        void Remove(BorrowDTO obj);
-        void Update(BorrowDTO obj);
-        List<BorrowDTO> Get();
+        void Add(Customer customer, Book book);
+        void Remove(Borrow obj);
+        void Update(Borrow obj);
+        List<Borrow> Get();
 
     }
 }
