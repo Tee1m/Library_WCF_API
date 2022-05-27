@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Configuration;
 using DAL;
+using Domain;
 
 namespace LibraryHost
 {
@@ -19,12 +20,12 @@ namespace LibraryHost
 
             var connectionString = ConfigurationManager.ConnectionStrings["LibraryDataBase"].ConnectionString;
 
-            RegisterMaps(builder);
-
-            builder.Register(context => context.Resolve<MapperConfiguration>()
-                .CreateMapper()).As<IMapper>();
             builder.Register(context => new LibraryDb(connectionString))
                 .As<LibraryDb>();
+
+            RegisterAutoMapper(builder);
+            RegisterDomainServices(builder);
+
             builder.Register(context => new UnitOfWork(context.Resolve<LibraryDb>(), context.Resolve<IMapper>()))
                 .As<IUnitOfWork>().SingleInstance();
 
@@ -35,17 +36,17 @@ namespace LibraryHost
             builder.Register(context => new BorrowsRepository(context.Resolve<LibraryDb>(), context.Resolve<IMapper>()))
                 .As<IBorrowsRepository>();
 
-            builder.Register(context => new BooksService(context.Resolve<IUnitOfWork>()))
-                .As<IBooksService>();
             builder.Register(context => new BorrowsService(context.Resolve<IUnitOfWork>()))
                 .As<IBorrowsService>();
-            builder.Register(context => new CustomersService(context.Resolve<IUnitOfWork>()))
+            builder.Register(context => new BooksService(context.Resolve<IUnitOfWork>(), context.Resolve<IBookUniquenessChecker>()))
+                .As<IBooksService>();
+            builder.Register(context => new CustomersService(context.Resolve<IUnitOfWork>(), context.Resolve<ICustomerUniquenessChecker>()))
                 .As<ICustomersService>();
 
             return builder;
         }
 
-        private static void RegisterMaps(ContainerBuilder builder)
+        private static void RegisterAutoMapper(ContainerBuilder builder)
         {
             var autoMapperProfileTypes = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes().Where(p => typeof(Profile)
@@ -58,6 +59,18 @@ namespace LibraryHost
                     cfg.AddProfile(profile);
                 }
             }));
+
+            builder.Register(context => context.Resolve<MapperConfiguration>()
+                .CreateMapper()).As<IMapper>();
+        }
+
+        private static void RegisterDomainServices(ContainerBuilder builder)
+        {
+            builder.Register(context => new BookUniquenessChecker(context.Resolve<IBooksRepository>()))
+            .As<IBookUniquenessChecker>();
+
+            builder.Register(context => new CustomerUniquenessChecker(context.Resolve<ICustomersRepository>()))
+            .As<ICustomerUniquenessChecker>();
         }
     }
 

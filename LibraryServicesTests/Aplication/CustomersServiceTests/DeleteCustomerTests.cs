@@ -30,7 +30,7 @@ namespace ApplicationTests
             unitOfWork.Setup(a => a.CustomersRepository.Get()).Returns(new List<Customer>() { testCustomer });
             unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<Borrow>() { testBorrow });
 
-            var customersService = new CustomersService(unitOfWork.Object);
+            var customersService = new CustomersService(unitOfWork.Object, new CustomerUniquenessChecker(unitOfWork.Object.CustomersRepository));
 
             //given
             var throwed = customersService.DeleteCustomer(2);
@@ -48,7 +48,7 @@ namespace ApplicationTests
             unitOfWork.Setup(a => a.CustomersRepository.Get()).Returns(new List<Customer>() { testCustomer });
             unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<Borrow>() { testBorrow });
 
-            var customersService = new CustomersService(unitOfWork.Object);
+            var customersService = new CustomersService(unitOfWork.Object, new CustomerUniquenessChecker(unitOfWork.Object.CustomersRepository));
 
             //given
             var throwed = customersService.DeleteCustomer(1);
@@ -70,7 +70,7 @@ namespace ApplicationTests
             unitOfWork.Setup(a => a.CustomersRepository.Get()).Returns(new List<Customer>() { testCustomer });
             unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<Borrow>() { anotherBorrow });
 
-            var customersService = new CustomersService(unitOfWork.Object);
+            var customersService = new CustomersService(unitOfWork.Object, new CustomerUniquenessChecker(unitOfWork.Object.CustomersRepository));
 
             //given
             var throwed = customersService.DeleteCustomer(1);

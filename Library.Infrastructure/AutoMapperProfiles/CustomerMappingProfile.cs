@@ -8,7 +8,9 @@ namespace DAL
     {
         public CustomerMappingProfile()
         {
-            CreateMap<CustomerDAL, Customer>().ReverseMap();
+            CreateMap<CustomerDAL, Customer>()
+                .ForMember(dest => dest._borrows, src => src.Ignore())
+                .ReverseMap();
         }
     }
 }

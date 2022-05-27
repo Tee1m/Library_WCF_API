@@ -9,44 +9,31 @@ namespace Application
     public class CustomersService : ICustomersService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly ICustomerUniquenessChecker _uniquenessChecker;
+        private IBusinessRule _rule;
 
-        public CustomersService(IUnitOfWork unitOfWork)
+        public CustomersService(IUnitOfWork unitOfWork, ICustomerUniquenessChecker uniquenessChecker)
         {
             this._unitOfWork = unitOfWork;
+            this._uniquenessChecker = uniquenessChecker;
         }
 
         public string AddCustomer(Customer newCustomer)
         {
-            if (CustomerIsNullable(newCustomer))
-            {
-                return "Nie dodano Klienta, ponieważ conajmniej jedno z atrybutów nie zawiera wartości.";
-            }
+            _rule = newCustomer.HasAllValues();
 
-            var customers = _unitOfWork.CustomersRepository.Get();
+            if (_rule.NotValid())
+                return _rule.Message;
 
-            foreach (var existingCustomer in customers)
-            {
-                if (IsSimilarCustomer(existingCustomer, newCustomer))
-                {
-                    return "Nie dodano Klienta, ponieważ istnieje on w bazie biblioteki.";
-                }
-            }
+            _rule = newCustomer.IsUnique(_uniquenessChecker);
+
+            if(_rule.NotValid())
+                return _rule.Message;
 
             _unitOfWork.CustomersRepository.Add(newCustomer);
             _unitOfWork.Commit();
 
             return $"Dodano Klienta, P. {newCustomer.Name} {newCustomer.Surname}";
-        }
-
-        private bool CustomerIsNullable(Customer customer)
-        {
-            return customer.Name == null || customer.Surname == null || customer.Address == null || customer.TelephoneNumber == "";
-        }
-
-        private bool IsSimilarCustomer(Customer existing, Customer created)
-        {
-            return existing.Name.Contains(created.Name) && existing.Surname.Contains(created.Surname) &&
-                   existing.Address.Contains(created.Address) && existing.TelephoneNumber == created.TelephoneNumber;
         }
 
         public string DeleteCustomer(int id)

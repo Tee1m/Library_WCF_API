@@ -27,5 +27,14 @@ namespace Domain
 
         [DataMember]
         public string Description { get; set; }
+
+        public Book() { }
+
+        public IBusinessRule HasAllValues() => new BookHasAllValues(this);
+
+        public IBusinessRule IsUnique(IBookUniquenessChecker checker)
+        {
+            return new BookUniqueRule(checker, Title, AuthorName, AuthorSurname);
+        }
     }
 }

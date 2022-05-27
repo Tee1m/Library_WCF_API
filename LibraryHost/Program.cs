@@ -14,7 +14,7 @@ namespace LibraryHost
             var borrowsHost = new ServiceHost(typeof(BorrowsService));
             var customersHost = new ServiceHost(typeof(CustomersService));
             var booksHost = new ServiceHost(typeof(BooksService));
-            
+
             var container = ContainerIoC.RegisterContainerBuilder().Build();
                          
             CheckServiceIsRegistrated(container, new TypedService(typeof(IBooksService)));

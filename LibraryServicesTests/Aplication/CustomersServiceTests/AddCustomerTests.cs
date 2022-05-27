@@ -36,7 +36,7 @@ namespace ApplicationTests
             unitOfWork.Setup(a => a.CustomersRepository.Get()).Returns(new List<Customer>() { testCustomer });
             unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<Borrow>());
 
-            var customersService = new CustomersService(unitOfWork.Object);
+            var customersService = new CustomersService(unitOfWork.Object, new CustomerUniquenessChecker(unitOfWork.Object.CustomersRepository));
 
             //given
             var throwed = customersService.AddCustomer(nullCustomer);
@@ -54,7 +54,7 @@ namespace ApplicationTests
             unitOfWork.Setup(a => a.CustomersRepository.Get()).Returns(new List<Customer>() { testCustomer });
             unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<Borrow>());
 
-            var customersService = new CustomersService(unitOfWork.Object);
+            var customersService = new CustomersService(unitOfWork.Object, new CustomerUniquenessChecker(unitOfWork.Object.CustomersRepository));
 
             //given
             var throwed = customersService.AddCustomer(testCustomer);
@@ -72,7 +72,7 @@ namespace ApplicationTests
             unitOfWork.Setup(a => a.CustomersRepository.Get()).Returns(new List<Customer>() { testCustomer });
             unitOfWork.Setup(a => a.BorrowsRepository.Get()).Returns(new List<Borrow>());
 
-            var customersService = new CustomersService(unitOfWork.Object);
+            var customersService = new CustomersService(unitOfWork.Object, new CustomerUniquenessChecker(unitOfWork.Object.CustomersRepository));
 
             //given
             var throwed = customersService.AddCustomer(anotherCustomer);

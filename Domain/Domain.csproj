@@ -42,9 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enties\Book.cs" />
+    <Compile Include="Book\Rules\BookHasAllValues.cs" />
+    <Compile Include="Book\Rules\BookUniqueRule.cs" />
+    <Compile Include="Book\Rules\IBookUniquenessChecker.cs" />
+    <Compile Include="Customer\Rules\CustomerHasAllValues.cs" />
+    <Compile Include="IBusinessRule.cs" />
+    <Compile Include="Customer\Rules\CustomerTelephoneNumberUniqueRule.cs" />
+    <Compile Include="Customer\Rules\ICustomerUniquenessChecker.cs" />
+    <Compile Include="Book\Book.cs" />
     <Compile Include="Enties\Borrow.cs" />
-    <Compile Include="Enties\Customer.cs" />
+    <Compile Include="Customer\Customer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

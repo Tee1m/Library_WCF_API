@@ -38,7 +38,7 @@ namespace ApplicationTests
             unitOfWork.Setup(x => x.BooksRepository.Get()).Returns(new List<Book>() { book });
             unitOfWork.Setup(x => x.BorrowsRepository.Get()).Returns(new List<Borrow>());
 
-            var booksService = new BooksService(unitOfWork.Object);
+            var booksService = new BooksService(unitOfWork.Object, new BookUniquenessChecker(unitOfWork.Object.BooksRepository));
 
             book.Title = null;
             //given
@@ -57,7 +57,7 @@ namespace ApplicationTests
             unitOfWork.Setup(x => x.BooksRepository.Get()).Returns(new List<Book>() { book });
             unitOfWork.Setup(x => x.BorrowsRepository.Get()).Returns(new List<Borrow>());
 
-            var booksService = new BooksService(unitOfWork.Object);
+            var booksService = new BooksService(unitOfWork.Object, new BookUniquenessChecker(unitOfWork.Object.BooksRepository));
 
             //given
             var throwed = booksService.AddBook(book);
@@ -75,7 +75,7 @@ namespace ApplicationTests
             unitOfWork.Setup(x => x.BooksRepository.Get()).Returns(new List<Book>() { book });
             unitOfWork.Setup(x => x.BorrowsRepository.Get()).Returns(new List<Borrow>());
 
-            var booksService = new BooksService(unitOfWork.Object);
+            var booksService = new BooksService(unitOfWork.Object, new BookUniquenessChecker(unitOfWork.Object.BooksRepository));
 
             //given
             var throwed = booksService.AddBook(anotherBook);

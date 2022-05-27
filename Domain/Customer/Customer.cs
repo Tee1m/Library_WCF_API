@@ -24,5 +24,23 @@ namespace Domain
 
         [DataMember]
         public string TelephoneNumber { get; set; }
+
+        public List<Borrow> _borrows { get; private set; }
+
+        public Customer() 
+        {
+            _borrows = new List<Borrow>();
+        }
+
+        public IBusinessRule HasAllValues() => new CustomerHasAllValues(this);
+
+        public IBusinessRule IsUnique(ICustomerUniquenessChecker checker)
+        {
+            return new CustomerTelephoneNumberUniqueRule(checker, TelephoneNumber);
+        }
+
+        
     }
 }
+
+

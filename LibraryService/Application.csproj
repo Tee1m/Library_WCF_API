@@ -57,6 +57,8 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainServices\BookUniquenessChecker.cs" />
+    <Compile Include="DomainServices\CustomerUniquenessChecker.cs" />
     <Compile Include="Repositories\IBooksRepository.cs" />
     <Compile Include="Repositories\IBorrowsRepository.cs" />
     <Compile Include="Repositories\ICustomersRepository.cs" />
@@ -78,6 +80,7 @@
       <Name>Domain</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <VSToolsPath Condition="'$(VSToolsPath)' == '' and '$(VisualStudioVersion)' != '' and '$(VisualStudioVersion)' != '11.0'">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

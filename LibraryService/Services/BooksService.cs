@@ -9,48 +9,31 @@ namespace Application
     public class BooksService : IBooksService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IBookUniquenessChecker _bookUniquenessChecker;
+        private IBusinessRule _rule;
 
-        public BooksService(IUnitOfWork unitOfWork)
+        public BooksService(IUnitOfWork unitOfWork, IBookUniquenessChecker bookUniquenessChecker)
         {
             this._unitOfWork = unitOfWork;
+            this._bookUniquenessChecker = bookUniquenessChecker;
         }
 
         public string AddBook(Book newBook)
         {
-            if (BookIsNullable(newBook))
-            {
-                return "Nie dodano książki, ponieważ conajmniej jedno z atrybutów nie zawiera wartości.";
-            }
+            _rule = newBook.HasAllValues();
 
-            var books = _unitOfWork.BooksRepository.Get();
+            if (_rule.NotValid())
+                return _rule.Message;
 
-            foreach (var book in books)
-            {
-                if (IsSimilarBook(book, newBook))
-                {
-                     book.Amount += newBook.Amount;
+            _rule = newBook.IsUnique(_bookUniquenessChecker);
 
-                     _unitOfWork.BooksRepository.Update(book);
-
-                     return "Książka znajduje się w bazie biblioteki. Uzupełniono jej dostępność.";
-                }
-            }
+            if (_rule.NotValid())
+                return _rule.Message;
 
             _unitOfWork.BooksRepository.Add(newBook);
             _unitOfWork.Commit();
 
             return "Dodano Książkę do bazy danych.";
-        }
-
-        private bool IsSimilarBook(Book existing, Book created)
-        {
-            return existing.Title.Contains(created.Title) && existing.AuthorName.Contains(created.AuthorName)
-                && existing.AuthorSurname.Contains(created.AuthorSurname);
-        }
-
-        private bool BookIsNullable(Book book)
-        {
-            return book.AuthorName == null || book.AuthorSurname == null || book.Description == "" || book.Title == null;
         }
 
         public string DeleteBook(int id)
