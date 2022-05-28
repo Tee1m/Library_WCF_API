@@ -4,10 +4,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LibraryService
+namespace Application
 {
     [DataContract]
-    public class CustomerDTO
+    public class CustomerDTO : IDTO
     {
         [DataMember]
         public int Id { get; set; }

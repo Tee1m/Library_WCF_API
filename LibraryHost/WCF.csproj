@@ -80,9 +80,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Rails\CommandBus.cs" />
-    <Compile Include="Utils\ContainerIoC.cs" />
+    <Compile Include="Rails\CommandBusFacade.cs" />
+    <Compile Include="Rails\QueryBus.cs" />
+    <Compile Include="Rails\QueryBusFacade.cs" />
+    <Compile Include="IoC\DataAccessModule.cs" />
+    <Compile Include="IoC\ContainerIoC.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceContracts\ICommandBusFacade.cs" />
+    <Compile Include="ServiceContracts\IQueryBusFacade.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -93,9 +99,9 @@
       <Project>{7674073a-7b97-4121-9c98-349513f35ed6}</Project>
       <Name>Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Library.Infrastructure\DAL.csproj">
+    <ProjectReference Include="..\Library.Infrastructure\Infrastructure.csproj">
       <Project>{aea4855c-5379-4ba3-9837-64f232ae042f}</Project>
-      <Name>DAL</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\LibraryService\Application.csproj">
       <Project>{3cf02194-8b80-4ab3-9983-22752755c042}</Project>

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Runtime.Serialization;
 
-namespace LibraryService
+namespace Application
 {
     [DataContract]
-    public class BorrowDTO
+    public class BorrowDTO : IDTO
     {
         [DataMember]
         public int Id { get; set; }

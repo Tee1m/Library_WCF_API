@@ -57,17 +57,34 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Queries\Borrow\GetBorrows.cs" />
+    <Compile Include="Queries\DTOs\BookDTO.cs" />
+    <Compile Include="Queries\DTOs\BorrowDTO.cs" />
     <Compile Include="Commands\Book\CreateBook.cs" />
     <Compile Include="Commands\Book\DeleteBook.cs" />
+    <Compile Include="Commands\Borrow\CreateBorrow.cs" />
+    <Compile Include="Commands\Borrow\ReturnBorrow.cs" />
     <Compile Include="Commands\Handlers\Book\CreateBookCommandHandler.cs" />
+    <Compile Include="Commands\Handlers\Borrow\CreateBorrowCommandHandler.cs" />
     <Compile Include="Commands\Handlers\Book\DeleteBookCommandHandler.cs" />
+    <Compile Include="Commands\Handlers\Borrow\ReturnBorrowCommandHandler.cs" />
+    <Compile Include="Queries\DTOs\CustomerDTO.cs" />
     <Compile Include="DomainServices\BookUniquenessChecker.cs" />
     <Compile Include="DomainServices\CustomerUniquenessChecker.cs" />
+    <Compile Include="Queries\Customer\GetCustomers.cs" />
+    <Compile Include="Queries\Book\GetBooks.cs" />
+    <Compile Include="Queries\Handlers\Book\GetBooksQueryHandler.cs" />
+    <Compile Include="Queries\Handlers\Borrow\GetBorrowsQueryHandler.cs" />
+    <Compile Include="Queries\Handlers\Customer\GetCustomersQueryHandler.cs" />
+    <Compile Include="Queries\DTOs\IDTO.cs" />
+    <Compile Include="Queries\IQuery.cs" />
+    <Compile Include="Queries\Handlers\IQueryHandlerGeneric.cs" />
+    <Compile Include="Queries\Handlers\IQueryHandler.cs" />
+    <Compile Include="Queries\Abstraction\ISqlConnectionFactory.cs" />
     <Compile Include="Repositories\IBooksRepository.cs" />
     <Compile Include="Repositories\IBorrowsRepository.cs" />
     <Compile Include="Repositories\ICustomersRepository.cs" />
     <Compile Include="Repositories\IUnitOfWork.cs" />
-    <Compile Include="Services\BooksService.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\Handlers\ICommandHandlerGeneric.cs" />
     <Compile Include="Commands\Handlers\ICommandHandler.cs" />
@@ -75,11 +92,9 @@
     <Compile Include="Commands\Customer\DeleteCustomer.cs" />
     <Compile Include="Commands\Handlers\Customer\CreateCustomerCommandHandler.cs" />
     <Compile Include="Commands\Handlers\Customer\DeleteCustomerCommandHandler.cs" />
-    <Compile Include="Contracts\IQueryBus.cs" />
-    <Compile Include="Contracts\ICommandBus.cs" />
-    <Compile Include="Contracts\IBorrowsService.cs" />
+    <Compile Include="Rails\IQueryBus.cs" />
+    <Compile Include="Rails\ICommandBus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\BorrowsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

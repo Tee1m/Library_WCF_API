@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 namespace Application
 {
@@ -38,4 +39,5 @@ namespace Application
 
             return $"Zwrócono, Tytuł: {book.Title} Klienta: {customer.Name} {customer.Surname}";
         }
+    }
 }

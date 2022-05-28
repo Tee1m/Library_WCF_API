@@ -10,35 +10,36 @@ using Application;
 using Autofac;
 using Domain;
 
-namespace CustomerServicesTests
+namespace CustomerCommandTests
 {
     [TestClass]
     public class DeleteCustomerTests : TransactionIsolator
     {
-        private ICommandBus commandBus = new CommandBus();
-        private DeleteCustomer deleteComand = new DeleteCustomer();
+        private ICommandBus _commandBus = new CommandBus();
+        private IQueryBus _queryBus = new QueryBus();
+        private DeleteCustomer _deleteComand = new DeleteCustomer();
 
-        //[TestMethod]
-        //public void DeleteExistingCustomer()
-        //{
-        //    //when
-        //    customer.Name = "Maciej";
-        //    customer.Surname = "Hanulak";
-        //    customer.Address = "ul. Moja";
-        //    customer.TelephoneNumber = "123456789";
+        [TestMethod]
+        public void DeleteExistingCustomer()
+        {
+            //when
+            CreateCustomer createCommand = new CreateCustomer();
+            createCommand.Name = "Maciej";
+            createCommand.Surname = "Hanulak";
+            createCommand.Address = "ul. Moja";
+            createCommand.TelephoneNumber = "123456789";
 
-        //    customersService.AddCustomer(customer);
-        //    var query = customersService.GetCustomers();
-        //    var CustomerId = query.Where(a => a.Name == customer.Name && a.Surname == customer.Surname && a.Address == customer.Address && a.TelephoneNumber == customer.TelephoneNumber).Select(a => a.Id).Single();
+            _deleteComand.TelephoneNumber = createCommand.TelephoneNumber;
 
-        //    //given
-        //    customersService.DeleteCustomer(CustomerId);
+            //given
+            _commandBus.Handle(createCommand);
+            _commandBus.Handle(_deleteComand);
 
-        //    query = customersService.GetCustomers();
+            var query = _queryBus.Handle(new GetCustomers());
 
-        //    //then
-        //    Assert.IsTrue(query.Count() == 0);
-        //}
+            //then
+            Assert.IsTrue(query.Count() == 0);
+        }
 
         [TestMethod]
         public void MessageOfDeletingExistingCustomer()
@@ -46,17 +47,17 @@ namespace CustomerServicesTests
             //when
             var createCommand = new CreateCustomer();
 
-            deleteComand.TelephoneNumber = "123456789";
+            _deleteComand.TelephoneNumber = "123456789";
 
             createCommand.Name = "Maciej";
             createCommand.Surname = "Hanulak";
             createCommand.Address = "ul. Moja";
-            createCommand.TelephoneNumber = deleteComand.TelephoneNumber;
+            createCommand.TelephoneNumber = _deleteComand.TelephoneNumber;
 
-            commandBus.Handle<CreateCustomer>(createCommand);
+            _commandBus.Handle(createCommand);
 
             //given
-            var throwed = commandBus.Handle<DeleteCustomer>(deleteComand);
+            var throwed = _commandBus.Handle(_deleteComand);
 
             //then
             StringAssert.Contains(throwed, "Usunięto Klienta");
@@ -66,47 +67,63 @@ namespace CustomerServicesTests
         public void NotExistingCustomerIsNotDeleted()
         {
             //when
-            deleteComand.TelephoneNumber = "123456789";
+            _deleteComand.TelephoneNumber = "123456789";
 
             //given
-            var throwed = commandBus.Handle<DeleteCustomer>(deleteComand);
+            var throwed = _commandBus.Handle(_deleteComand);
 
             //then
             StringAssert.Contains(throwed, "Nie znaleziono wskazanego Klienta w bazie biblioteki.");
         }
 
-        //[TestMethod]
-        //public void CustomerWithBorrowsIsNotDeleted()
-        //{
-        //    //when 
-        //    customer.Name = "Maciej";
-        //    customer.Surname = "Hanulak";
-        //    customer.Address = "ul. Moja";
-        //    customer.TelephoneNumber = "123456789";
+        [TestMethod]
+        public void CustomerWithBorrowsIsNotDeleted()
+        {
+            //when 
+            var createBookCommand = new CreateBook();
 
-        //    Book book = new Book();
+            createBookCommand.AuthorName = "Test";
+            createBookCommand.AuthorSurname = "testName";
+            createBookCommand.Amount = 4;
+            createBookCommand.Title = "TestTitle";
+            createBookCommand.Description = "TestDesc";
 
-        //    book.Amount = 3;
-        //    book.AuthorName = "Sztefan";
-        //    book.AuthorSurname = "Szymoniak";
-        //    book.Description = "hehe";
-        //    book.Title = "Heheszki";
+            _commandBus.Handle(createBookCommand);
 
-        //    booksService.AddBook(book);
-        //    customersService.AddCustomer(customer);
+            var createCustomerCommand = new CreateCustomer();
 
+            createCustomerCommand.Name = "Maciej";
+            createCustomerCommand.Surname = "Hanulak";
+            createCustomerCommand.Address = "ul. Moja";
+            createCustomerCommand.TelephoneNumber = "123456789";
 
-        //    var customerQuery = customersService.GetCustomers();
-        //    var bookQuery = booksService.GetBooks();
-        //    var BookId = bookQuery.Where(a => a.Title == book.Title && a.AuthorName == book.AuthorName && a.AuthorSurname == book.AuthorSurname).Select(a => a.Id).First();
-        //    var CustomerId = customerQuery.Where(a => a.Name == customer.Name && a.Surname == customer.Surname && a.Address == customer.Address && a.TelephoneNumber == customer.TelephoneNumber).Select(a => a.Id).First();
-        //    borrowsService.AddBorrow(CustomerId, BookId);
+            _commandBus.Handle(createCustomerCommand);
 
-        //    //given
-        //    var message = customersService.DeleteCustomer(CustomerId);
+            var customers = _queryBus.Handle(new GetCustomers()) as List<CustomerDTO>;
+            var books = _queryBus.Handle(new GetBooks()) as List<BookDTO>;
 
-        //    //then
-        //    StringAssert.Contains(message, "Nie usunieto Klienta, ponieważ posiada on jeszcze wypożyczone książki.");
-        //}
+            var customerId = customers.Where(x => x.TelephoneNumber == createCustomerCommand.TelephoneNumber)
+                .Select(x => x.Id)
+                .Single();
+            var bookId = books.Where(x => x.Title == createBookCommand.Title && x.AuthorName == createBookCommand.AuthorName && x.AuthorSurname == createBookCommand.AuthorSurname)
+                .Select(x => x.Id)
+                .Single();
+
+            //given
+            CreateBorrow createBorrowCommand = new CreateBorrow();
+
+            createBorrowCommand.BookId = bookId;
+            createBorrowCommand.CustomerId = customerId;
+
+            _commandBus.Handle(createBorrowCommand);
+
+            DeleteCustomer deleteCustomer = new DeleteCustomer();
+            deleteCustomer.TelephoneNumber = createCustomerCommand.TelephoneNumber;
+
+            var throwed = _commandBus.Handle(deleteCustomer);
+
+            //then
+            StringAssert.Contains(throwed, "Nie usunieto Klienta, ponieważ posiada on jeszcze wypożyczone książki.");
+        }
     }
 }

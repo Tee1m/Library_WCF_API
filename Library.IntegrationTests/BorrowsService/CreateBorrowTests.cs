@@ -1,107 +1,165 @@
-﻿//using Application;
-//using Autofac;
-//using Domain;
-//using LibraryHost;
-//using Microsoft.VisualStudio.TestTools.UnitTesting;
-//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
-//using Tests.Common;
+﻿using Application;
+using Autofac;
+using Domain;
+using Library.IntegrationTests;
+using LibraryHost;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-//namespace Library.IntegrationTests
-//{
-//    [TestClass]
-//    public class CreateBorrowTests : TransactionIsolator
-//    {
-//        private static ICommandBus _commandBus = new CommandBus();
 
-//        [TestMethod]
-//        [DataRow("Wpożyczenie jest niemożliwe, ponieważ książki niema na stanie biblioteki.")]
-//        public void WhenBookBookIsOutOfStockBorrowNotAdded(string message)
-//        {
-//            //when
-//            //_booksService.AddBook(testBook);
-//            CreateBook createBookCommand = new CreateBook();
-//            createBookCommand.AuthorName = "Test";
-//            createBookCommand.AuthorSurname = "testName";
-//            createBookCommand.Amount = 4;
-//            createBookCommand.Title = "TestTitle";
-//            createBookCommand.Description = "TestDesc";
+namespace BorrowCommandTests
+{
+    [TestClass]
+    public class CreateBorrowTests : TransactionIsolator
+    {
+        private ICommandBus _commandBus = new CommandBus();
+        private IQueryBus _queryBus = new QueryBus();
 
-//            CreateCustomer createCustomerCommand = new CreateCustomer();
+        [TestMethod]
+        public void WhenBookBookIsOutOfStockBorrowNotAdded()
+        {
+            //when
+            CreateBook createBookCommand = new CreateBook();
+            createBookCommand.AuthorName = "Test";
+            createBookCommand.AuthorSurname = "testName";
+            createBookCommand.Amount = 1;
+            createBookCommand.Title = "TestTitle";
+            createBookCommand.Description = "TestDesc";
 
-//            createCustomerCommand.Name = "Maciej";
-//            createCustomerCommand.Surname = "Hanulak";
-//            createCustomerCommand.Address = "ul. Moja";
-//            createCustomerCommand.TelephoneNumber = "123456789";
+            CreateCustomer createCustomerCommand = new CreateCustomer();
 
-//            //given
-//            _commandBus.Handle<CreateBook>(createBookCommand);
-//            _commandBus.Handle<CreateCustomer>(createCustomerCommand);
+            createCustomerCommand.Name = "Maciej";
+            createCustomerCommand.Surname = "Hanulak";
+            createCustomerCommand.Address = "ul. Moja";
+            createCustomerCommand.TelephoneNumber = "123456789";
 
-//            _customersService.AddCustomer(testCustomer);
-//            var CustomerId = _customersService.GetCustomers().Select(x => x.Id).First();
-//            var BookId = _booksService.GetBooks().Select(x => x.Id).First();
-//            //given 
-//            var throwed = _borrowsService.AddBorrow(CustomerId, BookId);
-//            var expected = message;
+            _commandBus.Handle(createBookCommand);
+            _commandBus.Handle(createCustomerCommand);
 
-//            //then
-//            StringAssert.Contains(throwed, expected);
-//        }
+            var customers = _queryBus.Handle(new GetCustomers()) as List<CustomerDTO>;
+            var books = _queryBus.Handle(new GetBooks()) as List<BookDTO>;
 
-//        [TestMethod]
-//        [DataRow("Nie znaleziono wskazanego Klienta w bazie biblioteki.")]
-//        public void WhenCustomerNotFoundBorrowNotAdded(string message)
-//        {
-//            //when
-//            _booksService.AddBook(testBook);
+            var customerId = customers.Where(x => x.TelephoneNumber == createCustomerCommand.TelephoneNumber)
+                          .Select(x => x.Id)
+                          .Single();
 
-//            var BookId = _booksService.GetBooks().Select(x => x.Id).First();
-//            //given 
-//            var throwed = _borrowsService.AddBorrow(-1, BookId);
-//            var expected = message;
+            var bookId = books.Where(x => x.AuthorName == createBookCommand.AuthorName && x.AuthorSurname == createBookCommand.AuthorSurname && x.Title == createBookCommand.Title)
+                              .Select(x => x.Id)
+                              .Single();
 
-//            //then
-//            StringAssert.Contains(throwed, expected);
-//        }
+            //given
+            CreateBorrow createBorrowCommand = new CreateBorrow();
+            createBorrowCommand.BookId = bookId;
+            createBorrowCommand.CustomerId = customerId;
 
-//        [TestMethod]
-//        [DataRow("Nie znaleziono wskazanej Książki w bazie biblioteki.")]
-//        public void WhenBookNotFoundBorrowNotAdded(string message)
-//        {
-//            //when
-//            _customersService.AddCustomer(testCustomer);
+            _commandBus.Handle(createBorrowCommand);
+            var throwed = _commandBus.Handle(createBorrowCommand);
 
-//            var CustomerId = _customersService.GetCustomers().Select(x => x.Id).First();
-//            //given 
-//            var throwed = _borrowsService.AddBorrow(CustomerId, -1);
-//            var expected = message;
+            //then
+            StringAssert.Contains(throwed, "Wpożyczenie jest niemożliwe, ponieważ książki niema na stanie biblioteki.");
+        }
 
-//            //then
-//            StringAssert.Contains(throwed, expected);
-//        }
+        [TestMethod]
+        public void WhenCustomerNotFoundBorrowNotAdded()
+        {
+            //when
+            CreateBook createBookCommand = new CreateBook();
+            createBookCommand.AuthorName = "Test";
+            createBookCommand.AuthorSurname = "testName";
+            createBookCommand.Amount = 1;
+            createBookCommand.Title = "TestTitle";
+            createBookCommand.Description = "TestDesc";
 
-//        [TestMethod]
-//        public void BorrowAdded()
-//        {
-//            //when
-//            testBook.Amount++;
+            _commandBus.Handle(createBookCommand);
 
-//            _booksService.AddBook(testBook);
-//            _customersService.AddCustomer(testCustomer);
+            var books = _queryBus.Handle(new GetBooks()) as List<BookDTO>;
 
-//            var CustomerId = _customersService.GetCustomers().Select(x => x.Id).First();
-//            var BookId = _booksService.GetBooks().Select(x => x.Id).First();
-//            //given
+            var bookId = books.Where(x => x.AuthorName == createBookCommand.AuthorName && x.AuthorSurname == createBookCommand.AuthorSurname && x.Title == createBookCommand.Title)
+                              .Select(x => x.Id)
+                              .Single();
+            //given 
+            CreateBorrow createBorrowCommand = new CreateBorrow();
+            createBorrowCommand.BookId = bookId;
+            createBorrowCommand.CustomerId = -1;
 
-//            var throwed = _borrowsService.AddBorrow(CustomerId, BookId);
-//            var expected = $"Wyporzyczono, Tytuł: {testBook.Title}, Klientowi: {testCustomer.Name} {testCustomer.Surname}";
+            var throwed = _commandBus.Handle(createBorrowCommand);
 
-//            //then
-//            StringAssert.Contains(throwed, expected);
-//        }
-//    }
-//}
+            //then
+            StringAssert.Contains(throwed, "Nie znaleziono wskazanego Klienta w bazie biblioteki.");
+        }
+
+        [TestMethod]
+        public void WhenBookNotFoundBorrowNotAdded()
+        {
+            //when
+            CreateCustomer createCustomerCommand = new CreateCustomer();
+
+            createCustomerCommand.Name = "Maciej";
+            createCustomerCommand.Surname = "Hanulak";
+            createCustomerCommand.Address = "ul. Moja";
+            createCustomerCommand.TelephoneNumber = "123456789";
+
+            _commandBus.Handle(createCustomerCommand);
+
+            var customers = _queryBus.Handle(new GetCustomers()) as List<CustomerDTO>;
+            var customerId = customers.Where(x => x.TelephoneNumber == createCustomerCommand.TelephoneNumber)
+                                      .Select(x => x.Id)
+                                      .Single();
+            //given 
+            CreateBorrow createBorrowCommand = new CreateBorrow();
+            createBorrowCommand.BookId = -1;
+            createBorrowCommand.CustomerId = customerId;
+
+            var throwed = _commandBus.Handle(createBorrowCommand);
+
+            //then
+            StringAssert.Contains(throwed, "Nie znaleziono wskazanej Książki w bazie biblioteki.");
+        }
+
+        [TestMethod]
+        public void BorrowAdded()
+        {
+            //when
+            CreateBook createBookCommand = new CreateBook();
+            createBookCommand.AuthorName = "Test";
+            createBookCommand.AuthorSurname = "testName";
+            createBookCommand.Amount = 1;
+            createBookCommand.Title = "TestTitle";
+            createBookCommand.Description = "TestDesc";
+
+            CreateCustomer createCustomerCommand = new CreateCustomer();
+
+            createCustomerCommand.Name = "Maciej";
+            createCustomerCommand.Surname = "Hanulak";
+            createCustomerCommand.Address = "ul. Moja";
+            createCustomerCommand.TelephoneNumber = "123456789";
+
+            _commandBus.Handle(createCustomerCommand);
+            _commandBus.Handle(createBookCommand);
+
+            var customers = _queryBus.Handle(new GetCustomers()) as List<CustomerDTO>;
+            var books = _queryBus.Handle(new GetBooks()) as List<BookDTO>;
+
+            var customerId = customers.Where(x => x.TelephoneNumber == createCustomerCommand.TelephoneNumber)
+                                      .Select(x => x.Id)
+                                      .Single();
+            var bookId = books.Where(x => x.AuthorName == createBookCommand.AuthorName && x.AuthorSurname == createBookCommand.AuthorSurname && x.Title == createBookCommand.Title)
+                              .Select(x => x.Id)
+                              .Single();
+            //given
+            CreateBorrow createBorrowCommand = new CreateBorrow();
+            createBorrowCommand.BookId = bookId;
+            createBorrowCommand.CustomerId = customerId;
+
+            var throwed = _commandBus.Handle(createBorrowCommand);
+            var expected = $"Wyporzyczono, Tytuł: {createBookCommand.Title}, Klientowi: {createCustomerCommand.Name} {createCustomerCommand.Surname}";
+
+            //then
+            StringAssert.Contains(throwed, expected);
+        }
+    }
+}

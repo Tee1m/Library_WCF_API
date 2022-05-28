@@ -11,35 +11,29 @@ namespace LibraryHost
     {
         static void Main(string[] args)
         {
-            var borrowsHost = new ServiceHost(typeof(BorrowsService));
-            var customersHost = new ServiceHost(typeof(CommandBus));
-            var booksHost = new ServiceHost(typeof(BooksService));
+            var commandBusFacade = new ServiceHost(typeof(CommandBusFacade));
+            var queryBusFacade = new ServiceHost(typeof(QueryBusFacade));
 
             var container = ContainerIoC.RegisterContainerBuilder().Build();
                          
-            CheckServiceIsRegistrated(container, new TypedService(typeof(IBooksService)));
-            CheckServiceIsRegistrated(container, new TypedService(typeof(IBorrowsService)));
-            CheckServiceIsRegistrated(container, new TypedService(typeof(ICommandBus)));
+            CheckServiceIsRegistrated(container, new TypedService(typeof(IQueryBusFacade)));
+            CheckServiceIsRegistrated(container, new TypedService(typeof(ICommandBusFacade)));
 
-            borrowsHost.AddDependencyInjectionBehavior<IBorrowsService>(container);
-            customersHost.AddDependencyInjectionBehavior<ICommandBus>(container);
-            booksHost.AddDependencyInjectionBehavior<IBooksService>(container);
+            commandBusFacade.AddDependencyInjectionBehavior<ICommandBusFacade>(container);
+            queryBusFacade.AddDependencyInjectionBehavior<IQueryBusFacade>(container);
 
             Console.WriteLine("Uruchamianie ...");
 
-            borrowsHost.Opened += BorrowsServiceOpened;
-            customersHost.Opened += CustomersServiceOpened;
-            booksHost.Opened += BooksServiceOpened;
+            commandBusFacade.Opened += CommandBusServiceOpened;
+            queryBusFacade.Opened += QueryBusServiceOpened;
 
-            borrowsHost.Open();
-            customersHost.Open();
-            booksHost.Open();
+            commandBusFacade.Open();
+            queryBusFacade.Open();
 
             Console.ReadKey();
 
-            borrowsHost.Close();
-            customersHost.Close();
-            booksHost.Close();
+            commandBusFacade.Close();
+            queryBusFacade.Close();
 
             Environment.Exit(0);
         }
@@ -55,19 +49,14 @@ namespace LibraryHost
             }
         }
 
-        private static void BooksServiceOpened(object sender, EventArgs e)
+        private static void QueryBusServiceOpened(object sender, EventArgs e)
         {
-            Console.WriteLine("BooksRepository host został uruchomiony");
+            Console.WriteLine("QueryBusService host został uruchomiony");
         }
 
-        private static void CustomersServiceOpened(object sender, EventArgs e)
+        private static void CommandBusServiceOpened(object sender, EventArgs e)
         {
-            Console.WriteLine("CustomersRepository host został uruchomiony");
-        }
-
-        private static void BorrowsServiceOpened(object sender, EventArgs e)
-        {
-            Console.WriteLine("BorrowsRepository host został uruchomiony");
+            Console.WriteLine("CommandBusService host został uruchomiony");
         }
     }
 }

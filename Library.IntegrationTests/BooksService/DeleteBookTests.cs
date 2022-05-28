@@ -10,36 +10,42 @@ using Application;
 using Autofac;
 using Domain;
 
-namespace BooksServiceTests
+namespace BookCommandsTests
 {
     [TestClass]
     public class DeleteBookTests : TransactionIsolator
     {
-        private ICommandBus commandBus = new CommandBus();
+        private ICommandBus _commandBus = new CommandBus();
+        private IQueryBus _queryBus = new QueryBus();
         private DeleteBook deleteBook = new DeleteBook();
 
 
-        //[TestMethod]
-        //public void DeleteBook()
-        //{
-        //    //when
-        //    book.AuthorName = "Test";
-        //    book.AuthorSurname = "testName";
-        //    book.Amount = 3;
-        //    book.Description = "test test test";
-        //    book.Title = "TestTitle";
+        [TestMethod]
+        public void DeleteBook()
+        {
+            //when
+            CreateBook createBookCommand = new CreateBook();
+            createBookCommand.AuthorName = "Test";
+            createBookCommand.AuthorSurname = "testName";
+            createBookCommand.Amount = 4;
+            createBookCommand.Title = "TestTitle";
+            createBookCommand.Description = "TestDesc";
 
-        //    //given
-        //    _booksService.AddBook(book);
-        //    var books = _booksService.GetBooks();
+            _commandBus.Handle(createBookCommand);
 
-        //    var BookId = books.Where(a => a.AuthorName == book.AuthorName && a.AuthorSurname == book.AuthorSurname && a.Title == book.Title).Select(a => a.Id).Single();
-        //    _booksService.DeleteBook(BookId);
-        //    books = _booksService.GetBooks();
+            //given
+            DeleteBook deleteBookCommand = new DeleteBook();
+            deleteBookCommand.AuthorName = createBookCommand.AuthorName;
+            deleteBookCommand.AuthorSurname = createBookCommand.AuthorSurname;
+            deleteBookCommand.Title = createBookCommand.Title;
 
-        //    //then
-        //    Assert.IsTrue(books.Count == 0);
-        //}
+            _commandBus.Handle(deleteBookCommand);
+
+            var books = _queryBus.Handle(new GetBooks()) as List<BookDTO>;
+
+            //then
+            Assert.IsTrue(books.Count == 0);
+        }
 
         [TestMethod]
         public void CorrectMessageOfDeletingBookOperation()
@@ -58,8 +64,8 @@ namespace BooksServiceTests
             deleteBook.Title = "TestTitle";
 
             //given
-            commandBus.Handle<CreateBook>(createBook);
-            var throwed = commandBus.Handle<DeleteBook>(deleteBook);
+            _commandBus.Handle(createBook);
+            var throwed = _commandBus.Handle(deleteBook);
 
             //then
             StringAssert.Contains(throwed, $"Usunięto książkę, Tytuł: {deleteBook.Title} Autor: {deleteBook.AuthorName} {deleteBook.AuthorSurname}.");
@@ -71,44 +77,59 @@ namespace BooksServiceTests
             //when
 
             //given
-            var throwed = commandBus.Handle<DeleteBook>(deleteBook);
+            var throwed = _commandBus.Handle(deleteBook);
 
             //then
             StringAssert.Contains(throwed, "Nie znaleziono wskazanej Książki w bazie biblioteki.");
         }
 
-        //[TestMethod]
-        //public void DidNotReturnedBookCanNotDeleted()
-        //{
-        //    //when
-        //    book.AuthorName = "Test";
-        //    book.AuthorSurname = "testName";
-        //    book.Amount = 3;
-        //    book.Description = "test test test";
-        //    book.Title = "TestTitle";
+        [TestMethod]
+        public void DidNotReturnedBookCanNotDeleted()
+        {
+            //when
+            CreateBook createBookCommand = new CreateBook();
+            createBookCommand.AuthorName = "Test";
+            createBookCommand.AuthorSurname = "testName";
+            createBookCommand.Amount = 4;
+            createBookCommand.Title = "TestTitle";
+            createBookCommand.Description = "TestDesc";
 
-        //    Customer customer = new Customer();
+            CreateCustomer createCustomerCommand = new CreateCustomer();
+            createCustomerCommand.Name = "Maciej";
+            createCustomerCommand.Surname = "Hanulak";
+            createCustomerCommand.Address = "ul. Moja";
+            createCustomerCommand.TelephoneNumber = "123456789";
 
-        //    customer.Name = "Maciej";
-        //    customer.Surname = "Hanulak";
-        //    customer.Address = "ul. Moja";
-        //    customer.TelephoneNumber = "123456789";
+            _commandBus.Handle(createCustomerCommand);
+            _commandBus.Handle(createBookCommand);
 
-        //    _booksService.AddBook(book);
-        //    _customersService.AddCustomer(customer);
+            var books = _queryBus.Handle(new GetBooks()) as List<BookDTO>;
+            var customers = _queryBus.Handle(new GetCustomers()) as List<CustomerDTO>;
 
-        //    var books = _booksService.GetBooks();
-        //    var customers = _customersService.GetCustomers();
+            var bookId = books.Where(x => x.AuthorName == createBookCommand.AuthorName && x.AuthorSurname == createBookCommand.AuthorSurname && x.Title == createBookCommand.Title)
+                               .Select(x => x.Id)
+                               .Single();
 
-        //    var BookId = books.Where(a => a.AuthorName == book.AuthorName && a.AuthorSurname == book.AuthorSurname && a.Title == book.Title).Select(a => a.Id).Single();
-        //    var CustomerId = customers.Where(a => a.Name == customer.Name && a.Surname == customer.Surname && a.Address == customer.Address && a.TelephoneNumber == customer.TelephoneNumber).Select(a => a.Id).Single();
+            var customerId = customers.Where(x => x.TelephoneNumber == createCustomerCommand.TelephoneNumber)
+                                      .Select(x => x.Id)
+                                      .Single();
 
-        //    //given
-        //    _borrowsService.AddBorrow(CustomerId, BookId);
-        //    var message = _booksService.DeleteBook(BookId);
+            CreateBorrow createBorrowCommand = new CreateBorrow();
+            createBorrowCommand.BookId = bookId;
+            createBorrowCommand.CustomerId = customerId;
 
-        //    //then
-        //    StringAssert.Contains(message, "Nie usunieto książki, ponieważ nie wszystkie egzemplarze zostały zwrócone");
-        //}
+            _commandBus.Handle(createBorrowCommand);
+
+            //given
+            DeleteBook deleteCustomerCommand = new DeleteBook();
+            deleteCustomerCommand.AuthorName = createBookCommand.AuthorName;
+            deleteCustomerCommand.AuthorSurname = createBookCommand.AuthorSurname;
+            deleteCustomerCommand.Title = createBookCommand.Title;
+
+            var throwed = _commandBus.Handle(deleteCustomerCommand);
+
+            //then
+            StringAssert.Contains(throwed, "Nie usunieto książki, ponieważ nie wszystkie egzemplarze zostały zwrócone");
+        }
     }
 }

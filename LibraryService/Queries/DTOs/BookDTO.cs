@@ -1,9 +1,9 @@
 ﻿using System.Runtime.Serialization;
 
-namespace LibraryService
+namespace Application
 {
     [DataContract]
-    public class BookDTO
+    public class BookDTO : IDTO
     {
         [DataMember]
         public int Id { get; set; }

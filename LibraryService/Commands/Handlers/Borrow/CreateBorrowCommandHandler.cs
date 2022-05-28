@@ -43,3 +43,4 @@ namespace Application
             return $"Wyporzyczono, Tytuł: {book.Title}, Klientowi: {customer.Name} {customer.Surname}";
         }
     }
+}

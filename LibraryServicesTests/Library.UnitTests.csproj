@@ -84,17 +84,13 @@
       <Project>{7674073a-7b97-4121-9c98-349513f35ed6}</Project>
       <Name>Domain</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Library.Infrastructure\DAL.csproj">
+    <ProjectReference Include="..\Library.Infrastructure\Infrastructure.csproj">
       <Project>{aea4855c-5379-4ba3-9837-64f232ae042f}</Project>
-      <Name>DAL</Name>
+      <Name>Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\LibraryService\Application.csproj">
       <Project>{3cf02194-8b80-4ab3-9983-22752755c042}</Project>
       <Name>Application</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Tests.Common\Tests.Common.csproj">
-      <Project>{6314c5ad-bbc9-4610-8b8a-14ccdb40ec88}</Project>
-      <Name>Tests.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

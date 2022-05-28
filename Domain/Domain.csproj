@@ -50,7 +50,7 @@
     <Compile Include="Customer\Rules\CustomerTelephoneNumberUniqueRule.cs" />
     <Compile Include="Customer\Rules\ICustomerUniquenessChecker.cs" />
     <Compile Include="Book\Book.cs" />
-    <Compile Include="Enties\Borrow.cs" />
+    <Compile Include="Borrow\Borrow.cs" />
     <Compile Include="Customer\Customer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

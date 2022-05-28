@@ -7,7 +7,6 @@ using Autofac;
 
 namespace LibraryHost
 {
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.PerCall)]
     public class CommandBus : ICommandBus
     {
         public string Handle<TCommand>(TCommand command) where TCommand : ICommand

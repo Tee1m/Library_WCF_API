@@ -22,9 +22,11 @@ namespace Domain
             _borrows = new List<Borrow>();
         }
 
-        public IBusinessRule HasAllValues() => new CustomerHasAllValues(this);
+        public IBusinessRule HasAllValues()
+            => new CustomerHasAllValues(this);
 
-        public IBusinessRule IsUnique(ICustomerUniquenessChecker checker) => new CustomerTelephoneNumberUniqueRule(checker, TelephoneNumber);        
+        public IBusinessRule IsUnique(ICustomerUniquenessChecker checker)
+            => new CustomerTelephoneNumberUniqueRule(checker, TelephoneNumber);        
     }
 }
 
