@@ -40,8 +40,21 @@ namespace LibraryHost
                 .As<IBorrowsService>();
             builder.Register(context => new BooksService(context.Resolve<IUnitOfWork>(), context.Resolve<IBookUniquenessChecker>()))
                 .As<IBooksService>();
-            builder.Register(context => new CustomersService(context.Resolve<IUnitOfWork>(), context.Resolve<ICustomerUniquenessChecker>()))
-                .As<ICustomersService>();
+
+            builder.RegisterAssemblyTypes(AppDomain.CurrentDomain.GetAssemblies())
+            .Where(x => x.IsAssignableTo<ICommandHandler>())
+            .AsImplementedInterfaces();
+
+            builder.Register<Func<Type, ICommandHandler>>(c =>
+            {
+                var ctx = c.Resolve<IComponentContext>();
+
+                return t =>
+                {
+                    var handlerType = typeof(ICommandHandler<>).MakeGenericType(t);
+                    return (ICommandHandler)ctx.Resolve(handlerType);
+                };
+            });
 
             return builder;
         }

@@ -12,7 +12,7 @@
 
         public bool NotValid()
         {
-            return !(_book.Title != null && _book.AuthorSurname != null && _book.AuthorName != null);
+            return !(_book.Title != null && _book.AuthorSurname != null && _book.AuthorName != null && _book.Description != null && _book.Amount > 0);
         }
     }
 }

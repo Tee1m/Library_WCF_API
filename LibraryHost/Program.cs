@@ -12,17 +12,17 @@ namespace LibraryHost
         static void Main(string[] args)
         {
             var borrowsHost = new ServiceHost(typeof(BorrowsService));
-            var customersHost = new ServiceHost(typeof(CustomersService));
+            var customersHost = new ServiceHost(typeof(CommandBus));
             var booksHost = new ServiceHost(typeof(BooksService));
 
             var container = ContainerIoC.RegisterContainerBuilder().Build();
                          
             CheckServiceIsRegistrated(container, new TypedService(typeof(IBooksService)));
             CheckServiceIsRegistrated(container, new TypedService(typeof(IBorrowsService)));
-            CheckServiceIsRegistrated(container, new TypedService(typeof(ICustomersService)));
+            CheckServiceIsRegistrated(container, new TypedService(typeof(ICommandBus)));
 
             borrowsHost.AddDependencyInjectionBehavior<IBorrowsService>(container);
-            customersHost.AddDependencyInjectionBehavior<ICustomersService>(container);
+            customersHost.AddDependencyInjectionBehavior<ICommandBus>(container);
             booksHost.AddDependencyInjectionBehavior<IBooksService>(container);
 
             Console.WriteLine("Uruchamianie ...");
