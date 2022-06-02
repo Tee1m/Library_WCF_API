@@ -1,11 +1,11 @@
 ﻿using Autofac;
 using System;
 using System.Linq;
-using DAL;
+using Infrastructure;
 using Application;
 using System.Reflection;
 
-namespace LibraryHost
+namespace Infrastructure
 {
     public class QueryModule : Autofac.Module
     {
@@ -34,14 +34,8 @@ namespace LibraryHost
                 };
             });
 
-            builder.Register(context => new QueryBus())
-                .As<IQueryBus>();
-
             builder.Register(context => new SqlConnectionFactory(_connectionString))
                 .As<ISqlConnectionFactory>();
-
-            builder.Register(context => new QueryBusFacade(context.Resolve<IQueryBus>()))
-                    .As<IQueryBusFacade>();
         }
     }
 }

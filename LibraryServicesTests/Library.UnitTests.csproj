@@ -73,10 +73,11 @@
     <Compile Include="Aplication\BorrowServiceTests\ReturnBorrowTests.cs" />
     <Compile Include="Aplication\CustomersServiceTests\AddCustomerTests.cs" />
     <Compile Include="Aplication\CustomersServiceTests\DeleteCustomerTests.cs" />
-    <Compile Include="DAL\AutoMapperTests\ProfilesTests.cs" />
+    <Compile Include="Infrastructure\AutoMapperTests\ProfilesTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

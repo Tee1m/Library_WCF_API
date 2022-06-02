@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DAL;
+using Infrastructure;
 using Application;
 using AutoMapper;
 using System.Reflection;
 
-namespace LibraryHost
+namespace Infrastructure
 {
     public class DataAccessModule : Autofac.Module
     {

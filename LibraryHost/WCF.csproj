@@ -83,7 +83,6 @@
     <Compile Include="Rails\CommandBusFacade.cs" />
     <Compile Include="Rails\QueryBus.cs" />
     <Compile Include="Rails\QueryBusFacade.cs" />
-    <Compile Include="IoC\DataAccessModule.cs" />
     <Compile Include="IoC\ContainerIoC.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

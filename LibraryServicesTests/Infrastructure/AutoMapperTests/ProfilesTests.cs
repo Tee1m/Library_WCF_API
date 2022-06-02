@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using Library.Infrastructure;
 using AutoMapper;
 using Application;
-using DAL;
+using Infrastructure;
 
-namespace DALTests
+namespace InfrastructureUnitTests
 {
     [TestClass]
     public class ProfilesTests

@@ -5,7 +5,7 @@ using Domain;
 using Application;
 using System.Reflection;
 
-namespace LibraryHost
+namespace Infrastructure
 {
     public class CommandModule : Autofac.Module 
     {
@@ -34,12 +34,6 @@ namespace LibraryHost
                     return (ICommandHandler)context.Resolve(handlerType);
                 };
             });
-
-            builder.Register(context => new CommandBus())
-                .As<ICommandBus>();
-
-            builder.Register(context => new CommandBusFacade(context.Resolve<ICommandBus>()))
-                .As<ICommandBusFacade>();
         }
 
         private static void RegisterDomainServices(ContainerBuilder builder)

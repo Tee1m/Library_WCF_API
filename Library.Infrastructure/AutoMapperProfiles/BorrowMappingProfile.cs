@@ -2,7 +2,7 @@
 using Domain;
 using Application;
 
-namespace DAL
+namespace Infrastructure
 {
     public class BorrowMappingProfile : Profile
     {

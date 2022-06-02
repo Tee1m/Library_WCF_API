@@ -5,7 +5,7 @@ using AutoMapper;
 using System.Data.Entity;
 using Domain;
 
-namespace DAL
+namespace Infrastructure
 {
     public class BooksRepository : IBooksRepository
     {

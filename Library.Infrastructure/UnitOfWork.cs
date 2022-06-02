@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Application;
 using AutoMapper;
 
-namespace DAL
+namespace Infrastructure
 {
     public class UnitOfWork : IUnitOfWork
     {

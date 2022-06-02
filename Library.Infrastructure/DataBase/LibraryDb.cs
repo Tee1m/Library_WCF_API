@@ -2,7 +2,7 @@ using System;
 using System.Data.Entity;
 using System.Linq;
 
-namespace DAL
+namespace Infrastructure
 {
     public class LibraryDb : DbContext
     {

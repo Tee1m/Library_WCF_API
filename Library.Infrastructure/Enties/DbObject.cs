@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime.Serialization;
 
-namespace DAL
+namespace Infrastructure
 {
     public class DbObject
     {
